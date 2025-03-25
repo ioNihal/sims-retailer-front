@@ -1,0 +1,18 @@
+/* Navbar.module.css */
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #fff;
+    border-top: 1px solid #ccc;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .active {
+    color: #0070f3;
+    font-weight: bold;
+  }
+  
