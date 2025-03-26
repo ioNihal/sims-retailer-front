@@ -1,0 +1,40 @@
+/* src/styles/InvoiceDetails.module.css */
+.invoiceDetails {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+  }
+  
+  .invoiceDetails h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 12px;
+  }
+  
+  .invoiceDetails p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    color: #555;
+  }
+  
+  /* Close button positioned at the top right corner */
+  .closeButton {
+    background: transparent;
+    border: none;
+    color: #0070f3;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .closeButton:hover {
+    color: #005bb5;
+  }
+  

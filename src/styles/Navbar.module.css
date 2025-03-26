@@ -1,18 +1,30 @@
 /* Navbar.module.css */
 .navbar {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: #fff;
-    border-top: 1px solid #ccc;
-    padding: 10px 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
-  
-  .active {
-    color: #0070f3;
-    font-weight: bold;
-  }
-  
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  padding: 12px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #777;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #0070f3;
+}
+
+.active {
+  color: #0070f3;
+  font-weight: bold;
+}

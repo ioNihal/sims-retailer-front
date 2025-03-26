@@ -1,0 +1,45 @@
+/* src/styles/Home.module.css */
+.homeContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    min-height: calc(100vh - 60px); /* accounts for header/footer */
+    background: #f5f7fa;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  /* Both panes get a subtle card look on mobile */
+  .leftPane,
+  .rightPane {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+  }
+  
+  /* Adjust vertical scroll for leftPane content */
+  .leftPane {
+    overflow-y: auto;
+  }
+  
+  /* On tablet and larger screens, display panes side by side */
+  @media (min-width: 768px) {
+    .homeContainer {
+      flex-direction: row;
+      gap: 20px;
+      padding: 20px;
+    }
+    
+    .leftPane {
+      flex: 2;
+      padding: 24px;
+    }
+    
+    .rightPane {
+      flex: 1;
+      padding: 24px;
+      border-left: 1px solid #ddd;
+    }
+  }
+  

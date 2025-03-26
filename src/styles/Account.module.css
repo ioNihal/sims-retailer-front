@@ -1,0 +1,71 @@
+/* src/styles/Account.module.css */
+.accountContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 60px);
+    background: #f5f7fa;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  /* Sidebar as horizontal tabs on mobile */
+  .sidebar {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 12px;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .sidebar button {
+    flex: 1;
+    padding: 10px 12px;
+    background: #0070f3;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 0.95rem;
+  }
+  
+  .sidebar button:hover {
+    background: #005bb5;
+  }
+  
+  .sidebar button.active {
+    background: #005bb5;
+  }
+  
+  /* Content area styled as a card */
+  .content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #fff;
+    margin: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* For tablet and larger screens, switch to a vertical sidebar */
+  @media (min-width: 768px) {
+    .accountContainer {
+      flex-direction: row;
+    }
+    .sidebar {
+      flex-direction: column;
+      width: 200px;
+      padding: 20px;
+      border-bottom: none;
+      border-right: 1px solid #ddd;
+      box-shadow: none;
+    }
+    .content {
+      margin: 0;
+      padding: 20px;
+      flex: 1;
+    }
+  }
+  

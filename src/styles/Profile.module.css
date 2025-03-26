@@ -1,0 +1,46 @@
+/* src/styles/Profile.module.css */
+.profileContainer {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Roboto', sans-serif;
+    margin: 16px;
+  }
+  
+  .profileContainer h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    color: #333;
+  }
+  
+  .profileContainer p {
+    margin: 12px 0;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .changeRequestBtn {
+    margin-top: 20px;
+    padding: 12px 16px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  .changeRequestBtn:hover {
+    background: #218838;
+  }
+  
+  /* Responsive adjustments for larger screens */
+  @media (min-width: 768px) {
+    .profileContainer {
+      margin: 24px;
+      padding: 24px;
+    }
+  }
+  
