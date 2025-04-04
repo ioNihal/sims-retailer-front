@@ -3,3 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
 }
+
+:root, body, html {
+  background: linear-gradient(135deg, #eceff1, #f5f7fa);
+}

@@ -1,12 +1,13 @@
 // src/pages/Home.jsx
 import React, { useEffect, useState } from 'react';
 import SearchBar from '../components/SearchBar';
-import ProductList from '../components/ProductList';
-import Cart from '../components/Cart';
-import Checkout from '../components/Checkout';
+import ProductList from '../components/HomeComponents/ProductList';
+import Cart from '../components/HomeComponents/Cart';
+import Checkout from '../components/HomeComponents/Checkout';
 import styles from '../styles/Home.module.css';
 
 const Home = () => {
+  const [activeTab, setActiveTab] = useState('products'); // 'products' or 'cart'
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,13 +20,12 @@ const Home = () => {
       { id: 1, name: 'Product A', category: 'Electronics', price: 99.99, stock: 10, seller: 'Seller One' },
       { id: 2, name: 'Product B', category: 'Clothing', price: 49.99, stock: 5, seller: 'Seller Two' },
       { id: 3, name: 'Product C', category: 'Accessories', price: 19.99, stock: 20, seller: 'Seller Three' },
-      // Add more products as needed
     ];
     setProducts(sampleProducts);
     setFilteredProducts(sampleProducts);
   }, []);
 
-  // Update filtered products when search term changes
+  // Filter products by search term
   useEffect(() => {
     const filtered = products.filter(product =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -46,7 +46,6 @@ const Home = () => {
   };
 
   const confirmOrder = () => {
-    // In a real app, send the order to the backend
     alert('Order Confirmed!');
     setCartItems([]);
     setCheckoutVisible(false);
@@ -58,23 +57,55 @@ const Home = () => {
 
   return (
     <div className={styles.homeContainer}>
-      <div className={styles.leftPane}>
-        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        <ProductList products={filteredProducts} addToCart={addToCart} />
+      <div className={styles.tabButtons}>
+        <button
+          className={activeTab === 'products' ? styles.active : ''}
+          onClick={() => setActiveTab('products')}
+        >
+          Products
+        </button>
+        <button
+          className={activeTab === 'cart' ? styles.active : ''}
+          onClick={() => setActiveTab('cart')}
+        >
+          Cart {cartItems.length > 0 && <span className={styles.badge}>{cartItems.length}</span>}
+        </button>
       </div>
-      <div className={styles.rightPane}>
-        {checkoutVisible ? (
-          <Checkout 
-            cartItems={cartItems} 
-            confirmOrder={confirmOrder} 
-            goBack={goBackFromCheckout} 
-          />
-        ) : (
-          <Cart 
-            cartItems={cartItems} 
-            removeFromCart={removeFromCart} 
-            proceedToCheckout={proceedToCheckout} 
-          />
+
+      <div className={styles.tabContent}>
+        {activeTab === 'products' && (
+          <div className={styles.contentPane}>
+            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            {filteredProducts.length > 0 ? (
+              <ProductList products={filteredProducts} addToCart={addToCart} />
+            ) : (
+              <p className={styles.emptyMessage}>No products found.</p>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'cart' && (
+          <div className={styles.contentPane}>
+            {checkoutVisible ? (
+              <Checkout 
+                cartItems={cartItems} 
+                confirmOrder={confirmOrder} 
+                goBack={goBackFromCheckout} 
+              />
+            ) : (
+              <>
+                {cartItems.length > 0 ? (
+                  <Cart 
+                    cartItems={cartItems} 
+                    removeFromCart={removeFromCart} 
+                    proceedToCheckout={proceedToCheckout} 
+                  />
+                ) : (
+                  <p className={styles.emptyMessage}>Your cart is empty.</p>
+                )}
+              </>
+            )}
+          </div>
         )}
       </div>
     </div>

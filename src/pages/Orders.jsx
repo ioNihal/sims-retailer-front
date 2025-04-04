@@ -6,6 +6,7 @@ import OrderDetails from '../components/OrderDetails';
 import InvoiceList from '../components/InvoiceList';
 import InvoiceDetails from '../components/InvoiceDetails';
 import styles from '../styles/Orders.module.css';
+import { jsPDF } from 'jspdf';
 
 const Orders = () => {
     const [activeTab, setActiveTab] = useState('orders'); // 'orders' or 'invoices'
@@ -15,6 +16,7 @@ const Orders = () => {
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [selectedInvoice, setSelectedInvoice] = useState(null);
     const [selectedInvoices, setSelectedInvoices] = useState([]); // For multi-select
+    const [exporting, setExporting] = useState(false);
 
     // Simulate fetching orders from backend
     useEffect(() => {
@@ -72,17 +74,105 @@ const Orders = () => {
         }
     };
 
-    // Simulate exporting selected invoices as PDF
+    // Improved exporting selected invoices as PDF using jsPDF
+    // ... inside Orders.jsx, replace the exportInvoices function with the following:
+
     const exportInvoices = () => {
         if (selectedInvoices.length === 0) {
-            alert('Please select at least one invoice to export.');
-            return;
+          alert('Please select at least one invoice to export.');
+          return;
         }
-        // In a real app, generate a PDF from the selected invoices data.
-        alert(`Exporting invoices: ${selectedInvoices.join(', ')} as PDF...`);
-        // Optionally, clear selection after exporting:
+      
+        setExporting(true);
+      
+        // Filter the selected invoices details
+        const invoicesToExport = invoices.filter(invoice => selectedInvoices.includes(invoice.id));
+      
+        // Create a new PDF document
+        const doc = new jsPDF();
+      
+        // Define dimensions and positions
+        const pageWidth = doc.internal.pageSize.getWidth();
+        let yOffset = 20;
+      
+        // Header Section: Company Info & Title
+        doc.setFontSize(18);
+        doc.setTextColor(40);
+        doc.text('Your Company Name', pageWidth / 2, yOffset, { align: 'center' });
+        yOffset += 8;
+        doc.setFontSize(10);
+        doc.text('1234 Street Address, City, Country', pageWidth / 2, yOffset, { align: 'center' });
+        yOffset += 10;
+        doc.setFontSize(16);
+        doc.text('Invoice', pageWidth / 2, yOffset, { align: 'center' });
+        yOffset += 10;
+      
+        // Draw a horizontal line
+        doc.setLineWidth(0.5);
+        doc.line(20, yOffset, pageWidth - 20, yOffset);
+        yOffset += 10;
+      
+        // Loop through each selected invoice
+        invoicesToExport.forEach((invoice, index) => {
+          // Save the top coordinate for the invoice rectangle
+          const rectX = 20;
+          const rectY = yOffset;
+          const rectWidth = pageWidth - 40;
+          const innerMargin = 5;
+          let textY = rectY + innerMargin; // start text inside rectangle with margin
+          const textX = rectX + innerMargin;
+      
+          doc.setFontSize(12);
+          doc.setTextColor(0);
+          doc.text(`Invoice Number: ${invoice.invoiceNumber}`, textX, textY);
+          textY += 7;
+          doc.text(`Order Details:`, textX, textY);
+          textY += 7;
+      
+          // Wrap order details text if needed
+          const detailsLines = doc.splitTextToSize(invoice.orderDetails, rectWidth - 2 * innerMargin);
+          doc.text(detailsLines, textX, textY);
+          textY += detailsLines.length * 7;
+          doc.text(`Total Amount: $${invoice.total.toFixed(2)}`, textX, textY);
+          textY += 7; // Final line spacing inside rectangle
+      
+          // Calculate rectangle height based on text content plus bottom margin
+          const rectHeight = textY - rectY + innerMargin;
+          doc.setLineWidth(0.3);
+          doc.rect(rectX, rectY, rectWidth, rectHeight);
+      
+          // Update yOffset for next invoice with some spacing
+          yOffset = rectY + rectHeight + 15;
+      
+          // If page is almost full, add a new page and redraw header if needed
+          if (yOffset > 250 && index !== invoicesToExport.length - 1) {
+            doc.addPage();
+            yOffset = 20;
+            // Redraw header elements on new page
+            doc.setFontSize(18);
+            doc.text('Your Company Name', pageWidth / 2, yOffset, { align: 'center' });
+            yOffset += 8;
+            doc.setFontSize(10);
+            doc.text('1234 Street Address, City, Country', pageWidth / 2, yOffset, { align: 'center' });
+            yOffset += 10;
+            doc.setFontSize(16);
+            doc.text('Invoice', pageWidth / 2, yOffset, { align: 'center' });
+            yOffset += 10;
+            doc.setLineWidth(0.5);
+            doc.line(20, yOffset, pageWidth - 20, yOffset);
+            yOffset += 10;
+          }
+        });
+      
+        // Save the PDF
+        doc.save('invoices.pdf');
+      
+        // Reset selections and exporting state after export
+        setExporting(false);
         setSelectedInvoices([]);
-    };
+      };
+      
+
 
     return (
         <div className={styles.ordersPage}>
@@ -133,11 +223,15 @@ const Orders = () => {
                                     onClose={() => setSelectedInvoice(null)}
                                 />
                             ) : (
-                                <p>Select an invoice to view details</p>
+                                <p>Click an invoice to view details</p>
                             )}
                             {filteredInvoices.length > 0 && (
-                                <button onClick={exportInvoices} className={styles.exportButton}>
-                                    Export Selected as PDF
+                                <button
+                                    onClick={exportInvoices}
+                                    className={styles.exportButton}
+                                    disabled={exporting}
+                                >
+                                    {exporting ? 'Exporting...' : 'Export Selected as PDF'}
                                 </button>
                             )}
                         </div>

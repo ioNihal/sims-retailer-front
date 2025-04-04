@@ -1,45 +1,84 @@
 /* src/styles/Home.module.css */
 .homeContainer {
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  box-sizing: border-box;
+  min-height: calc(100vh - 60px); /* accounts for header/footer */
+  background: #f5f7fa;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Tab Buttons */
+.tabButtons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tabButtons button {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background: #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.tabButtons button.active {
+  background: #0070f3;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 112, 243, 0.4);
+}
+
+/* Badge for cart items */
+.badge {
+  background-color: #ff3b3b;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+}
+
+/* Content Pane */
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contentPane {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  transition: opacity 0.3s ease;
+}
+
+/* Empty state message */
+.emptyMessage {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+/* On tablet and larger screens, display content side by side if needed */
+@media (min-width: 768px) {
+  .homeContainer {
     flex-direction: column;
-    gap: 16px;
-    padding: 16px;
-    min-height: calc(100vh - 60px); /* accounts for header/footer */
-    background: #f5f7fa;
-    font-family: 'Roboto', sans-serif;
+    gap: 20px;
+    padding: 20px;
   }
-  
-  /* Both panes get a subtle card look on mobile */
-  .leftPane,
-  .rightPane {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    padding: 16px;
+
+  .tabContent {
+    flex: 1;
   }
-  
-  /* Adjust vertical scroll for leftPane content */
-  .leftPane {
-    overflow-y: auto;
-  }
-  
-  /* On tablet and larger screens, display panes side by side */
-  @media (min-width: 768px) {
-    .homeContainer {
-      flex-direction: row;
-      gap: 20px;
-      padding: 20px;
-    }
-    
-    .leftPane {
-      flex: 2;
-      padding: 24px;
-    }
-    
-    .rightPane {
-      flex: 1;
-      padding: 24px;
-      border-left: 1px solid #ddd;
-    }
-  }
-  
+}

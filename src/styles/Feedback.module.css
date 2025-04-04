@@ -1,56 +1,59 @@
 /* src/styles/Feedback.module.css */
 .feedbackContainer {
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Roboto', sans-serif;
-    margin: 16px;
-  }
+  box-sizing: border-box;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  margin: 16px;
+}
+
+.feedbackContainer h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.feedbackForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.textarea {
   
-  .feedbackContainer h2 {
-    margin-top: 0;
-    font-size: 1.4rem;
-    color: #333;
-    margin-bottom: 16px;
+  min-height: 120px;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+}
+
+.submitBtn {
+  padding: 12px;
+  background: #0070f3;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 1rem;
+}
+
+.submitBtn:hover {
+  background: #005bb5;
+}
+
+@media (min-width: 768px) {
+  .feedbackContainer {
+    margin: 24px;
+    padding: 24px;
   }
-  
-  .feedbackForm {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .textarea {
-    width: 100%;
-    min-height: 120px;
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    resize: vertical;
-  }
-  
-  .submitBtn {
-    padding: 12px;
-    background: #0070f3;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    font-size: 1rem;
-  }
-  
-  .submitBtn:hover {
-    background: #005bb5;
-  }
-  
-  /* Responsive adjustments for larger screens */
-  @media (min-width: 768px) {
-    .feedbackContainer {
-      margin: 24px;
-      padding: 24px;
-    }
-  }
-  
+}

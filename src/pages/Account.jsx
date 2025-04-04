@@ -17,23 +17,21 @@ const Account = () => {
 
   return (
     <div className={styles.accountContainer}>
-      <aside className={styles.sidebar}>
-        <button 
+      <div className={styles.tabButtons}>
+        <button
           className={activeTab === 'profile' ? styles.active : ''}
           onClick={() => setActiveTab('profile')}
         >
           Profile
         </button>
-        <button 
+        <button
           className={activeTab === 'feedback' ? styles.active : ''}
           onClick={() => setActiveTab('feedback')}
         >
           Feedback
         </button>
-        <button onClick={handleLogout}>
-          Logout
-        </button>
-      </aside>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
       <section className={styles.content}>
         {activeTab === 'profile' && <Profile />}
         {activeTab === 'feedback' && <Feedback />}

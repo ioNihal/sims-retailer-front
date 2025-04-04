@@ -6,7 +6,7 @@ const InvoiceList = ({ invoices, selectedInvoices, toggleInvoiceSelection, onSel
   return (
     <div className={styles.invoiceList}>
       {invoices.map(invoice => (
-        <div key={invoice.id} className={styles.invoiceItem}>
+        <div key={invoice.id} className={styles.invoiceItem} onClick={() => onSelect(invoice)}>
           <input
             type="checkbox"
             checked={selectedInvoices.includes(invoice.id)}
@@ -14,7 +14,6 @@ const InvoiceList = ({ invoices, selectedInvoices, toggleInvoiceSelection, onSel
             className={styles.checkbox}
           />
           <div
-            onClick={() => onSelect(invoice)}
             className={styles.invoiceContent}
           >
             <p><strong>{invoice.invoiceNumber}</strong></p>
