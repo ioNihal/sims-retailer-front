@@ -1,34 +1,32 @@
-import React, { useState, useContext } from 'react';
+// src/pages/Settings.jsx
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ThemeContext } from '../contexts/ThemeContext';
-import Profile from '../components/SettingsPage/Profile';
-import Feedback from '../components/SettingsPage/Feedback';
-import styles from '../styles/Settings/Settings.module.css';
 
-const Settings = () => {
+import Profile  from '../components/SettingsPage/Profile';
+import Feedback from '../components/SettingsPage/Feedback';
+import styles   from '../styles/Settings/Settings.module.css';
+
+export default function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
-  const { theme, toggle } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     alert('You have been logged out.');
-    navigate('/');
+    navigate('/login');
   };
 
   return (
     <div className={styles.accountContainer}>
-
-      {/* Tabs / Sidebar */}
-      <div className={styles.tabButtons}>
+      <aside className={styles.sidebar}>
         <button
-          className={activeTab === 'profile' ? styles.active : ''}
+          className={activeTab==='profile' ? styles.active : ''}
           onClick={() => setActiveTab('profile')}
         >
           Profile
         </button>
         <button
-          className={activeTab === 'feedback' ? styles.active : ''}
+          className={activeTab==='feedback' ? styles.active : ''}
           onClick={() => setActiveTab('feedback')}
         >
           Feedback
@@ -36,17 +34,12 @@ const Settings = () => {
         <button onClick={handleLogout}>
           Logout
         </button>
-      </div>
+      </aside>
 
-      
-
-      {/* Content */}
-      <section className={styles.content}>
-        {activeTab === 'profile' && <Profile />}
+      <main className={styles.content}>
+        {activeTab === 'profile'  && <Profile />}
         {activeTab === 'feedback' && <Feedback />}
-      </section>
+      </main>
     </div>
   );
-};
-
-export default Settings;
+}
