@@ -18,6 +18,11 @@
   flex-direction: column;
   gap: 16px;
   color: var(--text);
+
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
 }
 
 .heading {
@@ -27,24 +32,27 @@
   color: var(--text);
 }
 
-label {
+.loginForm label {
   font-weight: 500;
   font-size: 0.95rem;
 }
 
-input {
+.loginForm input {
   padding: 12px;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 10px;
   background: var(--bg);
   color: var(--text);
-  transition: border-color 0.2s;
+  transition: border 0.2s;
+  outline: none;
 }
 
-input:focus {
+
+
+.loginForm input:focus {
   outline: none;
-  border-color: var(--primary);
+  border: 1px solid var(--primary);
 }
 
 .loginButton {
