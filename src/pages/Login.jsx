@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from '../styles/Login.module.css';
+import styles from '../styles/Login/Login.module.css';
 import { ThemeContext } from '../contexts/ThemeContext';
 
 const Login = () => {

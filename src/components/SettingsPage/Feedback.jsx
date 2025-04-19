@@ -1,6 +1,6 @@
 // src/components/Feedback.jsx
 import React, { useState } from 'react';
-import styles from '../styles/Feedback.module.css';
+import styles from '../../styles/Settings/Feedback.module.css';
 
 const Feedback = () => {
   const [feedback, setFeedback] = useState("");

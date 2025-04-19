@@ -1,6 +1,6 @@
 // src/components/Profile.jsx
 import React from 'react';
-import styles from '../styles/Profile.module.css';
+import styles from '../../styles/Settings/Profile.module.css';
 
 const Profile = () => {
   const userDetails = {

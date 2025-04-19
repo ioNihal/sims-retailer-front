@@ -1,11 +1,11 @@
 // src/pages/Orders.jsx
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
-import OrderList from '../components/OrderList';
-import OrderDetails from '../components/OrderDetails';
-import InvoiceList from '../components/InvoiceList';
-import InvoiceDetails from '../components/InvoiceDetails';
-import styles from '../styles/Orders.module.css';
+import OrderList from '../components/OrdersPage/OrderList';
+import OrderDetails from '../components/OrdersPage/OrderDetails';
+import InvoiceList from '../components/OrdersPage/InvoiceList';
+import InvoiceDetails from '../components/OrdersPage/InvoiceDetails';
+import styles from '../styles/Orders/Orders.module.css';
 import { jsPDF } from 'jspdf';
 
 export default function Orders() {

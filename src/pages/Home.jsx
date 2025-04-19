@@ -1,10 +1,10 @@
 // src/pages/Home.jsx
 import React, { useEffect, useState } from 'react';
-import SearchBar from '../components/SearchBar';
-import ProductList from '../components/HomeComponents/ProductList';
-import Cart from '../components/HomeComponents/Cart';
-import Checkout from '../components/HomeComponents/Checkout';
-import styles from '../styles/Home.module.css';
+import SearchBar from '../components/SearchBar'
+import ProductList from '../components/HomePage/ProductList';
+import Cart from '../components/HomePage/Cart';
+import Checkout from '../components/HomePage/Checkout';
+import styles from '../styles/Home/Home.module.css';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('products');

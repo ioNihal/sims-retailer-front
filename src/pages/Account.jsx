@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../contexts/ThemeContext';
-import Profile from '../components/Profile';
-import Feedback from '../components/Feedback';
-import styles from '../styles/Account.module.css';
+import Profile from '../components/SettingsPage/Profile';
+import Feedback from '../components/SettingsPage/Feedback';
+import styles from '../styles/Settings/Account.module.css';
 
 const Account = () => {
   const [activeTab, setActiveTab] = useState('profile');

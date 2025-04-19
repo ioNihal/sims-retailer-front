@@ -1,6 +1,6 @@
 // src/components/OrderDetails.jsx
 import React from 'react';
-import styles from '../styles/OrderDetails.module.css';
+import styles from '../../styles/Orders/OrderDetails.module.css';
 
 export default function OrderDetails({ order, onCancel }) {
   return (

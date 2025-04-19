@@ -1,6 +1,6 @@
 // src/components/Checkout.jsx
 import React from 'react';
-import styles from '../../styles/HomeComponents/Checkout.module.css';
+import styles from '../../styles/Home/Checkout.module.css';
 
 export default function Checkout({ cartItems, confirmOrder, goBack }) {
   const total = cartItems.reduce((sum, i) => sum + i.productPrice, 0);

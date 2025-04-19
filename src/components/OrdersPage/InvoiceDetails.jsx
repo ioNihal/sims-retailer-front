@@ -1,6 +1,6 @@
 // src/components/InvoiceDetails.jsx
 import React from 'react';
-import styles from '../styles/InvoiceDetails.module.css';
+import styles from '../../styles/Orders/InvoiceDetails.module.css';
 
 export default function InvoiceDetails({ invoice, onClose }) {
   return (

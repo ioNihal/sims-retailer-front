@@ -1,6 +1,6 @@
 // src/components/Cart.jsx
 import React from 'react';
-import styles from '../../styles/HomeComponents/Cart.module.css';
+import styles from '../../styles/Home/Cart.module.css';
 
 export default function Cart({ cartItems, removeFromCart, proceedToCheckout }) {
   return (

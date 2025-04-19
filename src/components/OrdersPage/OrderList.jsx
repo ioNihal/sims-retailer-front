@@ -1,6 +1,6 @@
 // src/components/OrderList.jsx
 import React from 'react';
-import styles from '../styles/OrderList.module.css';
+import styles from '../../styles/Orders/OrderList.module.css';
 
 export default function OrderList({ orders, onSelect }) {
   return (

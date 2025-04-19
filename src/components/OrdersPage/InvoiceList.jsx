@@ -1,6 +1,6 @@
 // src/components/InvoiceList.jsx
 import React from 'react';
-import styles from '../styles/InvoiceList.module.css';
+import styles from '../../styles/Orders/InvoiceList.module.css';
 
 export default function InvoiceList({
   invoices,

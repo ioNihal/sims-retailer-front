@@ -1,6 +1,6 @@
 // src/components/ProductList.jsx
 import React from 'react';
-import styles from '../../styles/HomeComponents/ProductList.module.css';
+import styles from '../../styles/Home/ProductList.module.css';
 
 export default function ProductList({ products, addToCart }) {
   return (
