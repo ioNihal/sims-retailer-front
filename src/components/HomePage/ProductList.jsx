@@ -11,7 +11,7 @@ export default function ProductList({ products, addToCart }) {
           <p><strong>Category:</strong> {p.category}</p>
           <p><strong>Price:</strong> ${p.productPrice.toFixed(2)}</p>
           <p><strong>Stocks Left:</strong> {p.quantity}</p>
-          <p><strong>Seller:</strong> {p.seller}</p>
+          <p><strong>Seller:</strong> {p.supplierName}</p>
           <button className={styles.addButton} onClick={()=>addToCart(p)}>
             Add to Cart
           </button>
