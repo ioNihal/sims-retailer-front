@@ -1,9 +1,10 @@
-// src/pages/MainLayout.jsx
+// src/layouts/MainLayout.jsx
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import styles from '../styles/MainLayout.module.css';
 
-const MainLayout = () => {
+export default function MainLayout() {
   return (
     <div className={styles.container}>
       <Navbar />
@@ -12,6 +13,4 @@ const MainLayout = () => {
       </main>
     </div>
   );
-};
-
-export default MainLayout;
+}

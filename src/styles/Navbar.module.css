@@ -1,72 +1,52 @@
-/* src/styles/Navbar.module.css */
 .navbar {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background: #fff;
-  border-top: 1px solid #ddd;
+  background: var(--surface);
+  border-top: 1px solid rgba(0,0,0,0.08);
   padding: 12px 0;
   position: fixed;
   bottom: 0;
   width: 100%;
-  max-width: 1200px;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.05);
-  font-family: 'Roboto', sans-serif;
-  z-index: 999;
+  z-index: 1000;
 }
 
-/* Desktop: reposition navbar to the top */
-@media (min-width: 960px) {
+/* Desktop (≥961px): top nav */
+@media (min-width: 961px) {
   .navbar {
     position: static;
     border-top: none;
-    border-bottom: 1px solid #ddd;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    width: 100%;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   }
 }
 
-.navItem {
-  position: relative;
+.navbar a {
   text-decoration: none;
-  color: #777;
+  color: var(--text);
   font-size: 0.95rem;
-  padding: 8px 10px;
-  transition: color 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 8px 12px;
+  transition: color 0.3s;
 }
 
-.navItem:hover {
-  color: #0070f3;
+.navbar a:hover {
+  color: var(--primary);
 }
 
 .active {
-  color: #0070f3;
+  color: var(--primary);
   font-weight: bold;
+  position: relative;
 }
 
 .active::after {
-  content: "";
+  content: '';
   position: absolute;
-  bottom: 2px;
+  bottom: -4px;
   left: 50%;
   transform: translateX(-50%);
   width: 24px;
   height: 3px;
-  background-color: #0070f3;
+  background: var(--primary);
   border-radius: 2px;
-  animation: slideIn 0.3s ease forwards;
-}
-
-@keyframes slideIn {
-  from {
-    width: 0;
-    opacity: 0;
-  }
-  to {
-    width: 24px;
-    opacity: 1;
-  }
 }

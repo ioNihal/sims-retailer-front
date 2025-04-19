@@ -1,68 +1,47 @@
-/* src/styles/ProductList.module.css */
 .productList {
   display: grid;
-  grid-template-rows: repeat(auto-fill, minmax(150px, 1fr));
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  overflow: auto;
   gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-/* Card styling for each product */
 .productCard {
-  box-sizing: border-box;
-  background: #fff;
-  border-radius: 12px;
+  background: var(--surface);
   padding: 16px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Enhanced hover effects */
 @media (hover: hover) and (pointer: fine) {
   .productCard:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
 }
 
-.productTitle {
+.title {
   margin: 0 0 8px;
   font-size: 1.2rem;
-  color: #333;
+  color: var(--text);
 }
 
 .productCard p {
   margin: 4px 0;
   font-size: 0.95rem;
-  color: #555;
+  color: var(--text);
 }
 
 .addButton {
   margin-top: 12px;
   padding: 10px 14px;
-  background: #0070f3;
+  background: var(--primary);
   color: #fff;
-  font-size: 0.95rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s;
 }
 
 .addButton:hover {
-  background: #005bb5;
-}
-
-/* Responsive grid layout for larger screens */
-@media (min-width: 600px) {
-  
-
-
-}
-
-@media (min-width: 960px) {
-  .productList {
-    gap: 20px;
-   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
+  background: var(--primary-hover);
 }

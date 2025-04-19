@@ -2,7 +2,7 @@
 import React from 'react';
 import styles from '../../styles/HomeComponents/Cart.module.css';
 
-const Cart = ({ cartItems, removeFromCart, proceedToCheckout }) => {
+export default function Cart({ cartItems, removeFromCart, proceedToCheckout }) {
   return (
     <div className={styles.cart}>
       <h2>Cart</h2>
@@ -13,9 +13,9 @@ const Cart = ({ cartItems, removeFromCart, proceedToCheckout }) => {
           {cartItems.map(item => (
             <li key={item.id} className={styles.cartItem}>
               <div>
-                <strong>{item.name}</strong> - ${item.price}
+                <strong>{item.productName}</strong> - ${item.productPrice.toFixed(2)}
               </div>
-              <button onClick={() => removeFromCart(item.id)}>Remove</button>
+              <button onClick={()=>removeFromCart(item.id)}>Remove</button>
             </li>
           ))}
         </ul>
@@ -27,6 +27,4 @@ const Cart = ({ cartItems, removeFromCart, proceedToCheckout }) => {
       )}
     </div>
   );
-};
-
-export default Cart;
+}

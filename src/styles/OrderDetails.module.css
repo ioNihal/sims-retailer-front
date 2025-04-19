@@ -1,38 +1,34 @@
-/* src/styles/OrderDetails.module.css */
 .orderDetails {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    font-family: 'Roboto', sans-serif;
-  }
-  
-  .orderDetails h3 {
-    margin-top: 0;
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 12px;
-  }
-  
-  .orderDetails p {
-    margin: 8px 0;
-    font-size: 0.95rem;
-    color: #555;
-  }
-  
-  .cancelButton {
-    margin-top: 16px;
-    padding: 10px 14px;
-    background: #d9534f;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    transition: background 0.3s ease;
-  }
-  
-  .cancelButton:hover {
-    background: #c12e2a;
-  }
-  
+  background: var(--surface);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  color: var(--text);
+}
+
+.orderDetails h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.orderDetails p {
+  margin: 8px 0;
+  font-size: 0.95rem;
+}
+
+.cancelButton {
+  margin-top: 16px;
+  padding: 10px 14px;
+  background: #d9534f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cancelButton:hover {
+  background: #c12e2a;
+}

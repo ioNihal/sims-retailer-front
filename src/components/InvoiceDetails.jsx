@@ -2,7 +2,7 @@
 import React from 'react';
 import styles from '../styles/InvoiceDetails.module.css';
 
-const InvoiceDetails = ({ invoice, onClose }) => {
+export default function InvoiceDetails({ invoice, onClose }) {
   return (
     <div className={styles.invoiceDetails}>
       <button className={styles.closeButton} onClick={onClose}>×</button>
@@ -11,6 +11,4 @@ const InvoiceDetails = ({ invoice, onClose }) => {
       <p><strong>Total:</strong> ${invoice.total.toFixed(2)}</p>
     </div>
   );
-};
-
-export default InvoiceDetails;
+}

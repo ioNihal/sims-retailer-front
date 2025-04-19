@@ -1,38 +1,36 @@
-/* src/styles/MainLayout.module.css */
 .container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(135deg, #eceff1, #f5f7fa);
-  font-family: 'Roboto', sans-serif;
+  background: var(--bg);
 }
 
-/* Ensure enough space at the bottom for mobile navbar */
 .mainContent {
   flex: 1;
   overflow-y: auto;
-  background: #fff;
-  margin-bottom: 60px; /* Adjust if your mobile navbar height changes */
+  background: var(--surface);
+  margin-bottom: 60px; /* space for mobile nav */
 }
 
-/* Tablet and above */
-@media (min-width: 600px) {
+/* Tablet/mobile adjustments (≤960px) */
+@media (max-width: 960px) {
   .mainContent {
-    padding: 24px;
-    margin: 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0;
+    padding: 16px;
   }
 }
 
-/* Desktop and larger screens */
-@media (min-width: 960px) {
+/* Desktop (≥961px): center & card style */
+@media (min-width: 961px) {
   .container {
     max-width: 1200px;
     margin: 0 auto;
   }
-  /* Remove extra bottom margin on desktop since navbar will be at the top */
   .mainContent {
+    margin: 16px;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     margin-bottom: 0;
   }
 }

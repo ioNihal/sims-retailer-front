@@ -2,23 +2,21 @@
 import React from 'react';
 import styles from '../../styles/HomeComponents/ProductList.module.css';
 
-const ProductList = ({ products, addToCart }) => {
+export default function ProductList({ products, addToCart }) {
   return (
     <div className={styles.productList}>
-      {products.map(product => (
-        <div key={product.id} className={styles.productCard}>
-          <h3 className={styles.productTitle}>{product.name}</h3>
-          <p><strong>Category:</strong> {product.category}</p>
-          <p><strong>Price:</strong> ${product.price.toFixed(2)}</p>
-          <p><strong>Stocks Left:</strong> {product.stock}</p>
-          <p><strong>Seller:</strong> {product.seller}</p>
-          <button className={styles.addButton} onClick={() => addToCart(product)}>
+      {products.map(p => (
+        <div key={p.id} className={styles.productCard}>
+          <h3 className={styles.title}>{p.productName}</h3>
+          <p><strong>Category:</strong> {p.category}</p>
+          <p><strong>Price:</strong> ${p.productPrice.toFixed(2)}</p>
+          <p><strong>Stocks Left:</strong> {p.quantity}</p>
+          <p><strong>Seller:</strong> {p.seller}</p>
+          <button className={styles.addButton} onClick={()=>addToCart(p)}>
             Add to Cart
           </button>
         </div>
       ))}
     </div>
   );
-};
-
-export default ProductList;
+}

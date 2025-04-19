@@ -1,18 +1,17 @@
-/* src/styles/Feedback.module.css */
 .feedbackContainer {
   box-sizing: border-box;
-  background: #fff;
+  background: var(--surface);
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Roboto', sans-serif;
   margin: 16px;
+  color: var(--text);
 }
 
 .feedbackContainer h2 {
   margin-top: 0;
   font-size: 1.4rem;
-  color: #333;
+  color: var(--text);
   margin-bottom: 16px;
 }
 
@@ -23,35 +22,45 @@
 }
 
 .textarea {
-  
   min-height: 120px;
   padding: 12px;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,0.2);
   border-radius: 8px;
   resize: vertical;
+  color: var(--text);
+  background: var(--bg);
 }
 
 .textarea:focus {
   outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 6px rgba(0, 112, 243, 0.3);
 }
 
 .submitBtn {
   padding: 12px;
-  background: #0070f3;
+  background: var(--primary);
   color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
   font-size: 1rem;
+  transition: background 0.3s ease;
 }
 
 .submitBtn:hover {
-  background: #005bb5;
+  background: var(--primary-hover);
 }
 
-@media (min-width: 768px) {
+/* Desktop‑first responsive margins */
+@media (max-width: 960px) {
+  .feedbackContainer {
+    margin: 16px;
+    padding: 20px;
+  }
+}
+@media (min-width: 961px) {
   .feedbackContainer {
     margin: 24px;
     padding: 24px;

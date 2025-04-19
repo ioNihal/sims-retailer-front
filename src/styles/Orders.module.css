@@ -1,83 +1,94 @@
-/* src/styles/Orders.module.css */
 .ordersPage {
-    padding: 16px;
-    background: #f5f7fa;
+    background: var(--bg);
     min-height: calc(100vh - 60px);
+    padding: 16px;
     font-family: 'Roboto', sans-serif;
-}
-
-/* Tab Buttons */
-.tabButtons {
+    color: var(--text);
+  }
+  
+  .tabButtons {
     display: flex;
     gap: 8px;
-    margin-bottom: 16px;
-}
-
-.tabButtons button {
+    margin-bottom: 12px;
+  }
+  
+  .tabButtons button {
     flex: 1;
-    padding: 10px 12px;
+    padding: 10px;
     border: none;
-    background: #e0e0e0;
+    background: var(--surface);
+    color: var(--text);
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.95rem;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-}
-
-.tabButtons button.active {
-    background: #0070f3;
+    transition: background 0.3s;
+  }
+  
+  .tabButtons button:hover {
+    background: var(--bg);
+  }
+  
+  .tabButtons button.active {
+    background: var(--primary);
     color: #fff;
-    box-shadow: 0 2px 6px rgba(0, 112, 243, 0.4);
-}
-
-/* Content Layout */
-.content {
+    box-shadow: 0 2px 6px rgba(0,112,243,0.4);
+  }
+  
+  .content {
     display: flex;
-    flex-direction: column;
     gap: 16px;
-}
-
-/* For larger screens, display list and details side-by-side */
-@media (min-width: 768px) {
-    .content {
-        flex-direction: row;
-    }
-}
-
-/* List Container (Orders or Invoices List) */
-.listContainer {
+    margin-top: 12px;
+  }
+  
+  /* ----- List & Details panels ----- */
+  .listContainer,
+  .detailsContainer {
+    background: var(--surface);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     flex: 1;
     overflow-y: auto;
-    max-height: 500px;
-    background: #fff;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-/* Details Container */
-.detailsContainer {
-    flex: 1;
-    background: #fff;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-/* Export Button */
-.exportButton {
-    margin-top: 12px;
+  }
+  
+  .placeholder {
+    font-style: italic;
+    color: var(--text);
+  }
+  
+  /* Export button below invoices on desktop */
+  .exportButton {
+    margin-top: 16px;
+    width: 100%;
     padding: 12px;
-    background: #28a745;
+    background: var(--primary);
     color: #fff;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.3s ease;
-    width: 100%;
-}
-
-.exportButton:hover {
-    background: #218838;
-}
+    transition: background 0.3s;
+  }
+  
+  .exportButton:hover:enabled {
+    background: var(--primary-hover);
+  }
+  
+  .exportButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  /* ----- Responsive: stack on mobile/tablet ----- */
+  @media (max-width: 960px) {
+    .ordersPage {
+      padding: 12px;
+    }
+    .content {
+      flex-direction: column;
+    }
+    .listContainer,
+    .detailsContainer {
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+  }
+  

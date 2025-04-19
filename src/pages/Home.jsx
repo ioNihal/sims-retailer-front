@@ -6,110 +6,79 @@ import Cart from '../components/HomeComponents/Cart';
 import Checkout from '../components/HomeComponents/Checkout';
 import styles from '../styles/Home.module.css';
 
-const Home = () => {
-  const [activeTab, setActiveTab] = useState('products'); // 'products' or 'cart'
+export default function Home() {
+  const [activeTab, setActiveTab] = useState('products');
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [cartItems, setCartItems] = useState([]);
-  const [checkoutVisible, setCheckoutVisible] = useState(false);
+  const [filtered, setFiltered] = useState([]);
+  const [search, setSearch] = useState('');
+  const [cart, setCart] = useState([]);
+  const [checkout, setCheckout] = useState(false);
 
-  // Simulate fetching products from backend
   useEffect(() => {
-    const sampleProducts = [
-      { id: 1, name: 'Product A', category: 'Electronics', price: 99.99, stock: 10, seller: 'Seller One' },
-      { id: 2, name: 'Product B', category: 'Clothing', price: 49.99, stock: 5, seller: 'Seller Two' },
-      { id: 3, name: 'Product C', category: 'Accessories', price: 19.99, stock: 20, seller: 'Seller Three' },
-    ];
-    setProducts(sampleProducts);
-    setFilteredProducts(sampleProducts);
+    fetch('/api/inventory/customer')
+      .then(r => r.json())
+      .then(data => {
+        setProducts(data.inventory);
+        setFiltered(data.inventory);
+      });
   }, []);
 
-  // Filter products by search term
   useEffect(() => {
-    const filtered = products.filter(product =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    setFiltered(
+      products.filter(p =>
+        p.productName.toLowerCase().includes(search.toLowerCase())
+      )
     );
-    setFilteredProducts(filtered);
-  }, [searchTerm, products]);
+  }, [search, products]);
 
-  const addToCart = (product) => {
-    setCartItems(prev => [...prev, product]);
-  };
-
-  const removeFromCart = (id) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
-  };
-
-  const proceedToCheckout = () => {
-    setCheckoutVisible(true);
-  };
-
-  const confirmOrder = () => {
+  const add = p => setCart(c => [...c, p]);
+  const remove = id => setCart(c => c.filter(x => x.id !== id));
+  const proceed = () => setCheckout(true);
+  const confirm = () => {
     alert('Order Confirmed!');
-    setCartItems([]);
-    setCheckoutVisible(false);
+    setCart([]); setCheckout(false);
   };
-
-  const goBackFromCheckout = () => {
-    setCheckoutVisible(false);
-  };
+  const goBack = () => setCheckout(false);
 
   return (
     <div className={styles.homeContainer}>
       <div className={styles.tabButtons}>
         <button
-          className={activeTab === 'products' ? styles.active : ''}
-          onClick={() => setActiveTab('products')}
+          className={activeTab==='products'? styles.active : ''}
+          onClick={()=>{ setActiveTab('products'); setCheckout(false); }}
         >
           Products
         </button>
         <button
-          className={activeTab === 'cart' ? styles.active : ''}
-          onClick={() => setActiveTab('cart')}
+          className={activeTab==='cart'? styles.active : ''}
+          onClick={()=> setActiveTab('cart')}
         >
-          Cart {cartItems.length > 0 && <span className={styles.badge}>{cartItems.length}</span>}
+          Cart {cart.length>0 && <span className={styles.badge}>{cart.length}</span>}
         </button>
       </div>
 
       <div className={styles.tabContent}>
-        {activeTab === 'products' && (
+        {activeTab==='products' && (
           <div className={styles.contentPane}>
-            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-            {filteredProducts.length > 0 ? (
-              <ProductList products={filteredProducts} addToCart={addToCart} />
-            ) : (
-              <p className={styles.emptyMessage}>No products found.</p>
-            )}
+            <SearchBar value={search} onChange={setSearch} />
+            {filtered.length>0
+              ? <ProductList products={filtered} addToCart={add}/>
+              : <p className={styles.empty}>No products found.</p>
+            }
           </div>
         )}
-
-        {activeTab === 'cart' && (
+        {activeTab==='cart' && (
           <div className={styles.contentPane}>
-            {checkoutVisible ? (
-              <Checkout 
-                cartItems={cartItems} 
-                confirmOrder={confirmOrder} 
-                goBack={goBackFromCheckout} 
-              />
-            ) : (
-              <>
-                {cartItems.length > 0 ? (
-                  <Cart 
-                    cartItems={cartItems} 
-                    removeFromCart={removeFromCart} 
-                    proceedToCheckout={proceedToCheckout} 
-                  />
-                ) : (
-                  <p className={styles.emptyMessage}>Your cart is empty.</p>
-                )}
-              </>
-            )}
+            {checkout
+              ? <Checkout cartItems={cart} confirmOrder={confirm} goBack={goBack}/>
+              : (cart.length>0
+                  ? <Cart cartItems={cart} removeFromCart={remove} proceedToCheckout={proceed}/>
+                  : <p className={styles.empty}>Your cart is empty.</p>
+                )
+            }
           </div>
         )}
       </div>
     </div>
   );
-};
-
-export default Home;
+}

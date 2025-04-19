@@ -1,9 +1,33 @@
+/* index.css */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Light mode */
+  --bg: #f5f7fa;
+  --surface: #fff;
+  --text: #333;
+  --primary: #0070f3;
+  --primary-hover: #005bb5;
 }
 
-:root, body, html {
-  background: linear-gradient(135deg, #eceff1, #f5f7fa);
+[data-theme="dark"] {
+  /* Dark mode */
+  --bg: #121212;
+  --surface: #1e1e1e;
+  --text: #e0e0e0;
+  --primary: #90caf9;
+  --primary-hover: #64b5f6;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Utility: make all “surface” panels use var(--surface) */
+.surface {
+  background: var(--surface);
+  color: var(--text);
 }
