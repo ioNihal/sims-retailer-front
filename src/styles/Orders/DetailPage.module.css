@@ -1,0 +1,12 @@
+.page {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: var(--bg);
+  }
+  .back {
+    background: none; border: none;
+    color: var(--primary); font-size: 1rem;
+    margin-bottom: 1rem; cursor: pointer;
+  }
+  

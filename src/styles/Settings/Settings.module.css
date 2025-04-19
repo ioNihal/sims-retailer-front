@@ -159,18 +159,27 @@ input:checked~.slider .moon {
 @media (min-width: 960px) {
   .accountContainer {
     flex-direction: row;
+
   }
+
   .tabButtons {
     flex-direction: column;
+    justify-content: flex-start;
     flex: 0 0 200px;
     border-right: 1px solid rgba(0, 0, 0, 0.08);
     border-bottom: none;
     box-shadow: none;
   }
+
+  .tabButtons button {
+    flex: 0;
+  }
+
   .themeToggle {
     justify-content: flex-start;
-    border-top: 1px solid rgba(0,0,0,0.08);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
   }
+
   .content {
     margin: 16px;
   }

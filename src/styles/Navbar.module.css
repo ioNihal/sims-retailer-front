@@ -1,52 +1,195 @@
+/* Navbar.module.css */
+
+/* -------------------- */
+/* 1. Base / Desktop    */
+/* -------------------- */
 .navbar {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background: var(--surface);
-  border-top: 1px solid rgba(0,0,0,0.08);
-  padding: 12px 0;
   position: fixed;
-  bottom: 0;
-  width: 100%;
+  top: 0; left: 0; right: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   z-index: 1000;
-}
 
-/* Desktop (≥961px): top nav */
-@media (min-width: 961px) {
-  .navbar {
-    position: static;
-    border-top: none;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
 }
-
-.navbar a {
-  text-decoration: none;
-  color: var(--text);
-  font-size: 0.95rem;
-  padding: 8px 12px;
-  transition: color 0.3s;
-}
-
-.navbar a:hover {
+.brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-right: auto;
   color: var(--primary);
 }
-
+.links {
+  display: flex;
+  gap: 2rem;
+}
+.links a {
+  text-decoration: none;
+  color: var(--text);
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  transition: color 0.2s;
+}
+.links a:hover {
+  color: var(--primary);
+}
 .active {
   color: var(--primary);
   font-weight: bold;
   position: relative;
 }
-
 .active::after {
   content: '';
   position: absolute;
-  bottom: -4px;
+  bottom: -6px;
   left: 50%;
   transform: translateX(-50%);
   width: 24px;
   height: 3px;
   background: var(--primary);
   border-radius: 2px;
+}
+
+/* For toggle button */
+.themeToggle {
+  --size: 1.5rem;
+  --icon-size: calc(var(--size) * 0.6);
+  --padding: 2px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: calc(var(--size) * 2.2);
+  height: calc(var(--size) + var(--padding) * 2);
+  cursor: pointer;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: var(--transition);
+  border-radius: 999px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: var(--size);
+  width: var(--size);
+  left: var(--padding);
+  bottom: var(--padding);
+  background-color: white;
+  transition: var(--transition);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.icons {
+  position: relative;
+  height: 100%;
+}
+
+.sun,
+.moon {
+  position: absolute;
+  font-size: var(--icon-size);
+  top: 50%;
+  transform: translateY(-50%);
+  transition: var(--transition);
+  opacity: 0.8;
+}
+
+.sun {
+  left: calc(var(--padding) + var(--size) * 0.25);
+  opacity: 0;
+}
+
+.moon {
+  right: calc(var(--padding) + var(--size) * 0.25);
+}
+
+input:checked+.slider {
+  background-color: #3d3d3d;
+}
+
+input:checked+.slider:before {
+  transform: translateX(calc(var(--size) * 1.1));
+}
+
+input:checked~.slider .sun {
+  opacity: 1;
+  transform: translateY(-50%) rotate(360deg);
+}
+
+input:checked~.slider .moon {
+  opacity: 0;
+  transform: translateY(-50%) rotate(-360deg);
+}
+
+.dark .slider {
+  background-color: #4d4d4d;
+}
+
+/* ------------------------- */
+/* 2. Tablet & Mobile (≤960) */
+/* ------------------------- */
+@media (max-width: 960px) {
+  .themeToggle {
+    display: none;
+  }
+
+  .navbar {
+    top: auto; bottom: 0;
+    height: 56px;
+    padding: 0;
+    justify-content: space-around;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    border-bottom: none;
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
+  }
+  .brand {
+    display: none;  /* hide brand on mobile bottom bar */
+  }
+  .links {
+    gap: 0;
+    flex: 1;
+    justify-content: space-around;
+  }
+  .links a {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem 0;
+  }
+}
+
+/* ------------------------ */
+/* 3. Phone (≤600)           */
+/* ------------------------ */
+@media (max-width: 600px) {
+  .navbar {
+    height: 48px;
+  }
+  .links a {
+    font-size: 0.9rem;
+  }
 }

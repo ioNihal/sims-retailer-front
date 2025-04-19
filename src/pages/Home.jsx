@@ -1,6 +1,6 @@
 // src/pages/Home.jsx
 import React, { useEffect, useState } from 'react';
-import SearchBar from '../components/SearchBar'
+import SearchBar from '../components/SearchBar';
 import ProductList from '../components/HomePage/ProductList';
 import Cart from '../components/HomePage/Cart';
 import Checkout from '../components/HomePage/Checkout';
@@ -15,16 +15,12 @@ export default function Home() {
   const [checkout, setCheckout] = useState(false);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      await fetch('https://suims.vercel.app/api/inventory/customer')
-        .then(r => r.json())
-        .then(data => {
-          setProducts(data.inventory);
-          setFiltered(data.inventory);
-        });
-    }
-
-    fetchProducts();
+    fetch('https://suims.vercel.app/api/inventory/customer')
+      .then(r => r.json())
+      .then(data => {
+        setProducts(data.inventory);
+        setFiltered(data.inventory);
+      });
   }, []);
 
   useEffect(() => {
@@ -35,14 +31,11 @@ export default function Home() {
     );
   }, [search, products]);
 
-  const add = p => setCart(c => [...c, p]);
-  const remove = id => setCart(c => c.filter(x => x.id !== id));
-  const proceed = () => setCheckout(true);
-  const confirm = () => {
-    alert('Order Confirmed!');
-    setCart([]); setCheckout(false);
-  };
-  const goBack = () => setCheckout(false);
+  const add      = p  => setCart(c => [...c, p]);
+  const remove   = id => setCart(c => c.filter(x => x.id !== id));
+  const proceed  = () => setCheckout(true);
+  const confirm  = () => { alert('Order Confirmed!'); setCart([]); setCheckout(false); };
+  const goBack   = () => setCheckout(false);
 
   return (
     <div className={styles.homeContainer}>
@@ -62,7 +55,7 @@ export default function Home() {
       </div>
 
       <div className={styles.tabContent}>
-        {activeTab === 'products' && (
+        {activeTab === 'products' ? (
           <div className={styles.contentPane}>
             <SearchBar value={search} onChange={setSearch} />
             {filtered.length > 0
@@ -70,8 +63,7 @@ export default function Home() {
               : <p className={styles.empty}>No products found.</p>
             }
           </div>
-        )}
-        {activeTab === 'cart' && (
+        ) : (
           <div className={styles.contentPane}>
             {checkout
               ? <Checkout cartItems={cart} confirmOrder={confirm} goBack={goBack} />

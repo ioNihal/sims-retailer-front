@@ -1,94 +1,58 @@
+/* Desktop‑first */
 .ordersPage {
-    background: var(--bg);
-    min-height: calc(100vh - 60px);
-    padding: 16px;
-    font-family: 'Roboto', sans-serif;
-    color: var(--text);
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  background: var(--bg);
+  color: var(--text);
+}
+.tabButtons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.tabButtons button {
+  flex: 1;
+  padding: 0.75rem;
+  background: var(--surface);
+  border: none; border-radius: 8px;
+  cursor: pointer; transition: background 0.2s;
+}
+.tabButtons .active {
+  background: var(--primary); color: #fff;
+  box-shadow: 0 2px 6px rgba(0,112,243,0.4);
+}
+.listContainer {
+  display: flex;
+  gap: 1rem;
+}
+/* Invoice export button */
+.exportButton {
+  align-self: flex-start;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary); color: #fff;
+  border: none; border-radius: 8px;
+  cursor: pointer; transition: opacity 0.2s;
+}
+.exportButton:disabled {
+  opacity: 0.6; cursor: not-allowed;
+}
+
+/* Tablet (≤960px): stack */
+@media (max-width: 960px) {
+  .ordersPage { padding: 0 1rem; }
+  .listContainer {
+    flex-direction: column;
   }
-  
   .tabButtons {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
+    flex-direction: column;
+    gap: 0.75rem;
   }
-  
-  .tabButtons button {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    background: var(--surface);
-    color: var(--text);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .tabButtons button:hover {
-    background: var(--bg);
-  }
-  
-  .tabButtons button.active {
-    background: var(--primary);
-    color: #fff;
-    box-shadow: 0 2px 6px rgba(0,112,243,0.4);
-  }
-  
-  .content {
-    display: flex;
-    gap: 16px;
-    margin-top: 12px;
-  }
-  
-  /* ----- List & Details panels ----- */
-  .listContainer,
-  .detailsContainer {
-    background: var(--surface);
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    flex: 1;
-    overflow-y: auto;
-  }
-  
-  .placeholder {
-    font-style: italic;
-    color: var(--text);
-  }
-  
-  /* Export button below invoices on desktop */
-  .exportButton {
-    margin-top: 16px;
-    width: 100%;
-    padding: 12px;
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .exportButton:hover:enabled {
-    background: var(--primary-hover);
-  }
-  
-  .exportButton:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  
-  /* ----- Responsive: stack on mobile/tablet ----- */
-  @media (max-width: 960px) {
-    .ordersPage {
-      padding: 12px;
-    }
-    .content {
-      flex-direction: column;
-    }
-    .listContainer,
-    .detailsContainer {
-      padding: 12px;
-      margin-bottom: 16px;
-    }
-  }
-  
+}
+
+/* Phone (≤600px) */
+@media (max-width: 600px) {
+  .ordersPage { padding: 0 0.5rem; }
+  .tabButtons button { padding: 0.6rem; font-size: 0.9rem; }
+}

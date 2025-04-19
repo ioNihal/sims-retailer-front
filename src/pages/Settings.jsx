@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../contexts/ThemeContext';
 import Profile from '../components/SettingsPage/Profile';
 import Feedback from '../components/SettingsPage/Feedback';
-import styles from '../styles/Settings/Account.module.css';
+import styles from '../styles/Settings/Settings.module.css';
 
-const Account = () => {
+const Settings = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const { theme, toggle } = useContext(ThemeContext);
   const navigate = useNavigate();
@@ -38,22 +38,7 @@ const Account = () => {
         </button>
       </div>
 
-      {/* Theme toggle (moves under sidebar on desktop) */}
-      <div className={`${styles.themeToggle} ${theme === 'dark' ? styles.dark : ''}`}>
-        <label className={styles.switch}>
-          <input
-            type="checkbox"
-            checked={theme === 'dark'}
-            onChange={toggle}
-          />
-          <div className={styles.slider}>
-            <div className={styles.icons}>
-              <span className={styles.sun}>&#9728;</span>
-              <span className={styles.moon}>&#9790;</span>
-            </div>
-          </div>
-        </label>
-      </div>
+      
 
       {/* Content */}
       <section className={styles.content}>
@@ -64,4 +49,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default Settings;
