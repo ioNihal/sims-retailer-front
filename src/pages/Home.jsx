@@ -15,12 +15,16 @@ export default function Home() {
   const [checkout, setCheckout] = useState(false);
 
   useEffect(() => {
-    fetch('/api/inventory/customer')
-      .then(r => r.json())
-      .then(data => {
-        setProducts(data.inventory);
-        setFiltered(data.inventory);
-      });
+    const fetchProducts = async () => {
+      await fetch('https://suims.vercel.app/api/inventory/customer')
+        .then(r => r.json())
+        .then(data => {
+          setProducts(data.inventory);
+          setFiltered(data.inventory);
+        });
+    }
+
+    fetchProducts();
   }, []);
 
   useEffect(() => {
@@ -44,37 +48,37 @@ export default function Home() {
     <div className={styles.homeContainer}>
       <div className={styles.tabButtons}>
         <button
-          className={activeTab==='products'? styles.active : ''}
-          onClick={()=>{ setActiveTab('products'); setCheckout(false); }}
+          className={activeTab === 'products' ? styles.active : ''}
+          onClick={() => { setActiveTab('products'); setCheckout(false); }}
         >
           Products
         </button>
         <button
-          className={activeTab==='cart'? styles.active : ''}
-          onClick={()=> setActiveTab('cart')}
+          className={activeTab === 'cart' ? styles.active : ''}
+          onClick={() => setActiveTab('cart')}
         >
-          Cart {cart.length>0 && <span className={styles.badge}>{cart.length}</span>}
+          Cart {cart.length > 0 && <span className={styles.badge}>{cart.length}</span>}
         </button>
       </div>
 
       <div className={styles.tabContent}>
-        {activeTab==='products' && (
+        {activeTab === 'products' && (
           <div className={styles.contentPane}>
             <SearchBar value={search} onChange={setSearch} />
-            {filtered.length>0
-              ? <ProductList products={filtered} addToCart={add}/>
+            {filtered.length > 0
+              ? <ProductList products={filtered} addToCart={add} />
               : <p className={styles.empty}>No products found.</p>
             }
           </div>
         )}
-        {activeTab==='cart' && (
+        {activeTab === 'cart' && (
           <div className={styles.contentPane}>
             {checkout
-              ? <Checkout cartItems={cart} confirmOrder={confirm} goBack={goBack}/>
-              : (cart.length>0
-                  ? <Cart cartItems={cart} removeFromCart={remove} proceedToCheckout={proceed}/>
-                  : <p className={styles.empty}>Your cart is empty.</p>
-                )
+              ? <Checkout cartItems={cart} confirmOrder={confirm} goBack={goBack} />
+              : (cart.length > 0
+                ? <Cart cartItems={cart} removeFromCart={remove} proceedToCheckout={proceed} />
+                : <p className={styles.empty}>Your cart is empty.</p>
+              )
             }
           </div>
         )}
