@@ -31,33 +31,35 @@ export default function Home() {
     );
   }, [search, products]);
 
-  const add      = p  => setCart(c => [...c, p]);
-  const remove   = id => setCart(c => c.filter(x => x.id !== id));
-  const proceed  = () => setCheckout(true);
-  const confirm  = () => { alert('Order Confirmed!'); setCart([]); setCheckout(false); };
-  const goBack   = () => setCheckout(false);
+  const add = p => setCart(c => [...c, p]);
+  const remove = id => setCart(c => c.filter(x => x.id !== id));
+  const proceed = () => setCheckout(true);
+  const confirm = () => { alert('Order Confirmed!'); setCart([]); setCheckout(false); };
+  const goBack = () => setCheckout(false);
 
   return (
     <div className={styles.homeContainer}>
-      <div className={styles.tabButtons}>
-        <button
-          className={activeTab === 'products' ? styles.active : ''}
-          onClick={() => { setActiveTab('products'); setCheckout(false); }}
-        >
-          Products
-        </button>
-        <button
-          className={activeTab === 'cart' ? styles.active : ''}
-          onClick={() => setActiveTab('cart')}
-        >
-          Cart {cart.length > 0 && <span className={styles.badge}>{cart.length}</span>}
-        </button>
+      <div className={styles.actions}>
+        <div className={styles.tabButtons}>
+          <button
+            className={activeTab === 'products' ? styles.active : ''}
+            onClick={() => { setActiveTab('products'); setCheckout(false); }}
+          >
+            Products
+          </button>
+          <button
+            className={activeTab === 'cart' ? styles.active : ''}
+            onClick={() => setActiveTab('cart')}
+          >
+            Cart {cart.length > 0 && <span className={styles.badge}>{cart.length}</span>}
+          </button>
+        </div>
+        <SearchBar value={search} onChange={setSearch} />
       </div>
 
       <div className={styles.tabContent}>
         {activeTab === 'products' ? (
           <div className={styles.contentPane}>
-            <SearchBar value={search} onChange={setSearch} />
             {filtered.length > 0
               ? <ProductList products={filtered} addToCart={add} />
               : <p className={styles.empty}>No products found.</p>

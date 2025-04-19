@@ -10,8 +10,8 @@ import { orders, invoices } from '../../public/data';
 export default function Orders({ activeTab: initialTab = 'orders' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [searchTerm, setSearchTerm] = useState('');
-  const [orders, setOrders] = useState([]);
-  const [invoices, setInvoices] = useState([]);
+  const [ordersData, setOrders] = useState([]);
+  const [invoiceData, setInvoices] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [exporting, setExporting] = useState(false);
   const navigate = useNavigate();
@@ -22,8 +22,8 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     setInvoices(invoices);
   }, []);
 
-  const filteredOrders = orders.filter(o => o.orderNumber.toLowerCase().includes(searchTerm));
-  const filteredInvoices = invoices.filter(i => i.invoiceNumber.toLowerCase().includes(searchTerm));
+  const filteredOrders = ordersData.filter(o => o.orderNumber.toLowerCase().includes(searchTerm));
+  const filteredInvoices = invoiceData.filter(i => i.invoiceNumber.toLowerCase().includes(searchTerm));
 
   const toggleSelection = id =>
     setSelectedIds(prev =>

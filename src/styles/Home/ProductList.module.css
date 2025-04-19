@@ -1,6 +1,5 @@
 /* src/styles/Home/ProductList.module.css */
 
-/* Desktop‑first grid */
 .productList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -11,16 +10,17 @@
   background: var(--surface);
   padding: 1.25rem;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+
 @media (hover: hover) and (pointer: fine) {
   .productCard:hover {
     transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 }
 
@@ -47,13 +47,39 @@
   align-self: flex-start;
   transition: background 0.2s;
 }
+
 .addButton:hover {
   background: var(--primary-hover);
 }
 
-/* Tablet/mobile */
-@media (max-width: 960px) {
+
+@media (max-width: 1024px) {}
+
+@media (max-width: 767px) {
   .productList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
   }
+
+  .productCard {
+    padding: 1rem;
+  }
+
+  .title {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .productCard p {
+    font-size: 0.7rem;
+  }
+
+  .addButton {
+    margin-top: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
 }
+
+@media (max-width: 480px) {}

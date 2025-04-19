@@ -11,7 +11,8 @@ export default function MainLayout() {
   return (
     <div className={styles.container}>
       <header className={styles.mobileHeader}>
-        <div className={styles.brand}>YourBrandName</div>
+        <div className={styles.brand}>YourBuisness</div>
+        <Navbar />
         {/* Theme toggle (moves under sidebar on desktop) */}
         <div className={`${styles.themeToggle} ${theme === 'dark' ? styles.dark : ''}`}>
           <label className={styles.switch}>
@@ -29,8 +30,7 @@ export default function MainLayout() {
           </label>
         </div>
       </header>
-      <Navbar />
-      <main className={styles.content}>
+      <main className={styles.mainContent}>
         <Outlet />
       </main>
     </div>

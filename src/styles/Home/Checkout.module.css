@@ -1,13 +1,12 @@
 /* src/styles/Home/Checkout.module.css */
 
-/* Desktop‑first */
+
 .checkout {
   margin: 0 auto;
-  max-width: 600px;
   background: var(--surface);
-  padding: 1.5rem;
+  padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   color: var(--text);
 }
 
@@ -22,13 +21,29 @@
   padding: 0;
   margin: 0 0 1rem;
 }
+
 .orderList li {
+  font-size: 1rem;
   margin: 0.5rem 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgb(100, 100, 100);
+}
+
+.total {
+  font-size: 1rem;
+}
+
+.btnGroup {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .confirmButton,
 .backButton {
-  width: 100%;
+  flex: 1;
   padding: 0.75rem;
   border: none;
   border-radius: 8px;
@@ -37,29 +52,55 @@
   transition: background 0.2s;
   margin-bottom: 0.75rem;
 }
+
 .confirmButton {
   background: #28a745;
   color: #fff;
 }
+
 .confirmButton:hover {
   background: #218838;
 }
+
 .backButton {
   background: rgb(241, 47, 47);
   color: var(--text);
 }
+
 .backButton:hover {
-  background: var(--bg);
+  background: rgb(204, 38, 38);
 }
 
-/* Tablet/mobile */
-@media (max-width: 960px) {
+@media (max-width: 1024px) {}
+
+@media (max-width: 767px) {
   .checkout {
-    padding: 1rem;
+    padding: 10px;
   }
+
+  .checkout h2 {
+    font-size: 1rem;
+  }
+
+  .orderList {
+    margin: 0 0 1rem;
+  }
+
+  .orderList li {
+    font-size: 0.7rem;
+  }
+
+  .total {
+    font-size: 0.75rem;
+  }
+
   .confirmButton,
   .backButton {
-    padding: 0.6rem;
-    font-size: 0.95rem;
+    font-size: 0.7rem;
+    padding: 0.5rem;
+    margin-bottom: 0;
   }
+
 }
+
+@media (max-width: 480px) {}

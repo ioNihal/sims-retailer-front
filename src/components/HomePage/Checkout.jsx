@@ -14,13 +14,15 @@ export default function Checkout({ cartItems, confirmOrder, goBack }) {
           </li>
         ))}
       </ul>
-      <p><strong>Total:</strong> ${total.toFixed(2)}</p>
-      <button onClick={confirmOrder} className={styles.confirmButton}>
-        Confirm Order
-      </button>
-      <button onClick={goBack} className={styles.backButton}>
-        Back to Cart
-      </button>
+      <p className={styles.total}><strong>Total:</strong> ${total.toFixed(2)}</p>
+      <div className={styles.btnGroup}>
+        <button onClick={confirmOrder} className={styles.confirmButton}>
+          Confirm Order
+        </button>
+        <button onClick={goBack} className={styles.backButton}>
+          Back to Cart
+        </button>
+      </div>
     </div>
   );
 }
