@@ -1,58 +1,157 @@
-/* Desktop‑first */
 .ordersPage {
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 2rem;
-  background: var(--bg);
-  color: var(--text);
-}
-.tabButtons {
+  padding: 20px;
+  margin: auto;
+  border-radius: 10px;
   display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  height: 100%;
+  overflow: hidden;
+
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
-.tabButtons button {
+
+.tabButtons {
   flex: 1;
-  padding: 0.75rem;
-  background: var(--surface);
-  border: none; border-radius: 8px;
-  cursor: pointer; transition: background 0.2s;
-}
-.tabButtons .active {
-  background: var(--primary); color: #fff;
-  box-shadow: 0 2px 6px rgba(0,112,243,0.4);
-}
-.listContainer {
+  max-width: 200px;
   display: flex;
+  align-items: center;
   gap: 1rem;
 }
-/* Invoice export button */
+
+.tabButtons button {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+
+.tabButtons button:hover {
+  color: #fff;
+  background: var(--primary-hover);
+}
+
+.tabButtons .active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 112, 243, 0.4);
+}
+
+.listContainer {
+  display: flex;
+  gap: 0.5rem;
+  background-color: var(--bg);
+  padding: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.listPane {
+  width: 100%;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+}
+
+.detailContainer {
+  width: 60%;
+  background: var(--surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.detailHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.backButton {
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.backButton:hover {
+  background: var(--primary-hover);
+}
+
+.detailViewActive .listPane {
+  width: 40%;
+}
+
 .exportButton {
-  align-self: flex-start;
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  background: var(--primary); color: #fff;
-  border: none; border-radius: 8px;
-  cursor: pointer; transition: opacity 0.2s;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: rgb(17, 230, 63);
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
+
+.exportButton:hover {
+  background: rgb(13, 204, 55);
+}
+
 .exportButton:disabled {
-  opacity: 0.6; cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-/* Tablet (≤960px): stack */
-@media (max-width: 960px) {
-  .ordersPage { padding: 0 1rem; }
-  .listContainer {
-    flex-direction: column;
+
+@media (max-width: 1024px) {}
+
+
+@media (max-width: 767px) {
+  .homeContainer {
+    padding: 10px;
   }
+
+  .actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
   .tabButtons {
-    flex-direction: column;
-    gap: 0.75rem;
+    width: 100%;
+    max-width: 300px;
+    gap: 0.5rem;
+  }
+
+  .exportButton {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .detailViewActive .listPane {
+    display: none;
+  }
+
+  .detailContainer {
+    width: 100%;
+
   }
 }
 
-/* Phone (≤600px) */
-@media (max-width: 600px) {
-  .ordersPage { padding: 0 0.5rem; }
-  .tabButtons button { padding: 0.6rem; font-size: 0.9rem; }
-}
+@media (max-width: 480px) {}

@@ -14,12 +14,16 @@ export default function InvoiceList({
         <div
           key={inv.id}
           className={styles.invoiceItem}
-          onClick={()=>onSelect(inv)}
+          onClick={() => onSelect(inv)}           
         >
           <input
             type="checkbox"
             checked={selectedInvoices.includes(inv.id)}
-            onChange={()=>toggleInvoiceSelection(inv.id)}
+            onChange={e => {
+              e.stopPropagation();               
+              toggleInvoiceSelection(inv.id);
+            }}
+            onClick={e => e.stopPropagation()} 
             className={styles.checkbox}
           />
           <div className={styles.invoiceContent}>

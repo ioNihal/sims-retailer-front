@@ -103,9 +103,8 @@
   }
 
   .tabButtons {
-    flex: 1;
     width: 100%;
-    justify-content: space-between;
+    max-width: 300px;
     gap: 0.5rem;
   }
 }

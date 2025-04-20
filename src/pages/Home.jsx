@@ -54,7 +54,8 @@ export default function Home() {
             Cart {cart.length > 0 && <span className={styles.badge}>{cart.length}</span>}
           </button>
         </div>
-        <SearchBar value={search} onChange={setSearch} />
+
+        <SearchBar value={search} onChange={setSearch} placeholder={"Search products..."} />
       </div>
 
       <div className={styles.tabContent}>
