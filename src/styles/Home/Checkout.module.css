@@ -71,6 +71,11 @@
   background: rgb(204, 38, 38);
 }
 
+.error {
+  font-size: 0.8rem;
+  color: var(--error);
+}
+
 @media (max-width: 1024px) {}
 
 @media (max-width: 767px) {

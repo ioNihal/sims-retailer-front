@@ -36,20 +36,92 @@
   color: var(--text);
 }
 
-.addButton {
+.actions {
+  align-self: stretch;
   margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.actions input {
+  outline: none;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  width: 100%;
+  padding: 0.6rem 1rem;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.actions button {
+  outline: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+}
+
+.plusBtn {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.plusBtn:hover {
+  background-color: var(--success);
+  color: #fff;
+}
+
+.minusBtn {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.minusBtn:hover {
+  background-color: var(--error);
+  color: #fff;
+}
+
+.addButton {
+  align-self: flex-start;
+  margin-top: 0.5rem;
   padding: 0.6rem 1rem;
   background: var(--primary);
   color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  align-self: flex-start;
   transition: background 0.2s;
 }
 
+
+
+
+
+
 .addButton:hover {
   background: var(--primary-hover);
+}
+
+.inStock {
+  color: var(--success);
+  font-weight: bold;
+
+}
+
+.lowStock {
+  color: var(--warning);
+  font-weight: bold;
+
+}
+
+.outOfStock {
+  color: var(--error);
+  font-weight: bold;
+
 }
 
 
@@ -76,7 +148,17 @@
   }
 
   .addButton {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .actions input {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .actions button {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
   }

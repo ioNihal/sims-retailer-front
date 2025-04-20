@@ -7,6 +7,9 @@
   --primary: #0070f3;
   --primary-hover: #005bb5;
   --border: rgb(190, 190, 190);
+  --success: #4caf50;
+  --warning: #ff9800;
+  --error: #f44336;
 }
 
 [data-theme="dark"] {
@@ -17,9 +20,13 @@
   --primary: #90caf9;
   --primary-hover: #64b5f6;
   --border: rgb(36, 36, 36);
+  --success:#81c784;
+  --warning:#ffb74d;
+  --error: #e57373;
 }
 
-html, body {
+html,
+body {
   height: 100dvh;
   margin: 0;
   padding: 0;
