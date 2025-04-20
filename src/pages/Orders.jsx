@@ -21,7 +21,18 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
   const [selectedInvoice, setSelectedInvoice] = useState(null);
 
   useEffect(() => {
-    setOrders(orders);
+    const fetchOrders = async () => {
+      fetch('https://suims.vercel.app/api/orders?customerId=680358d0c0eba9f5d5cc86e0')
+        .then(r => r.json())
+        .then(data => {
+          setOrders(data.orders);
+        })
+        .catch(console.error);
+        };
+    fetchOrders();
+  }, []);
+
+  useEffect(() => {
     setInvoices(invoices);
   }, []);
 
@@ -33,9 +44,13 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     setSelectedInvoice(null);
   };
 
-  const filteredOrders = ordersData.filter(o =>
-    o.orderNumber.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredOrders = ordersData.filter(order =>
+    order.orderProducts.some(p =>
+      p.inventoryId.productName.toLowerCase().includes(searchTerm.toLowerCase())
+    )
   );
+  
+  
   const filteredInvoices = invoiceData.filter(i =>
     i.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase())
   );

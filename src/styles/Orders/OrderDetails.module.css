@@ -8,14 +8,33 @@
 
 .orderDetails h3 {
   margin-top: 0;
-  font-size: 1.2rem;
-  color: var(--text);
+  font-size: 1.3rem;
   margin-bottom: 12px;
 }
 
 .orderDetails p {
-  margin: 8px 0;
+  margin: 6px 0;
   font-size: 0.95rem;
+}
+
+.productsSection {
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.productDetails {
+  background-color: var(--bg);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.total {
+  font-size: 1rem;
+  margin-top: 20px;
+  font-weight: bold;
 }
 
 .cancelButton {

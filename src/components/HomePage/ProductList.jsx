@@ -4,12 +4,14 @@ import styles from '../../styles/Home/ProductList.module.css';
 
 export default function ProductList({ products, addToCart }) {
 
-  const [quantity, setQuantity] = useState(0);
+  const [quantities, setQuantities] = useState({});
+
 
   return (
     <div className={styles.productList}>
       {products.map(p => {
-        // derive stock status purely from quantity vs threshold
+        const qty = quantities[p._id] || 0;
+
         const stockStatus =
           p.quantity === 0
             ? 'out of stock'
@@ -46,13 +48,48 @@ export default function ProductList({ products, addToCart }) {
             )} */}
 
             <div className={styles.actions}>
-              <button className={styles.plusBtn} onClick={() => setQuantity(quantity + 1)}>+</button>
-              <input type='number' min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} />
-              <button className={styles.minusBtn} onClick={() => setQuantity(quantity - 1)} disabled={quantity === 0}>-</button>
+              <button
+                className={styles.plusBtn}
+                onClick={() =>
+                  setQuantities(prev => ({
+                    ...prev,
+                    [p._id]: Math.min((prev[p._id] || 0) + 1, p.quantity)
+                  }))
+                }
+              >
+                +
+              </button>
+
+              <input
+                type="number"
+                min={0}
+                max={p.quantity}
+                value={qty}
+                onChange={(e) =>
+                  setQuantities(prev => ({
+                    ...prev,
+                    [p._id]: Math.min(Math.max(0, parseInt(e.target.value) || 0), p.quantity)
+                  }))
+                }
+              />
+
+              <button
+                className={styles.minusBtn}
+                onClick={() =>
+                  setQuantities(prev => ({
+                    ...prev,
+                    [p._id]: Math.max((prev[p._id] || 0) - 1, 0)
+                  }))
+                }
+                disabled={qty === 0}
+              >
+                -
+              </button>
             </div>
+
             <button
               className={styles.addButton}
-              onClick={() => addToCart({ ...p, quantity: quantity })}
+              onClick={() => addToCart({ ...p, quantity: qty })}
               disabled={p.quantity === 0}
             >
               {p.quantity > 0 ? 'Add to Cart' : 'Out of Stock'}
