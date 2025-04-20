@@ -6,6 +6,7 @@ import OrderDetail from '../components/OrdersPage/OrderDetails';
 import InvoiceDetail from '../components/OrdersPage/InvoiceDetails';
 import styles from '../styles/Orders/Orders.module.css';
 import { orders, invoices } from '../../public/data';
+import { exportFunc } from '../utils/exportFunc';
 
 export default function Orders({ activeTab: initialTab = 'orders' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -47,7 +48,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
   const exportInvoices = () => {
     if (!selectedIds.length) { alert('Select at least one invoice.'); return; }
     setExporting(true);
-    // jsPDF logic…
+    exportFunc(invoices, selectedIds)
     setExporting(false);
     setSelectedIds([]);
   };
@@ -59,6 +60,8 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     if (activeTab === 'orders') setSelectedOrder(null);
     else setSelectedInvoice(null);
   };
+
+  
 
   return (
     <div className={styles.ordersPage}>

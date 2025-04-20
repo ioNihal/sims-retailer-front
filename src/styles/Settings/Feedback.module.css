@@ -17,11 +17,12 @@
 .feedbackForm {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .textarea {
   min-height: 120px;
+  max-height: 300px;
   padding: 12px;
   font-size: 1rem;
   border: 1px solid rgba(0,0,0,0.2);
@@ -52,16 +53,10 @@
   background: var(--primary-hover);
 }
 
-/* Desktop‑first responsive margins */
-@media (max-width: 960px) {
-  .feedbackContainer {
-    margin: 16px;
-    padding: 20px;
-  }
+@media (max-width: 1024px) {}
+
+@media (max-width: 767px) {
+  
 }
-@media (min-width: 961px) {
-  .feedbackContainer {
-    margin: 24px;
-    padding: 24px;
-  }
-}
+
+@media (max-width: 480px) {}

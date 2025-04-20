@@ -19,7 +19,7 @@
 .actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -46,6 +46,7 @@
 }
 
 .tabButtons button:hover {
+  color: #fff;
   background: var(--primary-hover);
 }
 

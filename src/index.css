@@ -6,6 +6,7 @@
   --text: #333;
   --primary: #0070f3;
   --primary-hover: #005bb5;
+  --border: rgb(190, 190, 190);
 }
 
 [data-theme="dark"] {
@@ -15,6 +16,7 @@
   --text: #e0e0e0;
   --primary: #90caf9;
   --primary-hover: #64b5f6;
+  --border: rgb(36, 36, 36);
 }
 
 html, body {

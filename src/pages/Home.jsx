@@ -40,6 +40,7 @@ export default function Home() {
   return (
     <div className={styles.homeContainer}>
       <div className={styles.actions}>
+        <SearchBar value={search} onChange={setSearch} placeholder={"Search products..."} />
         <div className={styles.tabButtons}>
           <button
             className={activeTab === 'products' ? styles.active : ''}
@@ -55,7 +56,7 @@ export default function Home() {
           </button>
         </div>
 
-        <SearchBar value={search} onChange={setSearch} placeholder={"Search products..."} />
+
       </div>
 
       <div className={styles.tabContent}>

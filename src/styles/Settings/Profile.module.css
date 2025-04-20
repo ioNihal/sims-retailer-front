@@ -36,16 +36,12 @@
   background: var(--primary-hover);
 }
 
-/* Desktop‑first responsive margins */
-@media (max-width: 960px) {
-  .profileContainer {
-    margin: 16px;
-    padding: 20px;
-  }
+
+@media (max-width: 1024px) {}
+
+@media (max-width: 767px) {
+  
 }
-@media (min-width: 961px) {
-  .profileContainer {
-    margin: 24px;
-    padding: 24px;
-  }
-}
+
+@media (max-width: 480px) {}
+

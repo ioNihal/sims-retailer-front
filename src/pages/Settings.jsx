@@ -11,13 +11,14 @@ export default function Settings() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    if(!confirm('Sure you want to logout?')) return;
     localStorage.removeItem('token');
-    alert('You have been logged out.');
     navigate('/login');
+    alert('You have been logged out!')
   };
 
   return (
-    <div className={styles.accountContainer}>
+    <div className={styles.settingsContainer}>
       <aside className={styles.sidebar}>
         <button
           className={activeTab==='profile' ? styles.active : ''}

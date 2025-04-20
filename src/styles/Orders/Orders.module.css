@@ -73,6 +73,7 @@
   background: var(--surface);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 10px;
+  overflow-y: auto;
 }
 
 .detailHeader {
@@ -86,7 +87,7 @@
   border: none;
   cursor: pointer;
   font-size: 0.9rem;
-  color: var(--text);
+  color: #fff;
   border-radius: 5px;
   padding: 10px;
 }
@@ -123,7 +124,7 @@
 
 
 @media (max-width: 767px) {
-  .homeContainer {
+  .ordersPage {
     padding: 10px;
   }
 
