@@ -61,7 +61,7 @@ export default function Home() {
 
     try {
       // 1) get your customerId however you store it
-      const customerId = localStorage.getItem('customerId') || "680358d0c0eba9f5d5cc86e0";
+      const customerId = localStorage.getItem('token');
       if (!customerId) throw new Error('No customerId found in localStorage');
 
       // 2) build orderProducts array

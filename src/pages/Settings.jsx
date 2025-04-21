@@ -1,17 +1,23 @@
 // src/pages/Settings.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Profile  from '../components/SettingsPage/Profile';
+import Profile from '../components/SettingsPage/Profile';
 import Feedback from '../components/SettingsPage/Feedback';
-import styles   from '../styles/Settings/Settings.module.css';
+import styles from '../styles/Settings/Settings.module.css';
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
   const navigate = useNavigate();
+  const [id, setId] = useState("");
+
+  useEffect(() => {
+    const userId = localStorage.getItem('token');
+    setId(userId);
+  }, [])
 
   const handleLogout = () => {
-    if(!confirm('Sure you want to logout?')) return;
+    if (!confirm('Sure you want to logout?')) return;
     localStorage.removeItem('token');
     navigate('/login');
     alert('You have been logged out!')
@@ -21,13 +27,13 @@ export default function Settings() {
     <div className={styles.settingsContainer}>
       <aside className={styles.sidebar}>
         <button
-          className={activeTab==='profile' ? styles.active : ''}
+          className={activeTab === 'profile' ? styles.active : ''}
           onClick={() => setActiveTab('profile')}
         >
           Profile
         </button>
         <button
-          className={activeTab==='feedback' ? styles.active : ''}
+          className={activeTab === 'feedback' ? styles.active : ''}
           onClick={() => setActiveTab('feedback')}
         >
           Feedback
@@ -38,7 +44,7 @@ export default function Settings() {
       </aside>
 
       <main className={styles.content}>
-        {activeTab === 'profile'  && <Profile />}
+        {activeTab === 'profile' && <Profile userId={id} />}
         {activeTab === 'feedback' && <Feedback />}
       </main>
     </div>

@@ -12,9 +12,14 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Authentication logic goes here.
-    // On successful login, navigate to the home screen.
-    localStorage.setItem('token', 'logged-in');
+    const fetchUserId = async () => {
+      const response = await fetch('https://suims.vercel.app/api/customer/')
+      const data = await response.json()
+      const users = data.data;
+      const userData = users[0]._id;
+      localStorage.setItem('token', userData);
+    }
+    fetchUserId();
     navigate('/home');
   };
 

@@ -1,6 +1,7 @@
-// src/components/OrderDetails.jsx
+// src/components/OrdersPage/OrderDetails.jsx
 import React from 'react';
 import styles from '../../styles/Orders/OrderDetails.module.css';
+import { capitalize, formatDate } from '../../utils/validators';
 
 export default function OrderDetails({ order, onCancel }) {
   if (!order) return null;
@@ -8,14 +9,14 @@ export default function OrderDetails({ order, onCancel }) {
   return (
     <div className={styles.orderDetails}>
       <h3>Order #{order._id}</h3>
-      <p><strong>Status:</strong> {order.status}</p>
-      <p><strong>Ordered On:</strong> {new Date(order.createdAt).toLocaleString()}</p>
+      <p><strong>Status:</strong> {capitalize(order.status)}</p>
+      <p><strong>Ordered On:</strong> {formatDate(order.createdAt)}</p>
 
       <div className={styles.productsSection}>
         {order.orderProducts.map(product => (
           <div key={product._id} className={styles.productDetails}>
-            <p><strong>Product:</strong> {product.inventoryId.productName}</p>
-            <p>Category: {product.inventoryId.category}</p>
+            <p><strong>Product:</strong> {capitalize(product.inventoryId.productName)}</p>
+            <p>Category: {capitalize(product.inventoryId.category)}</p>
             <p>Quantity: {product.quantity}</p>
             <p>Price: ₹{product.price}</p>
             <p>Subtotal: ₹{(product.price * product.quantity).toFixed(2)}</p>
@@ -23,12 +24,14 @@ export default function OrderDetails({ order, onCancel }) {
         ))}
       </div>
 
-      <p className={styles.total}><strong>Total Amount:</strong> ₹{order.totalAmount.toFixed(2)}</p>
+      <p className={styles.total}>
+        <strong>Total Amount:</strong> &#8377;{order.totalAmount.toFixed(2)}
+      </p>
 
       {order.status === 'pending' && (
         <button
           className={styles.cancelButton}
-          onClick={() => onCancel(order._id)}
+          onClick={()=>onCancel(order._id)}
         >
           Cancel Order
         </button>

@@ -1,6 +1,7 @@
 // src/components/Checkout.jsx
 import React from 'react';
 import styles from '../../styles/Home/Checkout.module.css';
+import { capitalize } from '../../utils/validators';
 
 export default function Checkout({ cartItems, confirmOrder, goBack, loading, error }) {
   const total = cartItems
@@ -12,7 +13,7 @@ export default function Checkout({ cartItems, confirmOrder, goBack, loading, err
       <ul className={styles.orderList}>
         {cartItems.map((item, i) => (
           <li key={i}>
-             {item.productName} — &#8377;{(item.productPrice || 0).toFixed(2)} x {item.quantity || 1}
+             {capitalize(item.productName)} — &#8377;{(item.productPrice || 0).toFixed(2)} x {item.quantity || 1}
           </li>
         ))}
       </ul>

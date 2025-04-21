@@ -10,6 +10,9 @@
   --success: #4caf50;
   --warning: #ff9800;
   --error: #f44336;
+  --stepper: rgb(109, 109, 109);
+  --stepper-bg: rgb(150, 150, 150);
+  --stepper-hover: grey;
 }
 
 [data-theme="dark"] {
@@ -21,8 +24,12 @@
   --primary-hover: #64b5f6;
   --border: rgb(36, 36, 36);
   --success:#81c784;
+  --success-hover: #72b475;
   --warning:#ffb74d;
   --error: #e57373;
+  --stepper: rgb(92, 92, 92);
+  --stepper-bg: rgb(150, 150, 150);
+  --stepper-hover: grey;
 }
 
 html,

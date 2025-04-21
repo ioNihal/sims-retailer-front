@@ -1,42 +1,68 @@
+// src/pages/Orders.jsx
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import OrderList from '../components/OrdersPage/OrderList';
 import InvoiceList from '../components/OrdersPage/InvoiceList';
-import OrderDetail from '../components/OrdersPage/OrderDetails';
+import OrderDetails from '../components/OrdersPage/OrderDetails';
 import InvoiceDetail from '../components/OrdersPage/InvoiceDetails';
 import styles from '../styles/Orders/Orders.module.css';
-import { orders, invoices } from '../../public/data';
+import { invoices } from '../../public/data';
 import { exportFunc } from '../utils/exportFunc';
 
 export default function Orders({ activeTab: initialTab = 'orders' }) {
-  const [activeTab, setActiveTab] = useState(initialTab);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [ordersData, setOrders] = useState([]);
-  const [invoiceData, setInvoices] = useState([]);
-  const [selectedIds, setSelectedIds] = useState([]);
-  const [exporting, setExporting] = useState(false);
+  const [activeTab, setActiveTab]       = useState(initialTab);
+  const [searchTerm, setSearchTerm]     = useState('');
+  const [ordersData, setOrders]         = useState([]);
+  const [invoiceData, setInvoices]      = useState([]);
+  const [selectedIds, setSelectedIds]   = useState([]);
+  const [exporting, setExporting]       = useState(false);
+  const [selectedOrder, setSelectedOrder]       = useState(null);
+  const [selectedInvoice, setSelectedInvoice]   = useState(null);
 
-  // NEW: track which record is open for detail
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [selectedInvoice, setSelectedInvoice] = useState(null);
+  // 1) Fetch helper
+  const fetchOrders = async () => {
+    const customerId = localStorage.getItem('token');  // or 'customerId'
+    if (!customerId) {
+      console.warn('No customerId/token in localStorage');
+      return;
+    }
+    try {
+      const res  = await fetch(
+        `https://suims.vercel.app/api/orders?customerId=${customerId}`
+      );
+      const json = await res.json();
+      setOrders(json.orders || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
+  // 2) initial load
   useEffect(() => {
-    const fetchOrders = async () => {
-      fetch('https://suims.vercel.app/api/orders?customerId=680358d0c0eba9f5d5cc86e0')
-        .then(r => r.json())
-        .then(data => {
-          setOrders(data.orders);
-        })
-        .catch(console.error);
-        };
     fetchOrders();
-  }, []);
-
-  useEffect(() => {
     setInvoices(invoices);
   }, []);
 
-  // clear detail when switching tabs
+  // 3) Cancel handler
+  const handleCancel = async orderId => {
+    if (!window.confirm('Really cancel this order?')) return;
+    try {
+      const res  = await fetch(
+        `https://suims.vercel.app/api/orders/${orderId}`,
+        { method: 'DELETE' }
+      );
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || 'Cancel failed');
+      alert('Order cancelled');
+      setSelectedOrder(null);
+      fetchOrders();
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+  };
+
+  // tab switching
   const switchTo = tab => {
     setActiveTab(tab);
     setSearchTerm('');
@@ -44,39 +70,38 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     setSelectedInvoice(null);
   };
 
+  // filtering
   const filteredOrders = ordersData.filter(order =>
     order.orderProducts.some(p =>
-      p.inventoryId.productName.toLowerCase().includes(searchTerm.toLowerCase())
+      p.inventoryId.productName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
     )
   );
-  
-  
   const filteredInvoices = invoiceData.filter(i =>
     i.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // invoice export
   const toggleSelection = id =>
     setSelectedIds(prev =>
       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
     );
-
   const exportInvoices = () => {
     if (!selectedIds.length) { alert('Select at least one invoice.'); return; }
     setExporting(true);
-    exportFunc(invoices, selectedIds)
+    exportFunc(invoices, selectedIds);
     setExporting(false);
     setSelectedIds([]);
   };
 
-  // handlers for detail/back
-  const openOrder = o => setSelectedOrder(o);
+  // detail open/back
+  const openOrder   = o => setSelectedOrder(o);
   const openInvoice = i => setSelectedInvoice(i);
-  const goBack = () => {
-    if (activeTab === 'orders') setSelectedOrder(null);
+  const goBack      = () => {
+    if (activeTab==='orders') setSelectedOrder(null);
     else setSelectedInvoice(null);
   };
-
-  
 
   return (
     <div className={styles.ordersPage}>
@@ -89,79 +114,63 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
         <div className={styles.tabButtons}>
           <button
             className={activeTab === 'orders' ? styles.active : ''}
-            onClick={() => switchTo('orders')}
-          >
-            Orders
-          </button>
+            onClick={()=>switchTo('orders')}
+          >Orders</button>
           <button
             className={activeTab === 'invoices' ? styles.active : ''}
-            onClick={() => switchTo('invoices')}
-          >
-            Invoices
-          </button>
-
+            onClick={()=>switchTo('invoices')}
+          >Invoices</button>
         </div>
-        {activeTab === 'invoices' && filteredInvoices.length > 0 ? (
+        {activeTab==='invoices' && filteredInvoices.length>0 && (
           <button
             className={styles.exportButton}
             onClick={exportInvoices}
-            disabled={exporting || selectedIds.length === 0}
+            disabled={exporting || !selectedIds.length}
           >
             {exporting
               ? 'Exporting…'
-              : `Export ${selectedIds.length || ''} Invoice${selectedIds.length === 1 ? '' : 's'}`}
+              : `Export ${selectedIds.length} Invoice${selectedIds.length===1?'':'s'}`}
           </button>
-        ) : null}
-
+        )}
       </div>
 
-
-      <div
-        className={`${styles.listContainer} ${(selectedOrder && activeTab === 'orders') ||
-          (selectedInvoice && activeTab === 'invoices')
-          ? styles.detailViewActive
-          : ''
-          }`}
-      >
-
-        <div
-          className={`${styles.listPane}`}
-        >
-          {activeTab === 'orders' ? (
-            <OrderList
-              orders={filteredOrders}
-              onSelect={openOrder}
-            />
+      <div className={
+          `${styles.listContainer} ${
+            (selectedOrder && activeTab==='orders') ||
+            (selectedInvoice && activeTab==='invoices')
+              ? styles.detailViewActive
+              : ''
+          }`
+      }>
+        <div className={styles.listPane}>
+          {activeTab==='orders' ? (
+            <OrderList orders={filteredOrders} onSelect={openOrder} />
           ) : (
-            <>
-              <InvoiceList
-                invoices={filteredInvoices}
-                selectedInvoices={selectedIds}
-                toggleInvoiceSelection={toggleSelection}
-                onSelect={openInvoice}
-              />
-            </>
+            <InvoiceList
+              invoices={filteredInvoices}
+              selectedInvoices={selectedIds}
+              toggleInvoiceSelection={toggleSelection}
+              onSelect={openInvoice}
+            />
           )}
         </div>
 
-        {/* DETAIL CARD */}
-        {selectedOrder && activeTab === 'orders' && (
+        {selectedOrder && activeTab==='orders' && (
           <div className={styles.detailContainer}>
             <header className={styles.detailHeader}>
-              <button className={styles.backButton} onClick={goBack}>
-                Back
-              </button>
+              <button className={styles.backButton} onClick={goBack}>Back</button>
             </header>
-            <OrderDetail order={selectedOrder} />
+            <OrderDetails
+              order={selectedOrder}
+              onCancel={handleCancel}
+            />
           </div>
         )}
 
-        {selectedInvoice && activeTab === 'invoices' && (
+        {selectedInvoice && activeTab==='invoices' && (
           <div className={styles.detailContainer}>
             <header className={styles.detailHeader}>
-              <button className={styles.backButton} onClick={goBack}>
-                Back
-              </button>
+              <button className={styles.backButton} onClick={goBack}>Back</button>
             </header>
             <InvoiceDetail invoice={selectedInvoice} />
           </div>

@@ -1,102 +1,106 @@
 // src/components/HomePage/ProductList.jsx
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styles from '../../styles/Home/ProductList.module.css';
+import { capitalize } from '../../utils/validators';
+
+
+function ProductCard({ product, quantity, onQuantityChange, onAddToCart }) {
+  const { _id, productName, category, productPrice, quantity: stock, threshold, supplierName } = product;
+
+  const stockStatus =
+    stock === 0 ? 'Out of Stock'
+    : stock < threshold ? 'Low Stock'
+    : 'In Stock';
+
+  const statusClass =
+    stock === 0 ? styles.outOfStock
+    : stock < threshold ? styles.lowStock
+    : styles.inStock;
+
+  const decrement = () => onQuantityChange(_id, Math.max(quantity - 1, 0));
+  const increment = () => onQuantityChange(_id, Math.min(quantity + 1, stock));
+  const handleInput = e => {
+    const val = parseInt(e.target.value, 10) || 0;
+    onQuantityChange(_id, Math.min(Math.max(val, 0), stock));
+  };
+
+  return (
+    <div className={styles.productCard}>
+      <div>
+        <h3 className={styles.title}>{capitalize(productName)}</h3>
+        <p><strong>Category:</strong> {capitalize(category)}</p>
+        <p><strong>Price:</strong> ₹{productPrice.toFixed(2)}</p>
+        <p><strong>Stocks Left:</strong> {stock}</p>
+        <p><strong>Seller:</strong> {capitalize(supplierName)}</p>
+        <p>
+          <strong>Status:</strong>{' '}
+          <span className={statusClass}>{stockStatus}</span>
+        </p>
+      </div>
+
+      <div className={styles.actions}>
+        <div className={styles.stepper}>
+          <button
+            className={styles.stepperButton}
+            onClick={decrement}
+            disabled={quantity <= 0}
+          >
+            –
+          </button>
+
+          <input
+            type="number"
+            className={styles.stepperInput}
+            value={quantity}
+            onChange={handleInput}
+            min={0}
+            max={stock}
+            disabled={stock <= 0}
+          />
+
+          <button
+            className={styles.stepperButton}
+            onClick={increment}
+            disabled={quantity >= stock}
+          >
+            +
+          </button>
+        </div>
+
+        <button
+          className={styles.addButton}
+          onClick={() => onAddToCart(product, quantity)}
+          disabled={stock === 0 || quantity === 0}
+        >
+          {stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function ProductList({ products, addToCart }) {
-
   const [quantities, setQuantities] = useState({});
 
+  const handleQuantityChange = useCallback((id, value) => {
+    setQuantities(prev => ({ ...prev, [id]: value }));
+  }, []);
+
+  const handleAddToCart = useCallback((product, quantity) => {
+    if (quantity > 0) addToCart({ ...product, quantity });
+  }, [addToCart]);
 
   return (
     <div className={styles.productList}>
-      {products.map(p => {
-        const qty = quantities[p._id] || 0;
-
-        const stockStatus =
-          p.quantity === 0
-            ? 'out of stock'
-            : p.quantity < p.threshold
-              ? 'low stock'
-              : 'in stock';
-
-        const statusClass =
-          p.quantity === 0
-            ? styles.outOfStock
-            : p.quantity < p.threshold
-              ? styles.lowStock
-              : styles.inStock;
-
-        return (
-          <div key={p._id} className={styles.productCard}>
-            <h3 className={styles.title}>{p.productName}</h3>
-            <p><strong>Category:</strong> {p.category}</p>
-            <p><strong>Price:</strong> &#8377;{p.productPrice.toFixed(2)}</p>
-            <p><strong>Stocks Left:</strong> {p.quantity}</p>
-            <p><strong>Seller:</strong> {p.supplierName}</p>
-
-            <p>
-              <strong>Status:</strong>{' '}
-              <span className={statusClass}>
-                {stockStatus}
-              </span>
-            </p>
-
-            {/* {stockStatus === 'low stock' && (
-              <p className={styles.threshold}>
-                <em>Reorder at:</em> {p.threshold} units
-              </p>
-            )} */}
-
-            <div className={styles.actions}>
-              <button
-                className={styles.plusBtn}
-                onClick={() =>
-                  setQuantities(prev => ({
-                    ...prev,
-                    [p._id]: Math.min((prev[p._id] || 0) + 1, p.quantity)
-                  }))
-                }
-              >
-                +
-              </button>
-
-              <input
-                type="number"
-                min={0}
-                max={p.quantity}
-                value={qty}
-                onChange={(e) =>
-                  setQuantities(prev => ({
-                    ...prev,
-                    [p._id]: Math.min(Math.max(0, parseInt(e.target.value) || 0), p.quantity)
-                  }))
-                }
-              />
-
-              <button
-                className={styles.minusBtn}
-                onClick={() =>
-                  setQuantities(prev => ({
-                    ...prev,
-                    [p._id]: Math.max((prev[p._id] || 0) - 1, 0)
-                  }))
-                }
-                disabled={qty === 0}
-              >
-                -
-              </button>
-            </div>
-
-            <button
-              className={styles.addButton}
-              onClick={() => addToCart({ ...p, quantity: qty })}
-              disabled={p.quantity === 0}
-            >
-              {p.quantity > 0 ? 'Add to Cart' : 'Out of Stock'}
-            </button>
-          </div>
-        );
-      })}
+      {products.map(product => (
+        <ProductCard
+          key={product._id}
+          product={product}
+          quantity={quantities[product._id] || 0}
+          onQuantityChange={handleQuantityChange}
+          onAddToCart={handleAddToCart}
+        />
+      ))}
     </div>
   );
 }

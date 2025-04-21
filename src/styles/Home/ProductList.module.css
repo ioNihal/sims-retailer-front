@@ -8,24 +8,22 @@
 
 .productCard {
   background: var(--surface);
-  padding: 1.25rem;
+  padding: 1rem;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .productCard:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
+.productCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .title {
-  margin: 0 0 0.5rem;
+  margin-bottom: 0.5rem;
   font-size: 1.25rem;
   color: var(--text);
 }
@@ -37,131 +35,94 @@
 }
 
 .actions {
-  align-self: stretch;
-  margin-top: 1rem;
-  display: flex;
+  margin: 1rem 0;
+  display: flex; 
   align-items: center;
-  gap: 5px;
+  justify-content: space-around;
 }
 
-.actions input {
-  outline: none;
-  background-color: var(--bg);
-  border: 1px solid var(--border);
+.stepper {
+  display: inline-flex;
   border-radius: 8px;
-  color: var(--text);
-  width: 100%;
-  padding: 0.6rem 1rem;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
+  overflow: hidden;
 }
 
-.actions button {
-  outline: none;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-}
-
-.plusBtn {
-  background-color: var(--bg);
-  color: var(--text);
-}
-
-.plusBtn:hover {
-  background-color: var(--success);
-  color: #fff;
-}
-
-.minusBtn {
-  background-color: var(--bg);
-  color: var(--text);
-}
-
-.minusBtn:hover {
-  background-color: var(--error);
-  color: #fff;
-}
-
-.addButton {
-  align-self: flex-start;
-  margin-top: 0.5rem;
-  padding: 0.6rem 1rem;
-  background: var(--primary);
+.stepperButton {
+  background: var(--stepper);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
   cursor: pointer;
   transition: background 0.2s;
 }
 
+.stepperButton:disabled {
+  background: var(--border);
+  cursor: not-allowed;
+}
+
+.stepperButton:hover:not(:disabled) {
+  background: var(--stepper-hover);
+}
+
+.stepperInput {
+  width: 3rem;
+  text-align: center;
+  background: var(--stepper-bg);
+  border: none;
+  font-size: 0.8rem;
+  color: var(--text);
+  outline: none;
+}
+
+/* Hide Chrome, Safari, Edge spinners */
+.stepperInput::-webkit-outer-spin-button,
+.stepperInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide Firefox spinner */
+.stepperInput {
+  -moz-appearance: textfield;
+}
 
 
+.addButton {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
 
+.addButton:disabled {
+  background: var(--border);
+  cursor: not-allowed;
+}
 
-
-.addButton:hover {
+.addButton:hover:not(:disabled) {
   background: var(--primary-hover);
 }
 
-.inStock {
-  color: var(--success);
-  font-weight: bold;
 
-}
+.inStock    { color: var(--success); font-weight: bold; }
+.lowStock   { color: var(--warning); font-weight: bold; }
+.outOfStock { color: var(--error);   font-weight: bold; }
 
-.lowStock {
-  color: var(--warning);
-  font-weight: bold;
-
-}
-
-.outOfStock {
-  color: var(--error);
-  font-weight: bold;
-
-}
-
-
-@media (max-width: 1024px) {}
-
+/* Responsive tweaks */
 @media (max-width: 767px) {
   .productList {
-    display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
   }
-
-  .productCard {
-    padding: 1rem;
-  }
-
-  .title {
-    margin: 0 0 0.5rem;
-    font-size: 1.2rem;
-  }
-
-  .productCard p {
-    font-size: 1rem;
-  }
-
-  .addButton {
-    margin-top: 0.5rem;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-  }
-
-  .actions input {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-  }
-
-  .actions button {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-  }
+  .title { font-size: 1.2rem; }
 }
-
-@media (max-width: 480px) {}
