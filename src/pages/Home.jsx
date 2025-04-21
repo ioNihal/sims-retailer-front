@@ -13,18 +13,22 @@ export default function Home() {
   const [cart, setCart] = useState([]);
   const [checkout, setCheckout] = useState(false);
 
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const fetchProducts = async () => {
+  await fetch('https://suims.vercel.app/api/inventory/customer')
+  .then(r => r.json())
+  .then(data => {
+    setProducts(data.inventory);
+    setFiltered(data.inventory);
+  })
+  .catch(console.error);
+  }
+
   useEffect(() => {
-    fetch('https://suims.vercel.app/api/inventory/customer')
-      .then(r => r.json())
-      .then(data => {
-        setProducts(data.inventory);
-        setFiltered(data.inventory);
-      })
-      .catch(console.error);
+    fetchProducts();
   }, []);
 
   useEffect(() => {
@@ -67,7 +71,7 @@ export default function Home() {
       // 2) build orderProducts array
       const orderProducts = cart.map(item => ({
         inventoryId: item._id,
-        quantity: item.quantity,            
+        quantity: item.quantity,
         price: item.productPrice,
         category: item.category
       }));
@@ -76,11 +80,11 @@ export default function Home() {
       // 3) sum up totalAmount
       const totalAmount = orderProducts
         .reduce((sum, p) => sum + p.price * p.quantity, 0)
-        .toFixed(2);           
+        .toFixed(2);
 
       // 4) hit the API
       const res = await fetch(
-        'https://suims.vercel.app/api/orders/',    
+        'https://suims.vercel.app/api/orders/',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -135,6 +139,12 @@ export default function Home() {
             Cart {cart.length > 0 && <span className={styles.badge}>{cart.length}</span>}
           </button>
         </div>
+        <button
+          className={styles.refreshButton}
+          onClick={() => fetchProducts()}
+        >
+          Refresh
+        </button>
       </div>
 
       <div className={styles.tabContent}>

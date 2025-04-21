@@ -56,6 +56,19 @@
   box-shadow: 0 2px 6px rgba(0, 112, 243, 0.4);
 }
 
+.refreshButton {
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.refreshButton:hover {
+  color: #fff;
+  background: var(--success);
+}
+
 .badge {
   background: #ff3b3b;
   color: #fff;
@@ -107,6 +120,10 @@
     width: 100%;
     max-width: 300px;
     gap: 0.5rem;
+  }
+
+  .refreshButton {
+    display: none;
   }
 }
 
