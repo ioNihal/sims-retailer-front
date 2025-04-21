@@ -29,6 +29,7 @@
   padding: 12px;
   margin-bottom: 12px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  overflow: auto;
 }
 
 .total {
@@ -51,3 +52,13 @@
 .cancelButton:hover {
   background: #c12e2a;
 }
+
+@media (max-width: 1024px) {}
+
+@media (max-width: 767px) {
+  .orderDetails {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {}

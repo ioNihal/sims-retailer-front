@@ -10,14 +10,14 @@ import { invoices } from '../../public/data';
 import { exportFunc } from '../utils/exportFunc';
 
 export default function Orders({ activeTab: initialTab = 'orders' }) {
-  const [activeTab, setActiveTab]       = useState(initialTab);
-  const [searchTerm, setSearchTerm]     = useState('');
-  const [ordersData, setOrders]         = useState([]);
-  const [invoiceData, setInvoices]      = useState([]);
-  const [selectedIds, setSelectedIds]   = useState([]);
-  const [exporting, setExporting]       = useState(false);
-  const [selectedOrder, setSelectedOrder]       = useState(null);
-  const [selectedInvoice, setSelectedInvoice]   = useState(null);
+  const [activeTab, setActiveTab] = useState(initialTab);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [ordersData, setOrders] = useState([]);
+  const [invoiceData, setInvoices] = useState([]);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [exporting, setExporting] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
 
   // 1) Fetch helper
   const fetchOrders = async () => {
@@ -27,7 +27,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
       return;
     }
     try {
-      const res  = await fetch(
+      const res = await fetch(
         `https://suims.vercel.app/api/orders?customerId=${customerId}`
       );
       const json = await res.json();
@@ -47,10 +47,11 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
   const handleCancel = async orderId => {
     if (!window.confirm('Really cancel this order?')) return;
     try {
-      const res  = await fetch(
-        `https://suims.vercel.app/api/orders/${orderId}`,
-        { method: 'DELETE' }
-      );
+      const res = await fetch(`https://suims.vercel.app/api/orders/${orderId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'cancelled' })
+      });
       const json = await res.json();
       if (!res.ok) throw new Error(json.message || 'Cancel failed');
       alert('Order cancelled');
@@ -96,10 +97,10 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
   };
 
   // detail open/back
-  const openOrder   = o => setSelectedOrder(o);
+  const openOrder = o => setSelectedOrder(o);
   const openInvoice = i => setSelectedInvoice(i);
-  const goBack      = () => {
-    if (activeTab==='orders') setSelectedOrder(null);
+  const goBack = () => {
+    if (activeTab === 'orders') setSelectedOrder(null);
     else setSelectedInvoice(null);
   };
 
@@ -114,14 +115,14 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
         <div className={styles.tabButtons}>
           <button
             className={activeTab === 'orders' ? styles.active : ''}
-            onClick={()=>switchTo('orders')}
+            onClick={() => switchTo('orders')}
           >Orders</button>
           <button
             className={activeTab === 'invoices' ? styles.active : ''}
-            onClick={()=>switchTo('invoices')}
+            onClick={() => switchTo('invoices')}
           >Invoices</button>
         </div>
-        {activeTab==='invoices' && filteredInvoices.length>0 && (
+        {activeTab === 'invoices' && filteredInvoices.length > 0 && (
           <button
             className={styles.exportButton}
             onClick={exportInvoices}
@@ -129,21 +130,20 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
           >
             {exporting
               ? 'Exporting…'
-              : `Export ${selectedIds.length} Invoice${selectedIds.length===1?'':'s'}`}
+              : `Export ${selectedIds.length} Invoice${selectedIds.length === 1 ? '' : 's'}`}
           </button>
         )}
       </div>
 
       <div className={
-          `${styles.listContainer} ${
-            (selectedOrder && activeTab==='orders') ||
-            (selectedInvoice && activeTab==='invoices')
-              ? styles.detailViewActive
-              : ''
-          }`
+        `${styles.listContainer} ${(selectedOrder && activeTab === 'orders') ||
+          (selectedInvoice && activeTab === 'invoices')
+          ? styles.detailViewActive
+          : ''
+        }`
       }>
         <div className={styles.listPane}>
-          {activeTab==='orders' ? (
+          {activeTab === 'orders' ? (
             <OrderList orders={filteredOrders} onSelect={openOrder} />
           ) : (
             <InvoiceList
@@ -155,7 +155,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
           )}
         </div>
 
-        {selectedOrder && activeTab==='orders' && (
+        {selectedOrder && activeTab === 'orders' && (
           <div className={styles.detailContainer}>
             <header className={styles.detailHeader}>
               <button className={styles.backButton} onClick={goBack}>Back</button>
@@ -167,7 +167,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
           </div>
         )}
 
-        {selectedInvoice && activeTab==='invoices' && (
+        {selectedInvoice && activeTab === 'invoices' && (
           <div className={styles.detailContainer}>
             <header className={styles.detailHeader}>
               <button className={styles.backButton} onClick={goBack}>Back</button>
