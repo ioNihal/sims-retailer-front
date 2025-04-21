@@ -3,24 +3,36 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Login/Login.module.css';
 import { ThemeContext } from '../contexts/ThemeContext';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+export default function Login() {
+  const [email, setEmail]         = useState('');
+  const [password, setPassword]   = useState('');
+  const [loading, setLoading]     = useState(false);
+  const navigate                  = useNavigate();
+  const { theme, toggle }         = useContext(ThemeContext);
 
-  const { theme, toggle } = useContext(ThemeContext);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const fetchUserId = async () => {
-      const response = await fetch('https://suims.vercel.app/api/customer/')
-      const data = await response.json()
-      const users = data.data;
-      const userData = users[0]._id;
-      localStorage.setItem('token', userData);
+    setLoading(true);
+
+    try {
+      const response = await fetch('https://suims.vercel.app/api/customer/');
+      if (!response.ok) {
+        throw new Error(`Server responded ${response.status}`);
+      }
+      const data     = await response.json();
+      const users    = data.data;
+      const userId   = users[0]?._id;
+      if (!userId) {
+        throw new Error('No user found');
+      }
+      localStorage.setItem('token', userId);
+      navigate('/home');
+    } catch (err) {
+      console.error(err);
+      alert(err.message || 'Login failed');
+    } finally {
+      setLoading(false);
     }
-    fetchUserId();
-    navigate('/home');
   };
 
   return (
@@ -41,6 +53,7 @@ const Login = () => {
             </div>
           </label>
         </div>
+
         <h2 className={styles.heading}>Login</h2>
 
         <label>Email</label>
@@ -50,6 +63,7 @@ const Login = () => {
           value={email}
           onChange={e => setEmail(e.target.value)}
           required
+          disabled={loading}
         />
 
         <label>Password</label>
@@ -59,12 +73,17 @@ const Login = () => {
           value={password}
           onChange={e => setPassword(e.target.value)}
           required
+          disabled={loading}
         />
 
-        <button type="submit" className={styles.loginButton}>Sign In</button>
+        <button
+          type="submit"
+          className={styles.loginButton}
+          disabled={loading}
+        >
+          {loading ? 'Signing In…' : 'Sign In'}
+        </button>
       </form>
     </div>
   );
-};
-
-export default Login;
+}
