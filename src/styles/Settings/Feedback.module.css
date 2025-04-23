@@ -22,7 +22,7 @@
 
 .textarea {
   min-height: 120px;
-  max-height: 300px;
+  max-height: 220px;
   padding: 12px;
   font-size: 1rem;
   border: 1px solid rgba(0,0,0,0.2);
@@ -53,10 +53,30 @@
   background: var(--primary-hover);
 }
 
+.successMsg {
+  color: green;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.errorMsg {
+  color: red;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
 @media (max-width: 1024px) {}
 
 @media (max-width: 767px) {
-  
+  .feedbackContainer {
+    padding: 10px;
+  }
+
+  .textarea {
+    max-height: 300px;
+  }
 }
 
 @media (max-width: 480px) {}

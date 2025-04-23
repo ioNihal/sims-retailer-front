@@ -45,7 +45,7 @@ export default function Settings() {
 
       <main className={styles.content}>
         {activeTab === 'profile' && <Profile userId={id} />}
-        {activeTab === 'feedback' && <Feedback />}
+        {activeTab === 'feedback' && <Feedback customerId={id}/>}
       </main>
     </div>
   );

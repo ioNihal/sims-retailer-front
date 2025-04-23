@@ -2,27 +2,63 @@
 import React, { useState } from 'react';
 import styles from '../../styles/Settings/Feedback.module.css';
 
-const Feedback = () => {
+const Feedback = ({ customerId }) => {
   const [feedback, setFeedback] = useState("");
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Thank you for your feedback!");
-    setFeedback("");
+
+    try {
+      setLoading(true);
+      const response = await fetch('https://suims.vercel.app/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          customerId,
+          senderType: 'customer',
+          message: feedback.trim()
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Something went wrong!');
+      }
+
+      setStatus({ type: 'success', message: "Feedback sent successfully!" });
+      setLoading(false);
+      setFeedback('');
+    } catch (err) {
+      setStatus({
+        type: 'error',
+        message: err.message
+      });
+      setLoading(false);
+    }
   };
 
   return (
     <div className={styles.feedbackContainer}>
       <h2>Feedback / Report</h2>
       <form onSubmit={handleSubmit} className={styles.feedbackForm}>
-        <textarea 
+        <textarea
           placeholder="Enter your feedback or report any issues here..."
           value={feedback}
           onChange={(e) => setFeedback(e.target.value)}
           className={styles.textarea}
           required
         ></textarea>
-        <button type="submit" className={styles.submitBtn}>Submit</button>
+        <button type="submit" className={styles.submitBtn}>{loading ? 'Sending...' : 'Send'}</button>
+        {status && (
+          <p className={status.type === 'success' ? styles.successMsg : styles.errorMsg}>
+            {status.message}
+          </p>
+        )}
       </form>
     </div>
   );

@@ -1,14 +1,58 @@
-// src/components/Profile.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/Settings/Profile.module.css';
 
-const Profile = ({userId}) => {
+const Profile = ({ userId }) => {
+  const [showForm, setShowForm] = useState(false);
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const userDetails = {
     id: userId,
     name: "John Doe",
     email: "john.doe@example.com",
     phone: "+1 234 567 890",
     address: "123 Main St, City, Country"
+  };
+
+  const handleChangeReqClick = () => {
+    setShowForm(true);
+    setStatus(null);
+  };
+
+  const handleCancel = () => {
+    setShowForm(false);
+    setMessage('');
+    setStatus(null);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!message.trim()) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch('https://suims.vercel.app/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerId: userId,
+          senderType: 'customer',
+          message: message.trim()
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Something went wrong!');
+
+      setStatus({ type: 'success', text: data.message });
+      setMessage('');
+      setShowForm(false);
+    } catch (err) {
+      setStatus({ type: 'error', text: err.message });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -19,9 +63,49 @@ const Profile = ({userId}) => {
       <p><strong>Email:</strong> {userDetails.email}</p>
       <p><strong>Phone:</strong> {userDetails.phone}</p>
       <p><strong>Address:</strong> {userDetails.address}</p>
-      <button className={styles.changeRequestBtn}>
-        Request Changes
-      </button>
+
+      {!showForm ? (
+        <button
+          className={styles.changeRequestBtn}
+          onClick={handleChangeReqClick}
+        >
+          Request Changes
+        </button>
+      ) : (
+        <form className={styles.changeRequestForm} onSubmit={handleSubmit}>
+          <label htmlFor="changeMessage">Describe your requested changes:</label>
+          <textarea
+            id="changeMessage"
+            className={styles.formTextarea}
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+            placeholder="E.g. Please update my address to …"
+            required
+          />
+          <div className={styles.formButtons}>
+            <button
+              type="submit"
+              className={styles.submitBtn}
+              disabled={loading}
+            >
+              {loading ? 'Sending…' : 'Send Request'}
+            </button>
+            <button
+              type="button"
+              className={styles.cancelBtn}
+              onClick={handleCancel}
+              disabled={loading}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+      {status && (
+        <p className={status.type === 'success' ? styles.successMsg : styles.errorMsg}>
+          {status.text}
+        </p>
+      )}
     </div>
   );
 };
