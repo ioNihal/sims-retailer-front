@@ -20,7 +20,7 @@ export default function Cart({ cartItems, removeFromCart, proceedToCheckout }) {
                 <div>
                   <strong>{item.quantity} {capitalize(item.productName)}</strong> - &#8377;{(item.productPrice * item.quantity).toFixed(2)}
                 </div>
-                <button onClick={() => removeFromCart(item.id)}>Remove</button>
+                <button onClick={() => removeFromCart(item._id)}>Remove</button>
               </li>
             ))}
           </ul>

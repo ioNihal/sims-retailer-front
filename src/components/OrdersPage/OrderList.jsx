@@ -16,7 +16,7 @@ export default function OrderList({ orders, onSelect }) {
         >
           <p><strong>Order ID: {o._id}</strong></p>
           <p>Status: {capitalize(o.status)}</p>
-          <p>Total: ₹{o.totalAmount.toFixed(2)}</p>
+          <p>Total: ₹{o.totalAmount.toFixed(2)} Qty: {o.orderProducts.length}</p>
         </div>
       ))}
     </div>

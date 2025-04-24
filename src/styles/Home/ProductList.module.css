@@ -89,6 +89,7 @@
 
 /* Hide Firefox spinner */
 .stepperInput {
+  overscroll-behavior: contain;
   -moz-appearance: textfield;
 }
 

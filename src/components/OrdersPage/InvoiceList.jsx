@@ -1,4 +1,4 @@
-// src/components/InvoiceList.jsx
+// src/components/OrdersPage/InvoiceList.jsx
 import React from 'react';
 import styles from '../../styles/Orders/InvoiceList.module.css';
 
@@ -12,23 +12,23 @@ export default function InvoiceList({
     <div className={styles.invoiceList}>
       {invoices.map(inv => (
         <div
-          key={inv.id}
+          key={inv._id}
           className={styles.invoiceItem}
-          onClick={() => onSelect(inv)}           
+          onClick={() => onSelect(inv)}
         >
           <input
             type="checkbox"
-            checked={selectedInvoices.includes(inv.id)}
-            onChange={e => {
-              e.stopPropagation();               
-              toggleInvoiceSelection(inv.id);
-            }}
-            onClick={e => e.stopPropagation()} 
             className={styles.checkbox}
+            checked={selectedInvoices.includes(inv._id)}
+            onChange={e => {
+              e.stopPropagation();
+              toggleInvoiceSelection(inv._id);
+            }}
+            onClick={e => e.stopPropagation()}
           />
           <div className={styles.invoiceContent}>
-            <p><strong>{inv.invoiceNumber}</strong></p>
-            <p>Total: ${inv.total.toFixed(2)}</p>
+            <p><strong>Invoice ID: {inv._id}</strong></p>
+            <p>Total: ₹{inv.amount.toFixed(2)}</p>
           </div>
         </div>
       ))}

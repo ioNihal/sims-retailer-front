@@ -1,13 +1,12 @@
-// src/pages/Orders.jsx
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import OrderList from '../components/OrdersPage/OrderList';
 import InvoiceList from '../components/OrdersPage/InvoiceList';
 import OrderDetails from '../components/OrdersPage/OrderDetails';
-import InvoiceDetail from '../components/OrdersPage/InvoiceDetails';
+import InvoiceDetails from '../components/OrdersPage/InvoiceDetails';
 import styles from '../styles/Orders/Orders.module.css';
-import { invoices } from '../../public/data';
 import { exportFunc } from '../utils/exportFunc';
+import { useNavigate } from 'react-router-dom';
 
 export default function Orders({ activeTab: initialTab = 'orders' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -18,18 +17,14 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
   const [exporting, setExporting] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const navigate = useNavigate();
 
-  // 1) Fetch helper
+  // Fetch orders for this customer
   const fetchOrders = async () => {
-    const customerId = localStorage.getItem('token');  // or 'customerId'
-    if (!customerId) {
-      console.warn('No customerId/token in localStorage');
-      return;
-    }
+    const customerId = localStorage.getItem('token');
+    if (!customerId) return;
     try {
-      const res = await fetch(
-        `https://suims.vercel.app/api/orders?customerId=${customerId}`
-      );
+      const res = await fetch(`https://suims.vercel.app/api/orders?customerId=${customerId}`);
       const json = await res.json();
       setOrders(json.orders || []);
     } catch (err) {
@@ -37,13 +32,24 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     }
   };
 
-  // 2) initial load
+  // Fetch invoices for this customer
+  const fetchInvoices = async () => {
+    const customerId = localStorage.getItem('token');
+    if (!customerId) return;
+    try {
+      const res = await fetch(`https://suims.vercel.app/api/invoice?customerId=${customerId}`);
+      const json = await res.json();
+      setInvoices(json.invoice || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchOrders();
-    setInvoices(invoices);
+    fetchInvoices();
   }, []);
 
-  // 3) Cancel handler
   const handleCancel = async orderId => {
     if (!window.confirm('Really cancel this order?')) return;
     try {
@@ -63,7 +69,6 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     }
   };
 
-  // tab switching
   const switchTo = tab => {
     setActiveTab(tab);
     setSearchTerm('');
@@ -71,32 +76,30 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     setSelectedInvoice(null);
   };
 
-  // filtering
   const filteredOrders = ordersData.filter(order =>
     order.orderProducts.some(p =>
-      p.inventoryId.productName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+      p.inventoryId.productName.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
   const filteredInvoices = invoiceData.filter(i =>
-    i.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase())
+    i._id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // invoice export
   const toggleSelection = id =>
     setSelectedIds(prev =>
       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
     );
   const exportInvoices = () => {
-    if (!selectedIds.length) { alert('Select at least one invoice.'); return; }
+    if (!selectedIds.length) {
+      alert('Select at least one invoice.');
+      return;
+    }
     setExporting(true);
-    exportFunc(invoices, selectedIds);
+    exportFunc(invoiceData, selectedIds);
     setExporting(false);
     setSelectedIds([]);
   };
 
-  // detail open/back
   const openOrder = o => setSelectedOrder(o);
   const openInvoice = i => setSelectedInvoice(i);
   const goBack = () => {
@@ -116,11 +119,15 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
           <button
             className={activeTab === 'orders' ? styles.active : ''}
             onClick={() => switchTo('orders')}
-          >Orders</button>
+          >
+            Orders
+          </button>
           <button
             className={activeTab === 'invoices' ? styles.active : ''}
             onClick={() => switchTo('invoices')}
-          >Invoices</button>
+          >
+            Invoices
+          </button>
         </div>
         {activeTab === 'invoices' && filteredInvoices.length > 0 && (
           <button
@@ -135,13 +142,14 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
         )}
       </div>
 
-      <div className={
-        `${styles.listContainer} ${(selectedOrder && activeTab === 'orders') ||
+      <div
+        className={`${styles.listContainer} ${
+          (selectedOrder && activeTab === 'orders') ||
           (selectedInvoice && activeTab === 'invoices')
-          ? styles.detailViewActive
-          : ''
-        }`
-      }>
+            ? styles.detailViewActive
+            : ''
+        }`}
+      >
         <div className={styles.listPane}>
           {activeTab === 'orders' ? (
             <OrderList orders={filteredOrders} onSelect={openOrder} />
@@ -158,21 +166,22 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
         {selectedOrder && activeTab === 'orders' && (
           <div className={styles.detailContainer}>
             <header className={styles.detailHeader}>
-              <button className={styles.backButton} onClick={goBack}>Back</button>
+              <button className={styles.backButton} onClick={goBack}>
+                Back
+              </button>
             </header>
-            <OrderDetails
-              order={selectedOrder}
-              onCancel={handleCancel}
-            />
+            <OrderDetails order={selectedOrder} onCancel={handleCancel} />
           </div>
         )}
 
         {selectedInvoice && activeTab === 'invoices' && (
           <div className={styles.detailContainer}>
             <header className={styles.detailHeader}>
-              <button className={styles.backButton} onClick={goBack}>Back</button>
+              <button className={styles.backButton} onClick={goBack}>
+                Back
+              </button>
             </header>
-            <InvoiceDetail invoice={selectedInvoice} />
+            <InvoiceDetails invoice={selectedInvoice} />
           </div>
         )}
       </div>

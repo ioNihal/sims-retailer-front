@@ -86,6 +86,10 @@
   overflow-y: auto;
 }
 
+/* .tabContent:has(input:hover) {
+  overflow-y: hidden;
+} */
+
 .contentPane {
   background: var(--bg);
   border-radius: 12px;
