@@ -68,3 +68,18 @@ export const validateName = (name) => {
     })
     return formatedDate;
   };
+
+  export function formatDateForFilename(date) {
+    const dd   = String(date.getDate()).padStart(2,'0');
+    const mmm  = date.toLocaleString('en-US',{ month: 'short' }); 
+    const yyyy = date.getFullYear();
+    
+    let hh = date.getHours();
+    const ampm = hh >= 12 ? 'pm' : 'am';
+    hh = hh % 12 || 12;                    
+    const HH = String(hh).padStart(2,'0');
+    const MM = String(date.getMinutes()).padStart(2,'0');
+    
+    // return an array of each segment
+    return [ dd, mmm, yyyy, HH, MM, ampm ];
+  }

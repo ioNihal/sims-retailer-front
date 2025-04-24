@@ -1,58 +1,72 @@
 import { jsPDF } from 'jspdf';
+import { formatDate, formatDateForFilename } from './validators';
+
 
 export const exportFunc = (allInvoices, selectedIds) => {
-  // filter out only those you actually ticked
   const invoicesToExport = allInvoices.filter(inv =>
-    selectedIds.includes(inv.id)
+    selectedIds.includes(inv._id)
   );
 
-  // Create a new PDF document
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
   let yOffset = 20;
 
-  // … your header drawing code …
 
-  invoicesToExport.forEach((invoice, index) => {
-    const rectX = 20;
+  const drawHeader = () => {
+    doc.setFontSize(16);
+    doc.text('YourBuisness — Invoices', pageWidth / 2, 10, { align: 'center' });
+    yOffset = 20;
+  };
+  drawHeader();
+
+  invoicesToExport.forEach((inv, idx) => {
+    const rectX = 15;
     const rectY = yOffset;
-    const rectWidth = pageWidth - 40;
-    const innerMargin = 5;
-    let textY = rectY + innerMargin;
-    const textX = rectX + innerMargin;
+    const rectW = pageWidth - 30;
+    const innerM = 5;
+    let textY = rectY + innerM;
+    const textX = rectX + innerM;
 
     doc.setFontSize(12);
-    doc.text(`Invoice Number: ${invoice.invoiceNumber}`, textX, textY);
-    textY += 7;
-    doc.text(`Order Details:`, textX, textY);
-    textY += 7;
-
-    // wrap long details
-    const lines = doc.splitTextToSize(
-      invoice.orderDetails,
-      rectWidth - 2 * innerMargin
+    doc.text(`Invoice ID: ${inv._id}`, textX, textY);
+    textY += 6;
+    doc.text(`Status: ${inv.status}`, textX, textY);
+    textY += 6;
+    doc.text(`Amount: Rs ${inv.amount.toFixed(2)}`, textX, textY);
+    textY += 6;
+    doc.text(
+      `Due Date: ${new Date(inv.dueDate).toLocaleDateString()}`,
+      textX,
+      textY
     );
-    doc.text(lines, textX, textY);
-    textY += lines.length * 7;
+    textY += 8;
 
-    doc.text(`Total Amount: $${invoice.total.toFixed(2)}`, textX, textY);
-    textY += 7;
+    if (inv.orders?.length) {
+      doc.text('Order IDs:', textX, textY);
+      textY += 6;
+      inv.orders.forEach(orderId => {
+        doc.text(`• ${orderId}`, textX + 4, textY);
+        textY += 5;
+      });
+    }
 
-    // draw border around the block
-    const rectHeight = textY - rectY + innerMargin;
+    // border
+    const rectH = textY - rectY + innerM;
     doc.setLineWidth(0.3);
-    doc.rect(rectX, rectY, rectWidth, rectHeight);
+    doc.rect(rectX, rectY, rectW, rectH);
 
-    // move yOffset for next invoice
-    yOffset = rectY + rectHeight + 15;
-
-    // if space runs out, add new page + redraw header
-    if (yOffset > 250 && index < invoicesToExport.length - 1) {
+    // advance, new page if needed
+    yOffset = rectY + rectH + 12;
+    if (yOffset > 270 && idx < invoicesToExport.length - 1) {
       doc.addPage();
-      yOffset = 20;
-      // … redraw header on new page …
+      drawHeader();
     }
   });
 
-  doc.save('invoices.pdf');
+  const curDate = new Date();
+  const parts = formatDateForFilename(curDate);
+  const name = parts.join('_') + '_invoice.pdf';
+
+
+  doc.save(name);
 };
