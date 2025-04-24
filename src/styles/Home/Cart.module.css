@@ -4,7 +4,7 @@
   padding: 20px;
   background: var(--surface);
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px var(--shadow);
 }
 
 .cart h2 {
@@ -38,26 +38,27 @@
 .total {
   margin-bottom: 1rem;
   font-size: 1rem;
+  color: var(--text);
 }
 
 .cartItem button {
   background: transparent;
   border: none;
-  color: #d9534f;
+  color: var(--error);
   cursor: pointer;
   transition: color 0.2s;
   font-size: 1rem;
 }
 
 .cartItem button:hover {
-  color: #b52b27;
+  color: var(--error);
 }
 
 .checkoutButton {
   width: 100%;
   padding: 0.75rem;
-  background: #28a745;
-  color: #fff;
+  background: var(--primary);
+  color: var(--surface);
   border: none;
   border-radius: 8px;
   font-size: 1rem;
@@ -66,10 +67,8 @@
 }
 
 .checkoutButton:hover {
-  background: #218838;
+  background: var(--primary-hover);
 }
-
-@media (max-width: 1024px) {}
 
 @media (max-width: 767px) {
   .cart {
@@ -102,5 +101,3 @@
     font-size: 0.8rem;
   }
 }
-
-@media (max-width: 480px) {}

@@ -1,49 +1,84 @@
-/* index.css */
+
 :root {
-  /* Light mode */
-  --bg: #dfe4ec;
-  --surface: #edeff1;
-  --text: #333;
-  --primary: #0070f3;
-  --primary-hover: #005bb5;
-  --border: rgb(190, 190, 190);
-  --success: #4caf50;
-  --warning: #ff9800;
-  --error: #f44336;
-  --stepper: rgb(109, 109, 109);
-  --stepper-bg: rgb(150, 150, 150);
-  --stepper-hover: grey;
+  /* base backgrounds & text */
+  --bg: #ebe6df;
+  --surface: #e2dcda;
+  --card-bg: #f7f2ed;
+  --text: #4a433f;
+  --muted: #7c6f65;
+
+  /* primary actions */
+  --primary: #a57e6e;
+  --primary-hover: #856158;
+  --accent: #c48f65;
+  --accent-hover: #a3724b;
+
+  /* secondary / highlights */
+  --secondary: #8c6a55;
+  --secondary-hover: #6f523f;
+  --info: #6b8e8e;
+  --info-hover: #547373;
+
+  /* statuses */
+  --success: #7a6a5a;
+  --warning: #a77a4f;
+  --error: #8c4a45;
+
+  /* borders & dividers */
+  --border: #d6cbc3;
+  --shadow: rgba(0,0,0,0.05);
+
+  /* steppers & inputs */
+  --stepper: #6e5a4e;
+  --stepper-bg: #ddd3cc;
+  --stepper-hover: #c3b5ab;
+
+  /* links */
+  --link: #856158;
+  --link-hover: #65443a;
 }
 
 [data-theme="dark"] {
-  /* Dark mode */
-  --bg: #121212;
-  --surface: #1e1e1e;
-  --text: #e0e0e0;
-  --primary: #90caf9;
-  --primary-hover: #64b5f6;
-  --border: rgb(36, 36, 36);
-  --success:#81c784;
-  --success-hover: #72b475;
-  --warning:#ffb74d;
-  --error: #e57373;
-  --stepper: rgb(92, 92, 92);
-  --stepper-bg: rgb(150, 150, 150);
-  --stepper-hover: grey;
+  --bg: #18181b;
+  --surface: #1f2937;
+  --card-bg: #27272a;
+  --text: #e4e4e7;
+  --muted: #9ca3af;
+
+  --primary: #34d399;
+  --primary-hover: #10b981;
+  --accent: #6ee7b7;
+  --accent-hover: #3b82f6;
+
+  --secondary: #fb923c;
+  --secondary-hover: #f97316;
+  --info: #60a5fa;
+  --info-hover: #3b82f6;
+
+  --success: #6ee7b7;
+  --warning: #fbbf24;
+  --error: #f87171;
+
+  --border: #374151;
+  --shadow: rgba(0,0,0,0.3);
+
+  --stepper: #9ca3af;
+  --stepper-bg: #374151;
+  --stepper-hover: #4b5563;
+
+  --link: #60a5fa;
+  --link-hover: #3b82f6;
 }
 
-html,
-body {
+html, body {
   height: 100dvh;
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* Utility: make all “surface” panels use var(--surface) */
 .surface {
   background: var(--surface);
   color: var(--text);

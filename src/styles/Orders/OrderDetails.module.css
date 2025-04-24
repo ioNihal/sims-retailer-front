@@ -1,64 +1,76 @@
+/* src/styles/Orders/OrderDetails.module.css */
+
 .orderDetails {
   background: var(--surface);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
   color: var(--text);
 }
 
 .orderDetails h3 {
   margin-top: 0;
   font-size: 1.3rem;
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .orderDetails p {
-  margin: 6px 0;
+  margin: 0.5rem 0;
   font-size: 0.95rem;
+  color: var(--text);
 }
 
 .productsSection {
-  margin-top: 16px;
-  padding-top: 10px;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
   border-top: 1px solid var(--border);
 }
 
 .productDetails {
-  background-color: var(--bg);
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 12px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  overflow: auto;
+  background: var(--bg);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 1px 4px var(--shadow);
+  color: var(--text);
 }
 
 .total {
   font-size: 1rem;
-  margin-top: 20px;
+  margin-top: 1rem;
   font-weight: bold;
+  color: var(--text);
 }
 
 .cancelButton {
-  margin-top: 16px;
-  padding: 10px 14px;
-  background: #d9534f;
-  color: #fff;
+  margin-top: 1rem;
+  padding: 0.6rem 0.875rem;
+  background: var(--error);
+  color: var(--surface);
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: filter 0.2s;
 }
 
 .cancelButton:hover {
-  background: #c12e2a;
+  filter: brightness(1.1);
 }
 
-@media (max-width: 1024px) {}
+
+.pending { color: orange; }
+.delivered { color: green; }
+.cancelled { color: red; }
+
 
 @media (max-width: 767px) {
   .orderDetails {
-    padding: 10px;
+    padding: 0.75rem;
+  }
+  .orderDetails h3 {
+    font-size: 1.1rem;
+  }
+  .productDetails {
+    padding: 0.5rem;
   }
 }
-
-@media (max-width: 480px) {}

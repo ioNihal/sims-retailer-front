@@ -1,7 +1,7 @@
 // src/components/OrdersPage/OrderList.jsx
 import React from 'react';
 import styles from '../../styles/Orders/OrderList.module.css';
-import { capitalize } from '../../utils/validators';
+import { capitalize, formatDate } from '../../utils/validators';
 
 export default function OrderList({ orders, onSelect }) {
   if (!orders || !orders.length) return <p>No orders found!</p>;
@@ -10,12 +10,15 @@ export default function OrderList({ orders, onSelect }) {
     <div className={styles.orderList}>
       {orders.map(o => (
         <div
-          key={o._id}          
+          key={o._id}
           className={styles.orderItem}
-          onClick={()=>onSelect(o)}
+          onClick={() => onSelect(o)}
         >
           <p><strong>Order ID: {o._id}</strong></p>
           <p>Status: {capitalize(o.status)}</p>
+          <p><small>Customer: {o.customerId.name}</small></p>
+          <p>Date: {formatDate(o.createdAt)}</p>
+          <p>Items: {o.orderProducts.reduce((acc, cur) => acc + cur.quantity, 0)}</p>
           <p>Total: ₹{o.totalAmount.toFixed(2)} Qty: {o.orderProducts.length}</p>
         </div>
       ))}

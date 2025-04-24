@@ -1,3 +1,5 @@
+/* src/styles/Orders/Orders.module.css */
+
 .ordersPage {
   max-width: 1200px;
   padding: 20px;
@@ -8,18 +10,19 @@
   background: var(--surface);
   height: 100%;
   overflow: hidden;
-
   box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
 }
 
 .actions {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   gap: 1rem;
   margin-bottom: 1.5rem;
+}
+
+.leftWrapper {
+  display: flex;
+  gap: 1rem;
 }
 
 .tabButtons {
@@ -32,46 +35,46 @@
 
 .tabButtons button {
   flex: 1;
-  padding: 0.75rem 1rem;
-  border: none;
+  padding: 8px;
+  border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text);
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
-
 .tabButtons button:hover {
-  color: #fff;
   background: var(--primary-hover);
+  color: var(--surface);
 }
 
 .tabButtons .active {
   background: var(--primary);
-  color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 112, 243, 0.4);
+  color: var(--surface);
+  box-shadow: 0 2px 6px var(--shadow);
 }
 
 .listContainer {
   display: flex;
   gap: 0.5rem;
-  background-color: var(--bg);
+  background: var(--bg);
   padding: 10px;
   border-radius: 5px;
   overflow: hidden;
+  height: 100%;
 }
 
 .listPane {
   width: 100%;
-  transition: all 0.3s ease;
+  transition: width 0.3s ease;
   overflow-y: auto;
 }
 
 .detailContainer {
   width: 60%;
   background: var(--surface);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px var(--shadow);
   padding: 10px;
   overflow-y: auto;
 }
@@ -87,9 +90,10 @@
   border: none;
   cursor: pointer;
   font-size: 0.9rem;
-  color: #fff;
+  color: var(--surface);
   border-radius: 5px;
   padding: 10px;
+  transition: background 0.2s;
 }
 
 .backButton:hover {
@@ -101,17 +105,17 @@
 }
 
 .exportButton {
-  padding: 0.75rem 1rem;
+  padding: 8px;
   border: none;
-  background: rgb(17, 230, 63);
-  color: #fff;
-  border-radius: 8px;
+  background: var(--link);
+  color: var(--surface);
+  border-radius: 5px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, opacity 0.2s;
 }
 
-.exportButton:hover {
-  background: rgb(13, 204, 55);
+.exportButton:hover:enabled {
+  background: var(--link-hover);
 }
 
 .exportButton:disabled {
@@ -119,9 +123,13 @@
   cursor: not-allowed;
 }
 
-
-@media (max-width: 1024px) {}
-
+.empty,
+.loading {
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 2rem;
+}
 
 @media (max-width: 767px) {
   .ordersPage {
@@ -134,6 +142,11 @@
     margin: 1rem 0;
   }
 
+  .leftWrapper {
+    gap: 0.5rem;
+    width: 100%;
+  }
+
   .tabButtons {
     width: 100%;
     max-width: 100%;
@@ -142,7 +155,6 @@
 
   .exportButton {
     width: 100%;
-    max-width: 300px;
   }
 
   .detailViewActive .listPane {
@@ -151,8 +163,5 @@
 
   .detailContainer {
     width: 100%;
-
   }
 }
-
-@media (max-width: 480px) {}

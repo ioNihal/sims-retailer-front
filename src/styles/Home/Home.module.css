@@ -1,5 +1,4 @@
-/* src/styles/Home/Home.module.css */
-
+/* Home.module.css — use only your variables, no hard-coded colours */
 .homeContainer {
   max-width: 1200px;
   padding: 20px;
@@ -8,20 +7,22 @@
   display: flex;
   flex-direction: column;
   background: var(--surface);
+  box-shadow: 0 2px 6px var(--shadow);
   height: 100%;
   overflow: hidden;
-
   box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
 }
 
 .actions {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   gap: 1rem;
   margin-bottom: 1.5rem;
+}
+
+.leftWrapper {
+  display: flex;
+  gap: 1rem;
 }
 
 .tabButtons {
@@ -34,48 +35,33 @@
 
 .tabButtons button {
   flex: 1;
-  padding: 0.75rem 1rem;
-  border: none;
-  background: var(--bg);
+  padding: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
   color: var(--text);
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background 0.2s;
-
+  transition: background 0.2s, color 0.2s;
   position: relative;
 }
 
 .tabButtons button:hover {
-  color: #fff;
   background: var(--primary-hover);
+  color: #fff;
 }
 
 .tabButtons .active {
   background: var(--primary);
   color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 112, 243, 0.4);
-}
-
-.refreshButton {
-  padding: 0.75rem 1rem;
-  border: none;
-  background: var(--bg);
-  color: var(--text);
-  border-radius: 8px;
-  cursor: pointer;
-}
-.refreshButton:hover {
-  color: #fff;
-  background: var(--success);
+  box-shadow: 0 2px 6px var(--shadow);
 }
 
 .badge {
-  background: #ff3b3b;
+  background: var(--error);
   color: #fff;
   border-radius: 50%;
   padding: 3px;
   font-size: 0.6rem;
-
   position: absolute;
   top: -2px;
   right: -2px;
@@ -83,54 +69,44 @@
 
 .tabContent {
   flex: 1;
+  overflow: hidden;
+}
+
+.contentPane {
+  height: 100%;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px var(--shadow);
+  padding: 10px;
+  transition: opacity 0.3s;
   overflow-y: auto;
 }
 
-/* .tabContent:has(input:hover) {
-  overflow-y: hidden;
-} */
-
-.contentPane {
-  background: var(--bg);
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  transition: opacity 0.3s;
-}
-
-.empty {
+.empty,
+.loading {
   text-align: center;
-  color: var(--text);
+  color: var(--muted);
   font-style: italic;
   margin-top: 2rem;
 }
 
-
-@media (max-width: 1024px) {}
-
-
-@media (max-width: 767px) {
-  .homeContainer {
-    padding: 10px;
-  }
-
-  .actions {
-    flex-direction: column;
-    gap: 0.5rem;
-    margin: 1rem 0;
-  }
-
-  .tabButtons {
-    width: 100%;
-    max-width: 100%;
-    gap: 0.5rem;
-  }
-
-  .refreshButton {
-    display: none;
-  }
+.refreshButton {
+  padding: 0.5rem;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.refreshButton:hover {
+  background: var(--accent-hover);
 }
 
-@media (max-width: 480px) {
-  /* Empty */
+@media (max-width: 767px) {
+  .homeContainer { padding: 10px; }
+  .actions { flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+  .leftWrapper { gap: 0.5rem; width: 100%; }
+  .tabButtons { width: 100%; max-width: 100%; gap: 0.5rem; }
+  .refreshButton { display: none; }
 }

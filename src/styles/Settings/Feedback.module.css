@@ -1,17 +1,19 @@
+/* src/styles/Settings/Feedback.module.css */
+
 .feedbackContainer {
   box-sizing: border-box;
   background: var(--surface);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px var(--shadow);
   color: var(--text);
 }
 
 .feedbackContainer h2 {
   margin-top: 0;
   font-size: 1.4rem;
+  margin-bottom: 1rem;
   color: var(--text);
-  margin-bottom: 16px;
 }
 
 .feedbackForm {
@@ -21,32 +23,32 @@
 }
 
 .textarea {
-  min-height: 120px;
-  max-height: 220px;
-  padding: 12px;
+  min-height: 7.5rem;
+  max-height: 13.75rem;
+  padding: 0.75rem;
   font-size: 1rem;
-  border: 1px solid rgba(0,0,0,0.2);
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
   resize: vertical;
-  color: var(--text);
   background: var(--bg);
+  color: var(--text);
 }
 
 .textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 6px rgba(0, 112, 243, 0.3);
+  box-shadow: 0 0 6px var(--shadow);
 }
 
 .submitBtn {
-  padding: 12px;
+  padding: 0.75rem;
   background: var(--primary);
-  color: #fff;
+  color: var(--surface);
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   cursor: pointer;
   font-size: 1rem;
-  transition: background 0.3s ease;
+  transition: background 0.2s;
 }
 
 .submitBtn:hover {
@@ -54,29 +56,24 @@
 }
 
 .successMsg {
-  color: green;
+  color: var(--success);
   font-weight: 500;
   margin-top: 0.5rem;
   text-align: center;
 }
 
 .errorMsg {
-  color: red;
+  color: var(--error);
   font-weight: 500;
   margin-top: 0.5rem;
   text-align: center;
 }
 
-@media (max-width: 1024px) {}
-
 @media (max-width: 767px) {
   .feedbackContainer {
     padding: 10px;
   }
-
   .textarea {
     max-height: 300px;
   }
 }
-
-@media (max-width: 480px) {}

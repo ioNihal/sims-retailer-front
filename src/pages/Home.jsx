@@ -5,6 +5,7 @@ import Cart from '../components/HomePage/Cart';
 import Checkout from '../components/HomePage/Checkout';
 import styles from '../styles/Home/Home.module.css';
 import { useNavigate } from 'react-router-dom';
+import RefreshButton from '../components/RefreshButton';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('products');
@@ -20,12 +21,17 @@ export default function Home() {
 
   const fetchProducts = async () => {
     try {
+      setLoading(true);
       const r = await fetch('https://suims.vercel.app/api/inventory/customer');
       const data = await r.json();
       setProducts(data.inventory);
       setFiltered(data.inventory);
+      setLoading(false);
     } catch (e) {
       console.error(e);
+      setLoading(false);
+    } finally {
+
     }
   };
 
@@ -41,7 +47,7 @@ export default function Home() {
     );
   }, [search, products]);
 
-  
+
   const addOrUpdate = (product, qty) => {
     setCart(c => {
       const exists = c.find(item => item._id === product._id);
@@ -57,7 +63,7 @@ export default function Home() {
   };
 
   const proceed = () => { setError(null); setCheckout(true); };
-  const goBack  = () => { setError(null); setCheckout(false); };
+  const goBack = () => { setError(null); setCheckout(false); };
 
   const confirm = async () => {
     setLoading(true);
@@ -73,20 +79,20 @@ export default function Home() {
         category: i.category
       }));
       const totalAmount = orderProducts
-        .reduce((s,p) => s + p.price * p.quantity, 0)
+        .reduce((s, p) => s + p.price * p.quantity, 0)
         .toFixed(2);
 
       const res = await fetch('https://suims.vercel.app/api/orders/', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ customerId, totalAmount, orderProducts })
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message||'Failed');
+      if (!res.ok) throw new Error(data.message || 'Failed');
       setCart([]);
-       setCheckout(false);
-        setActiveTab('products');
-        navigate("/orders")
+      setCheckout(false);
+      setActiveTab('products');
+      navigate("/orders")
     } catch (e) {
       console.error(e);
       setError(e.message);
@@ -98,33 +104,36 @@ export default function Home() {
   return (
     <div className={styles.homeContainer}>
       <div className={styles.actions}>
-        <SearchBar value={search} onChange={setSearch} placeholder="Search products..." />
+       <div className={styles.leftWrapper}>
+       <SearchBar value={search} onChange={setSearch} placeholder="Search products..." />
+       <RefreshButton loading={loading} onClick={fetchProducts} />
+       </div>
         <div className={styles.tabButtons}>
-          <button className={activeTab==='products'?styles.active:''}
-                  onClick={()=>{setActiveTab('products');setCheckout(false);setError(null);}}>
+          <button className={activeTab === 'products' ? styles.active : ''}
+            onClick={() => { setActiveTab('products'); setCheckout(false); setError(null); }}>
             Products
           </button>
-          <button className={activeTab==='cart'?styles.active:''}
-                  onClick={()=>{setActiveTab('cart');setError(null);}}>
-            Cart {cart.length>0 && <span className={styles.badge}>{cart.length}</span>}
+          <button className={activeTab === 'cart' ? styles.active : ''}
+            onClick={() => { setActiveTab('cart'); setError(null); }}>
+            Cart {cart.length > 0 && <span className={styles.badge}>{cart.length}</span>}
           </button>
         </div>
-        <button className={styles.refreshButton} onClick={fetchProducts}>Refresh</button>
       </div>
 
       <div className={styles.tabContent}>
-        {activeTab==='products' ? (
+        {activeTab === 'products' ? (
           <div className={styles.contentPane}>
-            {filtered.length>0
-              ? <ProductList products={filtered} cart={cart} updateCart={addOrUpdate}/>
-              : <p className={styles.empty}>No products found.</p>}
+            {loading ? <p className={styles.loading}>Loading...</p> :
+              filtered.length > 0
+                ? <ProductList products={filtered} cart={cart} updateCart={addOrUpdate} />
+                : <p className={styles.empty}>No products found.</p>}
           </div>
         ) : (
           <div className={styles.contentPane}>
             {checkout
-              ? <Checkout cartItems={cart} confirmOrder={confirm} goBack={goBack} loading={loading} error={error}/>
-              : cart.length>0
-                ? <Cart cartItems={cart} removeFromCart={id=>addOrUpdate({ _id:id },0)} proceedToCheckout={proceed}/>
+              ? <Checkout cartItems={cart} confirmOrder={confirm} goBack={goBack} loading={loading} error={error} />
+              : cart.length > 0
+                ? <Cart cartItems={cart} removeFromCart={id => addOrUpdate({ _id: id }, 0)} proceedToCheckout={proceed} />
                 : <p className={styles.empty}>Your cart is empty.</p>}
           </div>
         )}

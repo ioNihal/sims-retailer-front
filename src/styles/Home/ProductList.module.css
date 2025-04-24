@@ -10,7 +10,7 @@
   background: var(--surface);
   padding: 1rem;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px var(--shadow);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -19,7 +19,7 @@
 
 .productCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px var(--shadow);
 }
 
 .title {
@@ -31,12 +31,12 @@
 .productCard p {
   margin: 0.25rem 0;
   font-size: 0.95rem;
-  color: var(--text);
+  color: var(--muted);
 }
 
 .actions {
   margin: 1rem 0;
-  display: flex; 
+  display: flex;
   align-items: center;
   justify-content: space-around;
 }
@@ -49,7 +49,7 @@
 
 .stepperButton {
   background: var(--stepper);
-  color: #fff;
+  color: var(--surface);
   border: none;
   width: 2.5rem;
   height: 2.5rem;
@@ -78,25 +78,20 @@
   font-size: 0.8rem;
   color: var(--text);
   outline: none;
+  overscroll-behavior: contain;
+  appearance: textfield;
 }
 
-/* Hide Chrome, Safari, Edge spinners */
+/* Hide native spinners */
 .stepperInput::-webkit-outer-spin-button,
 .stepperInput::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* Hide Firefox spinner */
-.stepperInput {
-  overscroll-behavior: contain;
-  -moz-appearance: textfield;
-}
-
-
 .addButton {
   background: var(--primary);
-  color: #fff;
+  color: var(--surface);
   border: none;
   border-radius: 8px;
   padding: 0.6rem 1rem;
@@ -114,16 +109,16 @@
   background: var(--primary-hover);
 }
 
+.inStock    { color: var(--success);   font-weight: bold; }
+.lowStock   { color: var(--warning);   font-weight: bold; }
+.outOfStock { color: var(--error);     font-weight: bold; }
 
-.inStock    { color: var(--success); font-weight: bold; }
-.lowStock   { color: var(--warning); font-weight: bold; }
-.outOfStock { color: var(--error);   font-weight: bold; }
-
-/* Responsive tweaks */
 @media (max-width: 767px) {
   .productList {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
   }
-  .title { font-size: 1.2rem; }
+  .title {
+    font-size: 1.2rem;
+  }
 }

@@ -1,3 +1,4 @@
+// src/pages/Orders.jsx
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import OrderList from '../components/OrdersPage/OrderList';
@@ -7,6 +8,7 @@ import InvoiceDetails from '../components/OrdersPage/InvoiceDetails';
 import styles from '../styles/Orders/Orders.module.css';
 import { exportFunc } from '../utils/exportFunc';
 import { useNavigate } from 'react-router-dom';
+import RefreshButton from '../components/RefreshButton';
 
 export default function Orders({ activeTab: initialTab = 'orders' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -17,31 +19,36 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
   const [exporting, setExporting] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch orders for this customer
   const fetchOrders = async () => {
     const customerId = localStorage.getItem('token');
     if (!customerId) return;
+    setLoading(true);
     try {
       const res = await fetch(`https://suims.vercel.app/api/orders?customerId=${customerId}`);
       const json = await res.json();
       setOrders(json.orders || []);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Fetch invoices for this customer
   const fetchInvoices = async () => {
     const customerId = localStorage.getItem('token');
     if (!customerId) return;
+    setLoading(true);
     try {
       const res = await fetch(`https://suims.vercel.app/api/invoice?customerId=${customerId}`);
       const json = await res.json();
       setInvoices(json.invoice || []);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -94,10 +101,14 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
       alert('Select at least one invoice.');
       return;
     }
-    setExporting(true);
-    exportFunc(invoiceData, selectedIds);
-    setExporting(false);
-    setSelectedIds([]);
+    try {
+      setExporting(true);
+      exportFunc(invoiceData, selectedIds);
+      setExporting(false);
+      setSelectedIds([]);
+    } catch(err) {
+      setExporting(false);
+    }
   };
 
   const openOrder = o => setSelectedOrder(o);
@@ -109,12 +120,20 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
 
   return (
     <div className={styles.ordersPage}>
+
       <div className={styles.actions}>
-        <SearchBar
-          value={searchTerm}
-          onChange={setSearchTerm}
-          placeholder={`Search ${activeTab}...`}
-        />
+        <div className={styles.leftWrapper}>
+          <SearchBar
+            value={searchTerm}
+            onChange={setSearchTerm}
+            placeholder={`Search ${activeTab}...`}
+          />
+          <RefreshButton
+            onClick={activeTab === 'orders' ? fetchOrders : fetchInvoices}
+            loading={loading}
+          />
+        </div>
+
         <div className={styles.tabButtons}>
           <button
             className={activeTab === 'orders' ? styles.active : ''}
@@ -129,6 +148,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
             Invoices
           </button>
         </div>
+
         {activeTab === 'invoices' && filteredInvoices.length > 0 && (
           <button
             className={styles.exportButton}
@@ -142,24 +162,31 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
         )}
       </div>
 
-      <div
-        className={`${styles.listContainer} ${
-          (selectedOrder && activeTab === 'orders') ||
-          (selectedInvoice && activeTab === 'invoices')
-            ? styles.detailViewActive
-            : ''
-        }`}
-      >
+      <div className={`${styles.listContainer} ${(selectedOrder && activeTab === 'orders') ||
+        (selectedInvoice && activeTab === 'invoices')
+        ? styles.detailViewActive
+        : ''
+        }`}>
         <div className={styles.listPane}>
-          {activeTab === 'orders' ? (
-            <OrderList orders={filteredOrders} onSelect={openOrder} />
+          {loading ? (
+            <p className={styles.loading}>Loading…</p>
+          ) : activeTab === 'orders' ? (
+            filteredOrders.length > 0 ? (
+              <OrderList orders={filteredOrders} onSelect={openOrder} />
+            ) : (
+              <p className={styles.empty}>No orders found.</p>
+            )
           ) : (
-            <InvoiceList
-              invoices={filteredInvoices}
-              selectedInvoices={selectedIds}
-              toggleInvoiceSelection={toggleSelection}
-              onSelect={openInvoice}
-            />
+            filteredInvoices.length > 0 ? (
+              <InvoiceList
+                invoices={filteredInvoices}
+                selectedInvoices={selectedIds}
+                toggleInvoiceSelection={toggleSelection}
+                onSelect={openInvoice}
+              />
+            ) : (
+              <p className={styles.empty}>No invoices found.</p>
+            )
           )}
         </div>
 
