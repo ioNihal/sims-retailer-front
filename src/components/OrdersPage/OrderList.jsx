@@ -16,7 +16,7 @@ export default function OrderList({ orders, onSelect }) {
         >
           <p><strong>Order ID: {o._id}</strong></p>
           <p>Status: {capitalize(o.status)}</p>
-          <p><small>Customer: {o.customerId.name}</small></p>
+          <p><small>Customer: {`${o.customerId?.name || "N/A"}`}</small></p>
           <p>Date: {formatDate(o.createdAt)}</p>
           <p>Items: {o.orderProducts.reduce((acc, cur) => acc + cur.quantity, 0)}</p>
           <p>Total: ₹{o.totalAmount.toFixed(2)} Qty: {o.orderProducts.length}</p>

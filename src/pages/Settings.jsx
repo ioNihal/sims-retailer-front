@@ -10,10 +10,12 @@ export default function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
   const navigate = useNavigate();
   const [id, setId] = useState("");
+  const [user , setUser] = useState({});
 
   useEffect(() => {
-    const userId = localStorage.getItem('token');
-    setId(userId);
+    const user = localStorage.getItem('user');
+    setUser(user);
+    
   }, [])
 
   const handleLogout = () => {
@@ -44,7 +46,7 @@ export default function Settings() {
       </aside>
 
       <main className={styles.content}>
-        {activeTab === 'profile' && <Profile userId={id} />}
+        {activeTab === 'profile' && <Profile userId={id} user={user} />}
         {activeTab === 'feedback' && <Feedback customerId={id}/>}
       </main>
     </div>

@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import styles from '../../styles/Settings/Profile.module.css';
 
-const Profile = ({ userId }) => {
+const Profile = ({ userId, user }) => {
   const [showForm, setShowForm] = useState(false);
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const userDetails = {
-    id: userId,
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1 234 567 890",
-    address: "123 Main St, City, Country"
+    id: userId || "23746723",
+    name: user?.name || "John Doe",
+    email: user?.email || "john.doe@example.com",
+    phone: user?.phone || "+1 234 567 890",
+    address: user?.address || "123 Main St, City, Country"
   };
 
   const handleChangeReqClick = () => {

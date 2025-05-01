@@ -1,35 +1,79 @@
-import { useContext, useState } from 'react';
+// src/pages/Login.jsx
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Login/Login.module.css';
 import { ThemeContext } from '../contexts/ThemeContext';
 
 export default function Login() {
-  const [email, setEmail]         = useState('');
-  const [password, setPassword]   = useState('');
-  const [loading, setLoading]     = useState(false);
-  const navigate                  = useNavigate();
-  const { theme, toggle }         = useContext(ThemeContext);
+  const [step, setStep] = useState('enterEmail'); // enterEmail | setPassword | login
+  const [email, setEmail] = useState('');
+  const [customerId, setCustomerId] = useState('');
+  const [isActive, setIsActive] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const [password, setPassword] = useState('');       // for login
+  const [newPassword, setNewPassword] = useState(''); // for setup
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const navigate = useNavigate();
+  const { theme, toggle } = useContext(ThemeContext);
+
+  // Step 1: Check email
+  const handleEmailSubmit = async e => {
     e.preventDefault();
-    setLoading(true);
-
+    setError(''); setLoading(true);
     try {
-      const response = await fetch('https://suims.vercel.app/api/customer/');
-      if (!response.ok) {
-        throw new Error(`Server responded ${response.status}`);
-      }
-      const data     = await response.json();
-      const users    = data.data;
-      const userId   = users[0]?._id;
-      if (!userId) {
-        throw new Error('No user found');
-      }
-      localStorage.setItem('token', userId);
+      const res = await fetch(`https://suims.vercel.app/api/customer/email/${encodeURIComponent(email)}`);
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error?.message);
+      setCustomerId(json.customer._id);
+      setIsActive(json.customer.isActive);
+      setStep(json.customer.isActive ? 'login' : 'setPassword');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Step 2: Set password for inactive
+  const handleSetupSubmit = async e => {
+    e.preventDefault();
+    setError(''); setLoading(true);
+    try {
+      const res = await fetch(`https://suims.vercel.app/api/customer/update/${customerId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: newPassword })
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error?.message);
+      setPassword(newPassword);
+      setStep('login');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Step 3: Login
+  const handleLoginSubmit = async e => {
+    e.preventDefault();
+    setError(''); setLoading(true);
+    try {
+      const res = await fetch(`https://suims.vercel.app/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error?.message);
+      localStorage.setItem('token', json.token);
+      localStorage.setItem('user', json.user?.id);
       navigate('/home');
     } catch (err) {
-      console.error(err);
-      alert(err.message || 'Login failed');
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -37,14 +81,17 @@ export default function Login() {
 
   return (
     <div className={styles.loginPage}>
-      <form className={styles.loginForm} onSubmit={handleSubmit}>
-        <div className={`${styles.themeToggle} ${theme === 'dark' ? styles.dark : ''}`}>
+      <form
+        className={styles.loginForm}
+        onSubmit={
+          step === 'enterEmail' ? handleEmailSubmit
+          : step === 'setPassword' ? handleSetupSubmit
+          : handleLoginSubmit
+        }
+      >
+        <div className={`${styles.themeToggle} ${theme==='dark'?styles.dark:''}`}>
           <label className={styles.switch}>
-            <input
-              type="checkbox"
-              checked={theme === 'dark'}
-              onChange={toggle}
-            />
+            <input type="checkbox" checked={theme==='dark'} onChange={toggle}/>
             <div className={styles.slider}>
               <div className={styles.icons}>
                 <span className={styles.sun}>&#9728;</span>
@@ -54,7 +101,11 @@ export default function Login() {
           </label>
         </div>
 
-        <h2 className={styles.heading}>Login</h2>
+        <h2 className={styles.heading}>
+          {step==='enterEmail' && 'Enter Your Email'}
+          {step==='setPassword' && 'Set Your Password'}
+          {step==='login' && 'Sign In'}
+        </h2>
 
         <label>Email</label>
         <input
@@ -63,26 +114,50 @@ export default function Login() {
           value={email}
           onChange={e => setEmail(e.target.value)}
           required
-          disabled={loading}
+          disabled={loading || step!=='enterEmail'}
         />
 
-        <label>Password</label>
-        <input
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-          disabled={loading}
-        />
+        {step === 'enterEmail' && (
+          <button className={styles.loginButton} disabled={loading}>
+            {loading ? 'Checking…' : 'Next'}
+          </button>
+        )}
 
-        <button
-          type="submit"
-          className={styles.loginButton}
-          disabled={loading}
-        >
-          {loading ? 'Signing In…' : 'Sign In'}
-        </button>
+        {step === 'setPassword' && (
+          <>
+            <label>New Password</label>
+            <input
+              type="password"
+              placeholder="Choose a password"
+              value={newPassword}
+              onChange={e => setNewPassword(e.target.value)}
+              required
+              disabled={loading}
+            />
+            <button className={styles.loginButton} disabled={loading || !newPassword}>
+              {loading ? 'Saving…' : 'Save Password'}
+            </button>
+          </>
+        )}
+
+        {step === 'login' && (
+          <>
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+              disabled={loading}
+            />
+            <button className={styles.loginButton} disabled={loading || !password}>
+              {loading ? 'Signing In…' : 'Sign In'}
+            </button>
+          </>
+        )}
+
+        {error && <p className={styles.error}>{error}</p>}
       </form>
     </div>
   );

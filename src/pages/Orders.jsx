@@ -6,7 +6,6 @@ import InvoiceList from '../components/OrdersPage/InvoiceList';
 import OrderDetails from '../components/OrdersPage/OrderDetails';
 import InvoiceDetails from '../components/OrdersPage/InvoiceDetails';
 import styles from '../styles/Orders/Orders.module.css';
-import { exportFunc } from '../utils/exportFunc';
 import { useNavigate } from 'react-router-dom';
 import RefreshButton from '../components/RefreshButton';
 
@@ -15,8 +14,6 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [ordersData, setOrders] = useState([]);
   const [invoiceData, setInvoices] = useState([]);
-  const [selectedIds, setSelectedIds] = useState([]);
-  const [exporting, setExporting] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -42,7 +39,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     if (!customerId) return;
     setLoading(true);
     try {
-      const res = await fetch(`https://suims.vercel.app/api/invoice?customerId=${customerId}`);
+      const res = await fetch(`https://suims.vercel.app/api/invoice/customer/${customerId}`);
       const json = await res.json();
       setInvoices(json.invoice || []);
     } catch (err) {
@@ -92,31 +89,23 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     i._id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const toggleSelection = id =>
-    setSelectedIds(prev =>
-      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
-    );
-  const exportInvoices = () => {
-    if (!selectedIds.length) {
-      alert('Select at least one invoice.');
-      return;
-    }
-    try {
-      setExporting(true);
-      exportFunc(invoiceData, selectedIds);
-      setExporting(false);
-      setSelectedIds([]);
-    } catch(err) {
-      setExporting(false);
-    }
-  };
-
   const openOrder = o => setSelectedOrder(o);
   const openInvoice = i => setSelectedInvoice(i);
   const goBack = () => {
     if (activeTab === 'orders') setSelectedOrder(null);
     else setSelectedInvoice(null);
   };
+
+
+  const goToOrder = (orderId) => {
+    const order = ordersData.find(o => o._id === orderId);
+    if (order) {
+      setSelectedOrder(order);
+      setActiveTab('orders'); 
+      setSelectedInvoice(null);
+    }
+  };
+
 
   return (
     <div className={styles.ordersPage}>
@@ -148,18 +137,6 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
             Invoices
           </button>
         </div>
-
-        {activeTab === 'invoices' && filteredInvoices.length > 0 && (
-          <button
-            className={styles.exportButton}
-            onClick={exportInvoices}
-            disabled={exporting || !selectedIds.length}
-          >
-            {exporting
-              ? 'Exporting…'
-              : `Export ${selectedIds.length} Invoice${selectedIds.length === 1 ? '' : 's'}`}
-          </button>
-        )}
       </div>
 
       <div className={`${styles.listContainer} ${(selectedOrder && activeTab === 'orders') ||
@@ -180,9 +157,8 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
             filteredInvoices.length > 0 ? (
               <InvoiceList
                 invoices={filteredInvoices}
-                selectedInvoices={selectedIds}
-                toggleInvoiceSelection={toggleSelection}
                 onSelect={openInvoice}
+              
               />
             ) : (
               <p className={styles.empty}>No invoices found.</p>
@@ -208,7 +184,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
                 Back
               </button>
             </header>
-            <InvoiceDetails invoice={selectedInvoice} />
+            <InvoiceDetails invoice={selectedInvoice}  ordersData={ordersData} onOrderClick={goToOrder} />
           </div>
         )}
       </div>

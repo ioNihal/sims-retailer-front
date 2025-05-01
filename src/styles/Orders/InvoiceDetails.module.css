@@ -9,10 +9,35 @@
   color: var(--text);
 }
 
-.invoiceDetails h3 {
+
+.btnWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btnWrapper h3 {
   margin-top: 0;
   font-size: 1.25rem;
   margin-bottom: 0.75rem;
+}
+
+.exportBtn {
+  padding: 8px;
+  border: none;
+  background: var(--link);
+  color: var(--surface);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.exportBtn:hover:enabled {
+  background: var(--link-hover);
+}
+
+.exportBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .invoiceDetails p {
@@ -32,7 +57,7 @@
 }
 
 .ordersSection ul {
-  list-style: disc;
+  list-style: none;
   padding-left: 1.25rem;
   margin: 0.5rem 0;
 }
@@ -41,8 +66,108 @@
   margin: 0.25rem 0;
   font-size: 0.9rem;
   color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s;
 }
 
+.ordersSection li:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.paymentBtn {
+  background: var(--secondary);
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--surface);
+  border-radius: 5px;
+  padding: 8px 12px;
+  transition: background 0.2s;
+}
+
+.paymentBtn:hover {
+  background: var(--secondary-hover);
+}
+
+/* Payment form wrapper */
+.paymentForm {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 4px var(--shadow);
+}
+
+/* Field labels */
+.paymentForm label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+/* Inputs & selects */
+.paymentForm input,
+.paymentForm select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.paymentForm input:focus,
+.paymentForm select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btnGroup {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Buttons inside form */
+.btnGroup button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+/* Save button (primary) */
+.btnGroup button:first-of-type {
+  background: var(--primary);
+  color: #fff;
+}
+.btnGroup button:first-of-type:hover {
+  background: var(--primary-hover);
+}
+
+/* Cancel button (secondary) */
+.btnGroup button:last-of-type {
+  background: var(--secondary);
+  color: #fff;
+}
+.btnGroup button:last-of-type:hover {
+  background: var(--secondary-hover);
+}
+
+/* Error message */
+.paymentForm .error {
+  color: var(--error);
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
 .closeButton {
   position: absolute;
   top: 0.5rem;
@@ -59,11 +184,37 @@
   color: var(--primary-hover);
 }
 
+
+
+
 @media (max-width: 767px) {
   .invoiceDetails {
     padding: 0.75rem;
   }
-  .invoiceDetails h3 {
-    font-size: 1.1rem;
+
+  .btnWrapper {
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  .btnWrapper h3 {
+    font-size: 0.9rem;
+  }
+
+  .paymentBtn {
+    width: 100%;
+  }
+
+  .btnGroup button {
+    font-size: 0.85rem;
+  }
+
+  .ordersSection ul {
+    padding-left: 5px;
+
+  }
+
+  .ordersSection li {
+    font-size: 0.75rem;
   }
 }

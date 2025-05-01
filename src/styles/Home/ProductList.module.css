@@ -11,6 +11,7 @@
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 2px 6px var(--shadow);
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -71,7 +72,7 @@
 }
 
 .stepperInput {
-  width: 3rem;
+  width: 4rem;
   text-align: center;
   background: var(--stepper-bg);
   border: none;
