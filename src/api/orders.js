@@ -34,17 +34,16 @@ export async function createOrder({ totalAmount, orderProducts }) {
 }
 
 
-
 /**
- * Update an order's status (e.g. cancel)
+ * Cancel a pending order.
+ * Hits: PATCH /api/orders/cancel/:orderId
  */
-export async function updateOrderStatus(orderId, status) {
-    const res = await fetch(`${API_BASE}/${orderId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
-    });
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.error?.message || "Failed to update order");
-    return json;
+export async function cancelOrder(orderId) {
+  const res = await fetch(`${API_BASE}/cancel/${orderId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" }
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message || "Failed to cancel order");
+  return json;
 }

@@ -4,6 +4,7 @@ import styles from '../../styles/Orders/InvoiceDetails.module.css';
 import { formatDate } from '../../utils/validators';
 import { exportFunc } from '../../utils/exportFunc';
 import { updateInvoicePayment } from '../../api/invoice';
+import toast from 'react-hot-toast';
 
 export default function InvoiceDetails({ invoice, ordersData, onOrderClick }) {
   const [editing, setEditing] = useState(false);
@@ -32,9 +33,11 @@ export default function InvoiceDetails({ invoice, ordersData, onOrderClick }) {
       invoice.method = updated.method;
       invoice.transactionId = updated.transactionId;
       invoice.transactionDate = updated.transactionDate;
+      toast.success("Invoice payment updated successfully!")
       setEditing(false);
     } catch (err) {
       console.error(err);
+      toast.error("Invoice payment update failed!")
       setError(err.message);
     } finally {
       setSaving(false);
@@ -47,7 +50,7 @@ export default function InvoiceDetails({ invoice, ordersData, onOrderClick }) {
       exportFunc([invoiceWithDetails], [invoice._id]);
     } catch (err) {
       console.error("Export failed:", err);
-      alert(err.message || 'Invoice export failed');
+      toast.error(err.message || 'Invoice export failed');
     }
   };
 

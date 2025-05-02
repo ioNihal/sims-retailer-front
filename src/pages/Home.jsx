@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import RefreshButton from '../components/RefreshButton';
 import { getInventory } from '../api/inventory';
 import { createOrder } from '../api/orders';
+import toast from 'react-hot-toast';
 
 
 export default function Home() {
@@ -84,10 +85,12 @@ export default function Home() {
       await createOrder({ totalAmount, orderProducts });
       setCart([]);
       setCheckout(false);
+      toast.success("Order placed successfully!")
       setActiveTab('products');
       navigate("/orders")
     } catch (e) {
       console.error(e);
+      toast.error("Couldn't place order!")
       setError(e.message);
     } finally {
       setLoading(false);

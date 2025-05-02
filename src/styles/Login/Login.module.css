@@ -71,6 +71,18 @@
   background: var(--primary-hover);
 }
 
+.link {
+  text-decoration: underline;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: color 0.3s;
+  text-align: center;
+}
+
+.link:hover {
+  color: var(--primary);
+}
+
 /* For toggle button */
 .themeToggle {
   --size: 1.5rem;

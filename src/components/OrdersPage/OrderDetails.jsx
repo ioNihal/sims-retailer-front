@@ -1,16 +1,28 @@
 // src/components/OrdersPage/OrderDetails.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/Orders/OrderDetails.module.css';
 import { capitalize, formatDate } from '../../utils/validators';
+import ConfirmDialog from '../ConfirmDialog';
+
 
 export default function OrderDetails({ order, onCancel }) {
+
+  const [cancelling, setCancelling] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   if (!order) return null;
+
+  const handleCancel = async () => {
+    setCancelling(true);
+    await onCancel(order._id);
+    setCancelling(false);
+    setShowConfirm(false);
+  };
 
   return (
     <div className={styles.orderDetails}>
       <h3>Order #{order._id}</h3>
       <p><strong>Status: </strong>
-         <span className={order.status === "pending" ? styles.pending : order.status === "delivered" ? styles.delivered : styles.cancelled}>
+        <span className={order.status === "pending" ? styles.pending : order.status === "delivered" ? styles.delivered : styles.cancelled}>
           {capitalize(order.status)}
         </span>
       </p>
@@ -38,12 +50,23 @@ export default function OrderDetails({ order, onCancel }) {
       </div>
 
       {order.status === 'pending' && (
-        <button
-          className={styles.cancelButton}
-          onClick={() => onCancel(order._id)}
-        >
-          Cancel Order
-        </button>
+        <>
+          <button
+            className={styles.cancelButton}
+            onClick={() => setShowConfirm(true)}
+            disabled={cancelling}
+          >
+            {cancelling ? 'Cancelling…' : 'Cancel Order'}
+          </button>
+
+          {showConfirm && (
+            <ConfirmDialog
+              message="Are you sure you want to cancel this order?"
+              onConfirm={handleCancel}
+              onCancel={() => setShowConfirm(false)}
+            />
+          )}
+        </>
       )}
     </div>
   );

@@ -5,12 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import Profile from '../components/SettingsPage/Profile';
 import Feedback from '../components/SettingsPage/Feedback';
 import styles from '../styles/Settings/Settings.module.css';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
   const navigate = useNavigate();
   const [id, setId] = useState("");
   const [user, setUser] = useState({});
+
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
     const raw = localStorage.getItem('user');
@@ -19,7 +22,6 @@ export default function Settings() {
   }, [])
 
   const handleLogout = () => {
-    if (!confirm('Sure you want to logout?')) return;
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     navigate('/login');
@@ -41,9 +43,19 @@ export default function Settings() {
         >
           Feedback
         </button>
-        <button onClick={handleLogout}>
+        <button onClick={() => setShowConfirm(true)}>
           Logout
         </button>
+        {showConfirm && (
+          <ConfirmDialog
+            message="Sure you want to logout?"
+            onConfirm={() => {
+              setShowConfirm(false);
+              handleLogout();
+            }}
+            onCancel={() => setShowConfirm(false)}
+          />
+        )}
       </aside>
 
       <main className={styles.content}>

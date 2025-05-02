@@ -1,0 +1,35 @@
+/* src/components/ConfirmDialog.module.css */
+.backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 10px var(--shadow);
+    text-align: center;
+  }
+  .message {
+    margin-bottom: 1rem;
+  }
+  .buttons button {
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+  .yes {
+    background: var(--error);
+    color: var(--surface);
+  }
+  .no {
+    background: var(--secondary);
+    color: var(--surface);
+  }
+  

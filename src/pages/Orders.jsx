@@ -8,8 +8,9 @@ import InvoiceDetails from '../components/OrdersPage/InvoiceDetails';
 import styles from '../styles/Orders/Orders.module.css';
 import { useNavigate } from 'react-router-dom';
 import RefreshButton from '../components/RefreshButton';
-import { getOrders, updateOrderStatus } from '../api/orders';
+import { cancelOrder, getOrders } from '../api/orders';
 import { getInvoices } from '../api/invoice';
+import toast from 'react-hot-toast';
 
 export default function Orders({ activeTab: initialTab = 'orders' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -54,16 +55,15 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     fetchInvoices();
   }, []);
 
-  const handleCancel = async orderId => {
-    if (!window.confirm('Really cancel this order?')) return;
+  const handleCancel = async (orderId) => {
     try {
-      await updateOrderStatus(orderId, 'cancelled');
-      alert('Order cancelled');
+      await cancelOrder(orderId);
+      const fresh = await getOrders();
+      setOrders(fresh);
       setSelectedOrder(null);
-      fetchOrders();
+      toast.success("Order cancelled!");
     } catch (err) {
-      console.error(err);
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 

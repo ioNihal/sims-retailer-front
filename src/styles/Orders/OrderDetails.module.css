@@ -43,7 +43,6 @@
 }
 
 .cancelButton {
-  margin-top: 1rem;
   padding: 0.6rem 0.875rem;
   background: var(--error);
   color: var(--surface);
@@ -72,5 +71,9 @@
   }
   .productDetails {
     padding: 0.5rem;
+  }
+
+  .cancelButton {
+    width: 100%;
   }
 }

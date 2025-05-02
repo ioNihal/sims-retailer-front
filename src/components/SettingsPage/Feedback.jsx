@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import styles from '../../styles/Settings/Feedback.module.css';
 import { sendFeedback } from '../../api/feedback';
+import toast from 'react-hot-toast';
 
 const Feedback = ({ customerId }) => {
   const [feedback, setFeedback] = useState("");
@@ -16,6 +17,7 @@ const Feedback = ({ customerId }) => {
       await sendFeedback(feedback);
 
       setStatus({ type: 'success', message: "Feedback sent successfully!" });
+      toast.success("Feedback sent successfully!")
       setLoading(false);
       setFeedback('');
     } catch (err) {
@@ -23,6 +25,7 @@ const Feedback = ({ customerId }) => {
         type: 'error',
         message: err.message
       });
+      toast.error("Something went wrong!");
       setLoading(false);
     }
   };

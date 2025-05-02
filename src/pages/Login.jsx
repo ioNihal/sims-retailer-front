@@ -85,13 +85,13 @@ export default function Login() {
         className={styles.loginForm}
         onSubmit={
           step === 'enterEmail' ? handleEmailSubmit
-          : step === 'setPassword' ? handleSetupSubmit
-          : handleLoginSubmit
+            : step === 'setPassword' ? handleSetupSubmit
+              : handleLoginSubmit
         }
       >
-        <div className={`${styles.themeToggle} ${theme==='dark'?styles.dark:''}`}>
+        <div className={`${styles.themeToggle} ${theme === 'dark' ? styles.dark : ''}`}>
           <label className={styles.switch}>
-            <input type="checkbox" checked={theme==='dark'} onChange={toggle}/>
+            <input type="checkbox" checked={theme === 'dark'} onChange={toggle} />
             <div className={styles.slider}>
               <div className={styles.icons}>
                 <span className={styles.sun}>&#9728;</span>
@@ -102,9 +102,9 @@ export default function Login() {
         </div>
 
         <h2 className={styles.heading}>
-          {step==='enterEmail' && 'Enter Your Email'}
-          {step==='setPassword' && 'Set Your Password'}
-          {step==='login' && 'Sign In'}
+          {step === 'enterEmail' && 'Enter Your Email'}
+          {step === 'setPassword' && 'Set Your Password'}
+          {step === 'login' && 'Sign In'}
         </h2>
 
         <label>Email</label>
@@ -114,7 +114,7 @@ export default function Login() {
           value={email}
           onChange={e => setEmail(e.target.value)}
           required
-          disabled={loading || step!=='enterEmail'}
+          disabled={loading || step !== 'enterEmail'}
         />
 
         {step === 'enterEmail' && (
@@ -154,6 +154,7 @@ export default function Login() {
             <button className={styles.loginButton} disabled={loading || !password}>
               {loading ? 'Signing In…' : 'Sign In'}
             </button>
+            <p className={styles.link} onClick={() => setStep('enterEmail')}>wrong email? Click here!</p>
           </>
         )}
 

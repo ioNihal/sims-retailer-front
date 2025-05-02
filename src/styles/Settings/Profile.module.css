@@ -104,11 +104,13 @@
 .successMsg {
   color: var(--success);
   font-size: 0.8rem;
+  text-align: center;
 }
 
 .errorMsg {
   color: var(--error);
   font-size: 0.8rem;
+  text-align: center;
 }
 
 @media (max-width: 767px) {

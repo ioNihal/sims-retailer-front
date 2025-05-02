@@ -6,9 +6,11 @@ import { capitalize, formatDate } from '../../utils/validators';
 export default function OrderList({ orders, onSelect }) {
   if (!orders || !orders.length) return <p>No orders found!</p>;
 
+  const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
   return (
     <div className={styles.orderList}>
-      {orders.map(o => (
+      {sortedOrders.map(o => (
         <div
           key={o._id}
           className={styles.orderItem}
@@ -16,10 +18,10 @@ export default function OrderList({ orders, onSelect }) {
         >
           <p><strong>Order ID: {o._id}</strong></p>
           <p>Status: {capitalize(o.status)}</p>
-          <p><small>Customer: {`${o.customerId?.name || "N/A"}`}</small></p>
+          {/* <p><small>Customer: {`${o.customerId?.name || "N/A"}`}</small></p> */}
           <p>Date: {formatDate(o.createdAt)}</p>
-          <p>Items: {o.orderProducts.reduce((acc, cur) => acc + cur.quantity, 0)}</p>
-          <p>Total: ₹{o.totalAmount.toFixed(2)} Qty: {o.orderProducts.length}</p>
+          <p>Quantity: {o.orderProducts.reduce((acc, cur) => acc + cur.quantity, 0)}</p>
+          <p>Total: ₹{o.totalAmount.toFixed(2)} Products: {o.orderProducts.length}</p>
         </div>
       ))}
     </div>

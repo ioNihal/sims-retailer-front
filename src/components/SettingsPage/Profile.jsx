@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../../styles/Settings/Profile.module.css';
+import toast from 'react-hot-toast';
+import { sendFeedback } from '../../api/feedback';
 
 const Profile = ({ userId, user }) => {
   const [showForm, setShowForm] = useState(false);
@@ -32,24 +34,14 @@ const Profile = ({ userId, user }) => {
 
     setLoading(true);
     try {
-      const response = await fetch('https://suims.vercel.app/api/feedback', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customerId: userId,
-          senderType: 'customer',
-          message: message.trim()
-        })
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Something went wrong!');
-
+      await sendFeedback(message);
       setStatus({ type: 'success', text: "Request send success!" });
+      toast.success("Request sent successfully!")
       setMessage('');
       setShowForm(false);
     } catch (err) {
       setStatus({ type: 'error', text: err.message });
+      toast.error("Something went wrong!")
     } finally {
       setLoading(false);
     }

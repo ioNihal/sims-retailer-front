@@ -4,9 +4,16 @@ import styles from '../../styles/Orders/InvoiceList.module.css';
 import { formatDate } from '../../utils/validators';
 
 export default function InvoiceList({ invoices, onSelect }) {
+  if (!invoices.length) return <div className={styles.noInvoices}>No invoices found.</div>;
+
+  const sortedInvoices = [...invoices].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
+
   return (
     <div className={styles.invoiceList}>
-      {invoices.map(inv => (
+      {sortedInvoices.map(inv => (
         <div
           key={inv._id}
           className={styles.invoiceItem}

@@ -7,6 +7,7 @@ import Settings from './pages/Settings';
 import RequireAuth from './components/RequireAuth';
 
 import MainLayout from './layouts/MainLayout';
+import { Toaster } from 'react-hot-toast';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={
           <RequireAuth>
+            <Toaster position='top-center' />
             <MainLayout />
           </RequireAuth>
         }>
