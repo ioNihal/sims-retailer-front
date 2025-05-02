@@ -8,6 +8,8 @@ import InvoiceDetails from '../components/OrdersPage/InvoiceDetails';
 import styles from '../styles/Orders/Orders.module.css';
 import { useNavigate } from 'react-router-dom';
 import RefreshButton from '../components/RefreshButton';
+import { getOrders, updateOrderStatus } from '../api/orders';
+import { getInvoices } from '../api/invoice';
 
 export default function Orders({ activeTab: initialTab = 'orders' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -24,9 +26,8 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     if (!customerId) return;
     setLoading(true);
     try {
-      const res = await fetch(`https://suims.vercel.app/api/orders?customerId=${customerId}`);
-      const json = await res.json();
-      setOrders(json.orders || []);
+      const orders = await getOrders(customerId);
+      setOrders(orders || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -39,9 +40,8 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     if (!customerId) return;
     setLoading(true);
     try {
-      const res = await fetch(`https://suims.vercel.app/api/invoice/customer/${customerId}`);
-      const json = await res.json();
-      setInvoices(json.invoice || []);
+      const invs = await getInvoices(customerId);
+      setInvoices(invs || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -57,13 +57,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
   const handleCancel = async orderId => {
     if (!window.confirm('Really cancel this order?')) return;
     try {
-      const res = await fetch(`https://suims.vercel.app/api/orders/${orderId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'cancelled' })
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.message || 'Cancel failed');
+      await updateOrderStatus(orderId, 'cancelled');
       alert('Order cancelled');
       setSelectedOrder(null);
       fetchOrders();
@@ -101,7 +95,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     const order = ordersData.find(o => o._id === orderId);
     if (order) {
       setSelectedOrder(order);
-      setActiveTab('orders'); 
+      setActiveTab('orders');
       setSelectedInvoice(null);
     }
   };
@@ -158,7 +152,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
               <InvoiceList
                 invoices={filteredInvoices}
                 onSelect={openInvoice}
-              
+
               />
             ) : (
               <p className={styles.empty}>No invoices found.</p>
@@ -184,7 +178,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
                 Back
               </button>
             </header>
-            <InvoiceDetails invoice={selectedInvoice}  ordersData={ordersData} onOrderClick={goToOrder} />
+            <InvoiceDetails invoice={selectedInvoice} ordersData={ordersData} onOrderClick={goToOrder} />
           </div>
         )}
       </div>

@@ -10,17 +10,18 @@ export default function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
   const navigate = useNavigate();
   const [id, setId] = useState("");
-  const [user , setUser] = useState({});
+  const [user, setUser] = useState({});
 
   useEffect(() => {
-    const user = localStorage.getItem('user');
+    const raw = localStorage.getItem('user');
+    const user = raw ? JSON.parse(raw) : null;
     setUser(user);
-    
   }, [])
 
   const handleLogout = () => {
     if (!confirm('Sure you want to logout?')) return;
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     navigate('/login');
     alert('You have been logged out!')
   };
@@ -47,7 +48,7 @@ export default function Settings() {
 
       <main className={styles.content}>
         {activeTab === 'profile' && <Profile userId={id} user={user} />}
-        {activeTab === 'feedback' && <Feedback customerId={id}/>}
+        {activeTab === 'feedback' && <Feedback customerId={id} />}
       </main>
     </div>
   );

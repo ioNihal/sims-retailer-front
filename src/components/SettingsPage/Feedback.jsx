@@ -1,6 +1,7 @@
 // src/components/Feedback.jsx
 import React, { useState } from 'react';
 import styles from '../../styles/Settings/Feedback.module.css';
+import { sendFeedback } from '../../api/feedback';
 
 const Feedback = ({ customerId }) => {
   const [feedback, setFeedback] = useState("");
@@ -12,23 +13,7 @@ const Feedback = ({ customerId }) => {
 
     try {
       setLoading(true);
-      const response = await fetch('https://suims.vercel.app/api/feedback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          customerId,
-          senderType: 'customer',
-          message: feedback.trim()
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong!');
-      }
+      await sendFeedback(feedback);
 
       setStatus({ type: 'success', message: "Feedback sent successfully!" });
       setLoading(false);

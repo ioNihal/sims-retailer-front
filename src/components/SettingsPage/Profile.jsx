@@ -8,10 +8,10 @@ const Profile = ({ userId, user }) => {
   const [loading, setLoading] = useState(false);
 
   const userDetails = {
-    id: userId || "23746723",
+    id: user?.id || "23746723",
     name: user?.name || "John Doe",
     email: user?.email || "john.doe@example.com",
-    phone: user?.phone || "+1 234 567 890",
+    phone: user?.phone || "+91 737582383",
     address: user?.address || "123 Main St, City, Country"
   };
 
@@ -61,7 +61,7 @@ const Profile = ({ userId, user }) => {
       <p><strong>UserID:</strong> {userDetails.id}</p>
       <p><strong>Name:</strong> {userDetails.name}</p>
       <p><strong>Email:</strong> {userDetails.email}</p>
-      <p><strong>Phone:</strong> {userDetails.phone}</p>
+      <p><strong>Phone:</strong>+91 {userDetails.phone}</p>
       <p><strong>Address:</strong> {userDetails.address}</p>
 
       {!showForm ? (

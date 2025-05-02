@@ -6,6 +6,9 @@ import Checkout from '../components/HomePage/Checkout';
 import styles from '../styles/Home/Home.module.css';
 import { useNavigate } from 'react-router-dom';
 import RefreshButton from '../components/RefreshButton';
+import { getInventory } from '../api/inventory';
+import { createOrder } from '../api/orders';
+
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('products');
@@ -22,16 +25,15 @@ export default function Home() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const r = await fetch('https://suims.vercel.app/api/inventory/customer');
-      const data = await r.json();
-      setProducts(data.inventory);
-      setFiltered(data.inventory);
-      setLoading(false);
+      setError(null);
+      const data = await getInventory();
+      setProducts(data);
+      setFiltered(data);
     } catch (e) {
       console.error(e);
-      setLoading(false);
+      setError(e.message);
     } finally {
-
+      setLoading(false);
     }
   };
 
@@ -69,9 +71,6 @@ export default function Home() {
     setLoading(true);
     setError(null);
     try {
-      const customerId = localStorage.getItem('token');
-      if (!customerId) throw new Error('No customerId in localStorage');
-
       const orderProducts = cart.map(i => ({
         inventoryId: i._id,
         quantity: i.quantity,
@@ -82,13 +81,7 @@ export default function Home() {
         .reduce((s, p) => s + p.price * p.quantity, 0)
         .toFixed(2);
 
-      const res = await fetch('https://suims.vercel.app/api/orders/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customerId, totalAmount, orderProducts })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed');
+      await createOrder({ totalAmount, orderProducts });
       setCart([]);
       setCheckout(false);
       setActiveTab('products');
@@ -104,10 +97,10 @@ export default function Home() {
   return (
     <div className={styles.homeContainer}>
       <div className={styles.actions}>
-       <div className={styles.leftWrapper}>
-       <SearchBar value={search} onChange={setSearch} placeholder="Search products..." />
-       <RefreshButton loading={loading} onClick={fetchProducts} />
-       </div>
+        <div className={styles.leftWrapper}>
+          <SearchBar value={search} onChange={setSearch} placeholder="Search products..." />
+          <RefreshButton loading={loading} onClick={fetchProducts} />
+        </div>
         <div className={styles.tabButtons}>
           <button className={activeTab === 'products' ? styles.active : ''}
             onClick={() => { setActiveTab('products'); setCheckout(false); setError(null); }}>

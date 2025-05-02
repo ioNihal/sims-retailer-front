@@ -70,7 +70,7 @@ export default function Login() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error?.message);
       localStorage.setItem('token', json.token);
-      localStorage.setItem('user', json.user?.id);
+      localStorage.setItem('user', JSON.stringify(json.user));
       navigate('/home');
     } catch (err) {
       setError(err.message);
