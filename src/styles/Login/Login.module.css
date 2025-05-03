@@ -48,11 +48,44 @@
   outline: none;
 }
 
-
-
 .loginForm input:focus {
   outline: none;
   border: 1px solid var(--primary);
+}
+
+
+.inputWrapper {
+  position: relative;
+}
+
+.inputWrapper input {
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.toggle {
+  position: absolute;
+  top: 13px;
+  right: 12px;
+}
+
+
+
+.inputWrapper input[type="password"]::-ms-reveal,
+.inputWrapper input[type="password"]::-ms-clear {
+  display: none;
+}
+
+
+.inputWrapper input[type="password"]::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.inputWrapper input[type="password"]::-webkit-textfield-decoration-button {
+  display: none;
 }
 
 .loginButton {

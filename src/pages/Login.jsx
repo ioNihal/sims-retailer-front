@@ -3,8 +3,11 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Login/Login.module.css';
 import { ThemeContext } from '../contexts/ThemeContext';
+import { Toaster } from 'react-hot-toast';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 export default function Login() {
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
   const [step, setStep] = useState('enterEmail'); // enterEmail | setPassword | login
   const [email, setEmail] = useState('');
   const [customerId, setCustomerId] = useState('');
@@ -15,6 +18,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const { theme, toggle } = useContext(ThemeContext);
 
@@ -23,7 +27,7 @@ export default function Login() {
     e.preventDefault();
     setError(''); setLoading(true);
     try {
-      const res = await fetch(`https://suims.vercel.app/api/customer/email/${encodeURIComponent(email)}`);
+      const res = await fetch(`${API_BASE}/api/customer/email/${encodeURIComponent(email)}`);
       const json = await res.json();
       if (!res.ok) throw new Error(json.error?.message);
       setCustomerId(json.customer._id);
@@ -41,7 +45,7 @@ export default function Login() {
     e.preventDefault();
     setError(''); setLoading(true);
     try {
-      const res = await fetch(`https://suims.vercel.app/api/customer/update/${customerId}`, {
+      const res = await fetch(`${API_BASE}/api/customer/update/${customerId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: newPassword })
@@ -62,7 +66,7 @@ export default function Login() {
     e.preventDefault();
     setError(''); setLoading(true);
     try {
-      const res = await fetch(`https://suims.vercel.app/login`, {
+      const res = await fetch(`${API_BASE}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -81,6 +85,7 @@ export default function Login() {
 
   return (
     <div className={styles.loginPage}>
+      <Toaster position='top-center' />
       <form
         className={styles.loginForm}
         onSubmit={
@@ -126,14 +131,24 @@ export default function Login() {
         {step === 'setPassword' && (
           <>
             <label>New Password</label>
-            <input
-              type="password"
-              placeholder="Choose a password"
-              value={newPassword}
-              onChange={e => setNewPassword(e.target.value)}
-              required
-              disabled={loading}
-            />
+            <div className={styles.inputWrapper}>
+              <input
+                type={show ? 'text' : 'password'}
+                placeholder="Choose a password"
+                value={newPassword}
+                onChange={e => setNewPassword(e.target.value)}
+                required
+                disabled={loading}
+              />
+              <span className={styles.toggle}
+                onClick={() => setShow(s => !s)}
+                tabIndex={-1}
+                aria-label={show ? 'Hide password' : 'Show password'}
+              >
+                {show ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+              </span>
+            </div>
+
             <button className={styles.loginButton} disabled={loading || !newPassword}>
               {loading ? 'Saving…' : 'Save Password'}
             </button>
@@ -143,14 +158,23 @@ export default function Login() {
         {step === 'login' && (
           <>
             <label>Password</label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-              disabled={loading}
-            />
+            <div className={styles.inputWrapper}>
+              <input
+                type={show ? 'text' : 'password'}
+                placeholder="Enter your password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                disabled={loading}
+              />
+              <span className={styles.toggle}
+                onClick={() => setShow(s => !s)}
+                tabIndex={-1}
+                aria-label={show ? 'Hide password' : 'Show password'}
+              >
+                {show ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+              </span>
+            </div>
             <button className={styles.loginButton} disabled={loading || !password}>
               {loading ? 'Signing In…' : 'Sign In'}
             </button>
@@ -160,6 +184,6 @@ export default function Login() {
 
         {error && <p className={styles.error}>{error}</p>}
       </form>
-    </div>
+    </div >
   );
 }

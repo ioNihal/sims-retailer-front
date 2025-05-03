@@ -6,6 +6,7 @@ import Profile from '../components/SettingsPage/Profile';
 import Feedback from '../components/SettingsPage/Feedback';
 import styles from '../styles/Settings/Settings.module.css';
 import ConfirmDialog from '../components/ConfirmDialog';
+import toast from 'react-hot-toast';
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
@@ -25,7 +26,7 @@ export default function Settings() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     navigate('/login');
-    alert('You have been logged out!')
+    toast.success('You have been logged out!')
   };
 
   return (

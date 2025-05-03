@@ -1,6 +1,5 @@
 // src/api/feedback.js
-const API_BASE = "https://suims.vercel.app/api/feedback";
-
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 /**
  * Send feedback (or report) on behalf of the current customer.
  * @param {string} message — the feedback text
@@ -10,7 +9,7 @@ export async function sendFeedback(message) {
     const customerId = JSON.parse(localStorage.getItem("user")).id;
     if (!customerId) throw new Error("Not userID found");
 
-    const res = await fetch(API_BASE, {
+    const res = await fetch(`${API_BASE}/api/feedback`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

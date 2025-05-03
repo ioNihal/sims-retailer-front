@@ -1,5 +1,5 @@
 // src/api/orders.js
-const API_BASE = "https://suims.vercel.app/api/orders";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 
 function getCustomerId() {
@@ -12,7 +12,7 @@ function getCustomerId() {
 export async function getOrders() {
     const customerId = getCustomerId();
     if (!customerId) return [];
-    const res = await fetch(`${API_BASE}?customerId=${customerId}`);
+    const res = await fetch(`${API_BASE}/api/orders?customerId=${customerId}`);
     const json = await res.json();
     if (!res.ok) throw new Error(json.error?.message || "Failed to fetch orders");
     // assume API returns { orders: [...] }
@@ -23,7 +23,7 @@ export async function getOrders() {
 export async function createOrder({ totalAmount, orderProducts }) {
     const customerId = getCustomerId();
     if (!customerId) throw new Error("No customerId in localStorage");
-    const res = await fetch(`${API_BASE}/`, {
+    const res = await fetch(`${API_BASE}/api/orders/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ customerId, totalAmount, orderProducts })
@@ -39,7 +39,7 @@ export async function createOrder({ totalAmount, orderProducts }) {
  * Hits: PATCH /api/orders/cancel/:orderId
  */
 export async function cancelOrder(orderId) {
-  const res = await fetch(`${API_BASE}/cancel/${orderId}`, {
+  const res = await fetch(`${API_BASE}/api/orders/cancel/${orderId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" }
   });

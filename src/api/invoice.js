@@ -1,5 +1,5 @@
 // src/api/invoice.js
-const API_BASE = 'https://suims.vercel.app';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 
 function getCustomerId() {

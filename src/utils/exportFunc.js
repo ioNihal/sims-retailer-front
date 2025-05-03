@@ -8,6 +8,7 @@ export const exportFunc = (allInvoices, selectedIds) => {
   );
   if (!invoicesToExport.length) return;
 
+  const user = JSON.parse(localStorage.getItem('user'));
   const doc = new jsPDF({ unit: 'pt', format: 'A4' });
   const pageWidth = doc.internal.pageSize.getWidth();
   const margin = 40;
@@ -48,12 +49,12 @@ export const exportFunc = (allInvoices, selectedIds) => {
     // === BILL TO / CUSTOMER INFO ===
     doc.setFontSize(12);
     doc.text('Bill To:', margin, lineY + 20);
-    if (inv.customer) {
-      const { name, email, phone, address } = inv.customer;
+    if (user) {
+      const { name, email, phone, address } = user;
       doc.setFontSize(10);
       doc.text(name, margin, lineY + 36);
-      doc.text(email, margin, lineY + 50);
-      doc.text(phone, margin, lineY + 64);
+      doc.text(`+91 ${phone}`, margin, lineY + 50);
+      doc.text(email, margin, lineY + 64);
       doc.text(address, margin, lineY + 78);
     }
 
@@ -127,19 +128,25 @@ export const exportFunc = (allInvoices, selectedIds) => {
 
     // === FOOTER ===
     const footerY = doc.internal.pageSize.getHeight() - margin;
+    const centerX = pageWidth / 2;
     doc.setLineWidth(0.5);
     doc.line(margin, footerY - 20, pageWidth - margin, footerY - 20);
     doc.setFontSize(9);
+    const firstLine = inv.status === 'paid'
+      ? 'Thank you for your order!'
+      : 'Thank you for your order! Please remit payment by the due date.';
+
+    const secondLine = 'YourBusiness — www.yourbusiness.com — support@yourbusiness.com';
+
+    // set font
+    doc.setFontSize(9);
+
+    // draw the two lines, centered
     doc.text(
-      'Thank you for your business! Please remit payment by the due date.',
-      margin,
-      footerY - 5
-    );
-    doc.text(
-      'YourBusiness — www.yourbusiness.com — support@yourbusiness.com',
-      pageWidth - margin,
-      footerY - 5,
-      { align: 'right' }
+      [firstLine, secondLine],
+      centerX,
+      footerY - 10,
+      { align: 'center' }
     );
 
     if (idx < invoicesToExport.length - 1) {
