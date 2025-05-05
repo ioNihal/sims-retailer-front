@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import styles from '../../styles/Settings/Profile.module.css';
 import toast from 'react-hot-toast';
 import { sendFeedback } from '../../api/feedback';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { resetPassword } from '../../api/user';
 
 const Profile = ({ userId, user }) => {
-  const [showForm, setShowForm] = useState(false);
+  const [activeForm, setActiveForm] = useState(null); // 'reset' | 'request' | null
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isResetting, setIsResetting] = useState(false);
+  const [show, setShow] = useState(false);
 
   const userDetails = {
     id: user?.id || "23746723",
@@ -17,16 +23,23 @@ const Profile = ({ userId, user }) => {
     address: user?.address || "123 Main St, City, Country"
   };
 
-  const handleChangeReqClick = () => {
-    setShowForm(true);
-    setStatus(null);
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+  
+    try {
+      setIsResetting(true);
+      await resetPassword(newPassword, confirmPassword);
+      toast.success('Password reset successfully!');
+      setNewPassword('');
+      setConfirmPassword('');
+      setActiveForm(null);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsResetting(false);
+    }
   };
-
-  const handleCancel = () => {
-    setShowForm(false);
-    setMessage('');
-    setStatus(null);
-  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,16 +48,24 @@ const Profile = ({ userId, user }) => {
     setLoading(true);
     try {
       await sendFeedback(message);
-      setStatus({ type: 'success', text: "Request send success!" });
-      toast.success("Request sent successfully!")
+      setStatus({ type: 'success', text: "Request sent successfully!" });
+      toast.success("Request sent successfully!");
       setMessage('');
-      setShowForm(false);
+      setActiveForm(null);
     } catch (err) {
       setStatus({ type: 'error', text: err.message });
-      toast.error("Something went wrong!")
+      toast.error("Something went wrong!");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCancel = () => {
+    setActiveForm(null);
+    setMessage('');
+    setNewPassword('');
+    setConfirmPassword('');
+    setStatus(null);
   };
 
   return (
@@ -56,43 +77,105 @@ const Profile = ({ userId, user }) => {
       <p><strong>Phone:</strong>+91 {userDetails.phone}</p>
       <p><strong>Address:</strong> {userDetails.address}</p>
 
-      {!showForm ? (
-        <button
-          className={styles.changeRequestBtn}
-          onClick={handleChangeReqClick}
-        >
-          Request Changes
-        </button>
-      ) : (
-        <form className={styles.changeRequestForm} onSubmit={handleSubmit}>
-          <label htmlFor="changeMessage">Describe your requested changes:</label>
-          <textarea
-            id="changeMessage"
-            className={styles.formTextarea}
-            value={message}
-            onChange={e => setMessage(e.target.value)}
-            placeholder="E.g. Please update my address to …"
-            required
-          />
-          <div className={styles.formButtons}>
+      <div className={styles.section}>
+        {(activeForm === 'reset' || activeForm === 'request') && (
+          <form
+            className={styles.changeRequestForm}
+            onSubmit={activeForm === 'reset' ? handlePasswordReset : handleSubmit}
+          >
+            {activeForm === 'reset' ? (
+              <>
+                <label htmlFor="newPassword">New Password:</label>
+                <div className={styles.inputWrapper}>
+                  <input
+                    type={show ? 'text' : 'password'}
+                    id="newPassword"
+                    className={styles.formInput}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                  />
+                  <span className={styles.toggle}
+                    onClick={() => setShow(s => !s)}
+                    tabIndex={-1}
+                    aria-label={show ? 'Hide password' : 'Show password'}
+                  >
+                    {show ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                  </span>
+                </div>
+
+                <label htmlFor="confirmPassword">Confirm Password:</label>
+                <div className={styles.inputWrapper}>
+                  <input
+                    type={show ? 'text' : 'password'}
+                    id="confirmPassword"
+                    className={styles.formInput}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                  />
+                  <span className={styles.toggle}
+                    onClick={() => setShow(s => !s)}
+                    tabIndex={-1}
+                    aria-label={show ? 'Hide password' : 'Show password'}
+                  >
+                    {show ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <>
+                <label htmlFor="changeMessage">Describe your requested changes:</label>
+                <textarea
+                  id="changeMessage"
+                  className={styles.formTextarea}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="E.g. Please update my address to …"
+                  required
+                />
+              </>
+            )}
+            <div className={styles.formButtons}>
+              <button
+                type="submit"
+                className={styles.submitBtn}
+                disabled={activeForm === 'reset' ? isResetting : loading}
+              >
+                {activeForm === 'reset' ? (isResetting ? 'Resetting...' : 'Reset Password') : (loading ? 'Sending…' : 'Send Request')}
+              </button>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={handleCancel}
+                disabled={activeForm === 'reset' ? isResetting : loading}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Buttons shown only when no form is active */}
+        {activeForm === null && (
+          <div className={styles.buttonRow}>
             <button
-              type="submit"
-              className={styles.submitBtn}
-              disabled={loading}
+              className={styles.changeRequestBtn}
+              onClick={() => setActiveForm('reset')}
             >
-              {loading ? 'Sending…' : 'Send Request'}
+              Reset Password
             </button>
             <button
-              type="button"
-              className={styles.cancelBtn}
-              onClick={handleCancel}
-              disabled={loading}
+              className={styles.changeRequestBtn}
+              onClick={() => setActiveForm('request')}
             >
-              Cancel
+              Request Changes
             </button>
           </div>
-        </form>
-      )}
+        )}
+      </div>
+
+
       {status && (
         <p className={status.type === 'success' ? styles.successMsg : styles.errorMsg}>
           {status.text}

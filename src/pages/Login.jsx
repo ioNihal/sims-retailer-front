@@ -45,10 +45,11 @@ export default function Login() {
     e.preventDefault();
     setError(''); setLoading(true);
     try {
+      const base64Password = btoa(newPassword);
       const res = await fetch(`${API_BASE}/api/customer/update/${customerId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: newPassword })
+        body: JSON.stringify({ password: base64Password })
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error?.message);
@@ -156,6 +157,7 @@ export default function Login() {
             <button className={styles.loginButton} disabled={loading || !newPassword}>
               {loading ? 'Saving…' : 'Save Password'}
             </button>
+            <p className={styles.link} onClick={() => setStep('enterEmail')}>wrong email? Click here!</p>
           </>
         )}
 
