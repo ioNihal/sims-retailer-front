@@ -1,7 +1,7 @@
 // src/components/OrdersPage/InvoiceDetails.jsx
 import React, { useState } from 'react';
 import styles from '../../styles/Orders/InvoiceDetails.module.css';
-import { formatDate } from '../../utils/validators';
+import { capitalize, formatDate } from '../../utils/validators';
 import { exportFunc } from '../../utils/exportFunc';
 import { updateInvoicePayment } from '../../api/invoice';
 import toast from 'react-hot-toast';
@@ -68,7 +68,7 @@ export default function InvoiceDetails({ invoice, ordersData, onOrderClick }) {
         </button>
       </div>
 
-      <p><strong>Status:</strong> {invoice.status}</p>
+      <p><strong>Status:</strong> {capitalize(invoice.status)}</p>
       <p><strong>Amount:</strong> ₹{invoice.amount.toFixed(2)}</p>
       <p><strong>Due Date:</strong> {formatDate(invoice.dueDate)}</p>
       <p><strong>Created:</strong> {formatDate(invoice.createdAt)}</p>

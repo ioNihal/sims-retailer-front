@@ -90,6 +90,56 @@
   margin-top: 2rem;
 }
 
+/* in Home.module.css, alongside .contentPane etc. */
+
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.skeletonCard {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px var(--shadow);
+  animation: pulse 1.2s ease-in-out infinite;
+  height: 200px;
+  /* match approximate height of your real card */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.skeletonLine {
+  height: 1rem;
+  background: var(--border);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.skeletonLine.mid {
+  width: 70%;
+}
+.skeletonLine.short {
+  width: 40%;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+
 .refreshButton {
   padding: 0.5rem;
   border: none;
@@ -99,14 +149,34 @@
   cursor: pointer;
   transition: background 0.2s;
 }
+
 .refreshButton:hover {
   background: var(--accent-hover);
 }
 
 @media (max-width: 767px) {
-  .homeContainer { padding: 10px; }
-  .actions { flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
-  .leftWrapper { gap: 0.5rem; width: 100%; }
-  .tabButtons { width: 100%; max-width: 100%; gap: 0.5rem; }
-  .refreshButton { display: none; }
+  .homeContainer {
+    padding: 10px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .leftWrapper {
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .tabButtons {
+    width: 100%;
+    max-width: 100%;
+    gap: 0.5rem;
+  }
+
+  .refreshButton {
+    display: none;
+  }
 }

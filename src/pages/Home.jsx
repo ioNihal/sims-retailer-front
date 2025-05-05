@@ -119,7 +119,16 @@ export default function Home() {
       <div className={styles.tabContent}>
         {activeTab === 'products' ? (
           <div className={styles.contentPane}>
-            {loading ? <p className={styles.loading}>Loading...</p> :
+            {loading ? <div className={styles.skeletonGrid}>
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className={styles.skeletonCard}>
+                  <div className={styles.skeletonLine} />  
+                  <div className={`${styles.skeletonLine} ${styles.mid}`} />
+                  <div className={styles.skeletonLine} />         
+                  <div className={`${styles.skeletonLine} ${styles.short}`} />
+                </div>
+              ))}
+            </div> :
               filtered.length > 0
                 ? <ProductList products={filtered} cart={cart} updateCart={addOrUpdate} />
                 : <p className={styles.empty}>No products found.</p>}

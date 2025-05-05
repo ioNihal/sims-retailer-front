@@ -74,6 +74,10 @@ export default function Login() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error?.message);
       localStorage.setItem('token', json.token);
+      // convert seconds → ms
+      const expiryMs = json.expiresIn * 1000;
+      localStorage.setItem('tokenExpiry', expiryMs.toString());
+
       localStorage.setItem('user', JSON.stringify(json.user));
       navigate('/home');
     } catch (err) {

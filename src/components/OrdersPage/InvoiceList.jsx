@@ -1,7 +1,7 @@
 // src/components/OrdersPage/InvoiceList.jsx
 import React from 'react';
 import styles from '../../styles/Orders/InvoiceList.module.css';
-import { formatDate } from '../../utils/validators';
+import { capitalize, formatDate } from '../../utils/validators';
 
 export default function InvoiceList({ invoices, onSelect }) {
   if (!invoices.length) return <div className={styles.noInvoices}>No invoices found.</div>;
@@ -24,7 +24,7 @@ export default function InvoiceList({ invoices, onSelect }) {
             <p><strong>Total:</strong> ₹{inv.amount.toFixed(2)}</p>
             <p><strong>Due:</strong> {formatDate(inv.dueDate)}</p>
             <p className={styles.status}>
-              <strong>Status:</strong> {inv.status}
+              <strong>Status:</strong> {capitalize(inv.status)}
             </p>
           </div>
         </div>

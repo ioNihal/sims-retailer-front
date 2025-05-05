@@ -40,8 +40,8 @@ export default function OrderDetails({ order, onCancel }) {
       <div className={styles.productsSection}>
         {order.orderProducts.map(product => (
           <div key={product._id} className={styles.productDetails}>
-            <p><strong>Product:</strong> {capitalize(product.inventoryId.productName)}</p>
-            <p>Category: {capitalize(product.inventoryId.category)}</p>
+            <p><strong>Product:</strong> {capitalize(product.name)}</p>
+            <p>Category: {capitalize(product.category)}</p>
             <p>Quantity: {product.quantity}</p>
             <p>Unit Price: ₹{product.price}</p>
             <p>Subtotal: ₹{(product.price * product.quantity).toFixed(2)}</p>

@@ -19,34 +19,31 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
   const [invoiceData, setInvoices] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [ordersLoading, setOrdersLoading] = useState(false);
+  const [invoicesLoading, setInvoicesLoading] = useState(false);
   const navigate = useNavigate();
 
   const fetchOrders = async () => {
-    const customerId = localStorage.getItem('token');
-    if (!customerId) return;
-    setLoading(true);
+    setOrdersLoading(true);
     try {
-      const orders = await getOrders(customerId);
+      const orders = await getOrders();
       setOrders(orders || []);
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
     } finally {
-      setLoading(false);
+      setOrdersLoading(false);
     }
   };
 
   const fetchInvoices = async () => {
-    const customerId = localStorage.getItem('token');
-    if (!customerId) return;
-    setLoading(true);
+    setInvoicesLoading(true);
     try {
-      const invs = await getInvoices(customerId);
+      const invs = await getInvoices();
       setInvoices(invs || []);
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
     } finally {
-      setLoading(false);
+      setInvoicesLoading(false);
     }
   };
 
@@ -75,12 +72,12 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
   };
 
   const filteredOrders = ordersData.filter(order =>
-    order.orderProducts.some(p =>
-      p.inventoryId.productName.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    order.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order._id.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const filteredInvoices = invoiceData.filter(i =>
-    i._id.toLowerCase().includes(searchTerm.toLowerCase())
+    i._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    i.status.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const openOrder = o => setSelectedOrder(o);
@@ -100,6 +97,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
     }
   };
 
+  const isLoading = activeTab === 'orders' ? ordersLoading : invoicesLoading;
 
   return (
     <div className={styles.ordersPage}>
@@ -113,7 +111,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
           />
           <RefreshButton
             onClick={activeTab === 'orders' ? fetchOrders : fetchInvoices}
-            loading={loading}
+            loading={isLoading}
           />
         </div>
 
@@ -139,8 +137,10 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
         : ''
         }`}>
         <div className={styles.listPane}>
-          {loading ? (
-            <p className={styles.loading}>Loading…</p>
+          {isLoading ? (
+            <div className={styles.loading}>
+               <div className={styles.spinner} />
+            </div>
           ) : activeTab === 'orders' ? (
             filteredOrders.length > 0 ? (
               <OrderList orders={filteredOrders} onSelect={openOrder} />

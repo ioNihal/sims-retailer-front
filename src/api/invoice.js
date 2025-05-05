@@ -1,28 +1,28 @@
 // src/api/invoice.js
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+import callApi from "./_callApi";
+import { getCustomerId } from "./_auth";
 
-
-function getCustomerId() {
-  return JSON.parse(localStorage.getItem('user')).id;
-}
-
+/**
+ * Fetch all invoices for the current customer.
+ * @returns {Promise<Array>} Array of invoice objects
+ */
 export async function getInvoices() {
   const customerId = getCustomerId();
   if (!customerId) return [];
-  const res = await fetch(`${API_BASE}/api/invoice/customer/${customerId}`);
-  const json = await res.json();
-  if (!res.ok) throw new Error(json.error?.message || "Failed to fetch invoices");
-  return Array.isArray(json.invoice) ? json.invoice : [];
+  const { invoice = [] } = await callApi(`/api/invoice/customer/${customerId}`);
+  return Array.isArray(invoice) ? invoice : [];
 }
 
-
+/**
+ * Update payment details on an invoice.
+ * @param {string} invoiceId
+ * @param {{ method: string, transId: string, transDate: string }} payload
+ * @returns {Promise<Object>} Updated invoice object
+ */
 export async function updateInvoicePayment(invoiceId, { method, transId, transDate }) {
-  const res = await fetch(`${API_BASE}/api/invoice/payment/${invoiceId}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ method, transId, transDate })
+  const { invoice } = await callApi(`/api/invoice/payment/${invoiceId}`, {
+    method: "PATCH",
+    body: { method, transId, transDate },
   });
-  const json = await res.json();
-  if (!res.ok) throw new Error(json.error?.message || 'Failed to update payment');
-  return json.invoice;
+  return invoice;
 }

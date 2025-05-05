@@ -1,12 +1,11 @@
 // src/api/inventory.js
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+import callApi from "./_callApi";
 
-/**
- * Fetch all inventory items visible to this customer.
- */
-export async function getInventory() {
-  const res = await fetch(`${API_BASE}/api/inventory/customer`);
-  const json = await res.json();
-  if (!res.ok) throw new Error(json.error?.message || "Failed to fetch inventory");
-  return Array.isArray(json.inventory) ? json.inventory : [];
-}
+ /**
+  * Fetch all inventory items visible to this customer.
+  * @returns {Promise<Array>} Array of inventory objects
+  */
+ export async function getInventory() {
+   const { inventory = [] } = await callApi("/api/inventory/customer");
+   return Array.isArray(inventory) ? inventory : [];
+ }
