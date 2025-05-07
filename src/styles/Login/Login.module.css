@@ -118,7 +118,8 @@
 }
 
 .error {
-font-size:0.8rem;
+font-size:0.75rem;
+text-align:center;
 }
 
 /* For toggle button */
