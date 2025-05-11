@@ -1,4 +1,4 @@
-// src/api/inventory.js
+
 import callApi from "./_callApi";
 
  /**

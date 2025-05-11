@@ -1,4 +1,4 @@
-// src/utils/exportFunc.js
+
 import { jsPDF } from 'jspdf';
 import { capitalize, formatDateForFilename } from './validators';
 
@@ -15,14 +15,14 @@ export const exportFunc = (allInvoices, selectedIds) => {
   const usableWidth = pageWidth - margin * 2;
 
   invoicesToExport.forEach((inv, idx) => {
-    // === HEADER ===
+    //HEADER 
     doc.setFontSize(18);
     doc.text('YourBusiness Name', margin, 50);
     doc.setFontSize(10);
     doc.text('123 Business Street, City, Country', margin, 65);
     doc.text('Phone: +1 234 5678   Email: info@yourbusiness.com', margin, 80);
 
-    // === INVOICE METADATA & PAYMENT INFO ===
+    // INVOICE METADATA & PAYMENT INFO
     doc.setFontSize(16);
     doc.text('INVOICE', pageWidth - margin, 50, { align: 'right' });
     doc.setFontSize(10);
@@ -46,7 +46,7 @@ export const exportFunc = (allInvoices, selectedIds) => {
     doc.setLineWidth(1);
     doc.line(margin, lineY, pageWidth - margin, lineY);
 
-    // === BILL TO / CUSTOMER INFO ===
+    // BILL TO / CUSTOMER INFO 
     doc.setFontSize(12);
     doc.text('Bill To:', margin, lineY + 20);
     if (user) {
@@ -58,7 +58,7 @@ export const exportFunc = (allInvoices, selectedIds) => {
       doc.text(address, margin, lineY + 78);
     }
 
-    // === LINE ITEMS TABLE ===
+    //  LINE ITEMS TABLE 
     const tableTop = lineY + 100;
     const colWidths = [usableWidth * 0.5, usableWidth * 0.15, usableWidth * 0.15, usableWidth * 0.2];
     const cols = ['Description', 'Qty', 'Unit Price', 'Line Total'];
@@ -100,15 +100,13 @@ export const exportFunc = (allInvoices, selectedIds) => {
       });
     });
 
-    // === TOTALS SUMMARY ===
-    const summaryY = y + 30;              // add extra vertical gap
+    //  TOTALS SUMMARY 
+    const summaryY = y + 30;              
     const labelX = margin + colWidths[0] + colWidths[1];
-    const valueRightX = pageWidth - margin;  // align values at right margin
+    const valueRightX = pageWidth - margin;  
 
     doc.setFontSize(11);
-    // Subtotal label on left
     doc.text('Subtotal:', labelX, summaryY);
-    // Subtotal value on right, right-aligned
     doc.text(
       `Rs ${inv.amount.toFixed(2)}`,
       valueRightX,
@@ -116,9 +114,7 @@ export const exportFunc = (allInvoices, selectedIds) => {
       { align: 'right' }
     );
 
-    // Status label just below
     doc.text('Status:', labelX, summaryY + 16);
-    // Status value on right
     doc.text(
       capitalize(inv.status),
       valueRightX,
@@ -126,7 +122,7 @@ export const exportFunc = (allInvoices, selectedIds) => {
       { align: 'right' }
     );
 
-    // === FOOTER ===
+    //  FOOTER 
     const footerY = doc.internal.pageSize.getHeight() - margin;
     const centerX = pageWidth / 2;
     doc.setLineWidth(0.5);

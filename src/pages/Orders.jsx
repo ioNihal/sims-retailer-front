@@ -1,4 +1,4 @@
-// src/pages/Orders.jsx
+
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import OrderList from '../components/OrdersPage/OrderList';

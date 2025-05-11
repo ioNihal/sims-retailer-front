@@ -1,4 +1,4 @@
-// src/components/OrdersPage/OrderList.jsx
+
 import React from 'react';
 import styles from '../../styles/Orders/OrderList.module.css';
 import { capitalize, formatDate } from '../../utils/validators';
@@ -18,7 +18,6 @@ export default function OrderList({ orders, onSelect }) {
         >
           <p><strong>Order ID: {o._id}</strong></p>
           <p>Status: {capitalize(o.status)}</p>
-          {/* <p><small>Customer: {`${o.customerId?.name || "N/A"}`}</small></p> */}
           <p>Date: {formatDate(o.createdAt)}</p>
           <p>Quantity: {o.orderProducts.reduce((acc, cur) => acc + cur.quantity, 0)}</p>
           <p>Total: ₹{o.totalAmount.toFixed(2)} Products: {o.orderProducts.length}</p>

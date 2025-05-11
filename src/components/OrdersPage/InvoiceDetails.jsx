@@ -1,4 +1,4 @@
-// src/components/OrdersPage/InvoiceDetails.jsx
+
 import React, { useState } from 'react';
 import styles from '../../styles/Orders/InvoiceDetails.module.css';
 import { capitalize, formatDate } from '../../utils/validators';
@@ -82,9 +82,6 @@ export default function InvoiceDetails({ invoice, ordersData, onOrderClick }) {
           <p><strong>Method:</strong> {invoice.method}</p>
           <p><strong>Transaction ID:</strong> {invoice.method === 'cash' ? 'N/A' : invoice.transactionId}</p>
           <p><strong>Transaction Date:</strong> {invoice.transactionDate ? formatDate(invoice.transactionDate) : 'N/A'}</p>
-          {/* {invoice.status !== 'paid' && (
-            <button className={styles.paymentBtn} onClick={() => setEditing(true)}>Edit Payment Details</button>
-          )} */}
         </>
       ) : editing ? (
         <div className={styles.paymentForm}>

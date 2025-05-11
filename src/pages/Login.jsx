@@ -1,4 +1,4 @@
-// src/pages/Login.jsx
+
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Login/Login.module.css';
@@ -8,13 +8,13 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 export default function Login() {
   const API_BASE = import.meta.env.VITE_API_BASE_URL;
-  const [step, setStep] = useState('enterEmail'); // enterEmail | setPassword | login
+  const [step, setStep] = useState('enterEmail'); 
   const [email, setEmail] = useState('');
   const [customerId, setCustomerId] = useState('');
   const [isActive, setIsActive] = useState(false);
 
-  const [password, setPassword] = useState('');       // for login
-  const [newPassword, setNewPassword] = useState(''); // for setup
+  const [password, setPassword] = useState('');      
+  const [newPassword, setNewPassword] = useState(''); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 

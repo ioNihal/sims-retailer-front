@@ -1,4 +1,4 @@
-/* MainLayout.module.css */
+
 .container {
   display: flex;
   flex-direction: column;
@@ -34,7 +34,7 @@
   overflow-y: hidden;
 }
 
-/* For toggle button */
+
 .themeToggle {
   --size: 1rem;
   --icon-size: calc(var(--size) * 0.6);

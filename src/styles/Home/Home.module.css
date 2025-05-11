@@ -1,4 +1,4 @@
-/* Home.module.css — use only your variables, no hard-coded colours */
+
 .homeContainer {
   max-width: 1200px;
   padding: 20px;
@@ -109,7 +109,7 @@
   box-shadow: 0 2px 6px var(--shadow);
   animation: pulse 1.2s ease-in-out infinite;
   height: 200px;
-  /* match approximate height of your real card */
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;

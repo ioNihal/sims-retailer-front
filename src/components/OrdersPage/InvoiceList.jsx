@@ -1,4 +1,4 @@
-// src/components/OrdersPage/InvoiceList.jsx
+
 import React from 'react';
 import styles from '../../styles/Orders/InvoiceList.module.css';
 import { capitalize, formatDate } from '../../utils/validators';

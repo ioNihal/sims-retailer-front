@@ -1,4 +1,4 @@
-// src/components/Checkout.jsx
+
 import React from 'react';
 import styles from '../../styles/Home/Checkout.module.css';
 import { capitalize } from '../../utils/validators';

@@ -86,11 +86,6 @@ body {
 }
 
 
-/* —————————————————————————————————————————————————————————
-   Global scrollbar styling
-————————————————————————————————————————————————————————— */
-
-
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--primary) var(--surface);

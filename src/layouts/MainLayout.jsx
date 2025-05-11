@@ -1,4 +1,4 @@
-// src/layouts/MainLayout.jsx
+
 import React, { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -13,7 +13,6 @@ export default function MainLayout() {
       <header className={styles.mobileHeader}>
         <div className={styles.brand}>YourBuisness</div>
         <Navbar />
-        {/* Theme toggle (moves under sidebar on desktop) */}
         <div className={`${styles.themeToggle} ${theme === 'dark' ? styles.dark : ''}`}>
           <label className={styles.switch}>
             <input

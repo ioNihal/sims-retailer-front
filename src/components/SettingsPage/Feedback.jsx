@@ -1,4 +1,4 @@
-// src/components/Feedback.jsx
+
 import React, { useState } from 'react';
 import styles from '../../styles/Settings/Feedback.module.css';
 import { sendFeedback } from '../../api/feedback';

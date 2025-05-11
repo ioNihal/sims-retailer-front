@@ -1,4 +1,4 @@
-// src/components/RequireAuth.jsx
+
 import { Navigate, useLocation } from 'react-router-dom';
 
 const RequireAuth = ({ children }) => {

@@ -1,4 +1,4 @@
-// src/components/Navbar.jsx
+
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from '../styles/Navbar.module.css';

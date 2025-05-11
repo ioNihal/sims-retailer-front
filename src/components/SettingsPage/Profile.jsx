@@ -6,7 +6,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { resetPassword } from '../../api/user';
 
 const Profile = ({ userId, user }) => {
-  const [activeForm, setActiveForm] = useState(null); // 'reset' | 'request' | null
+  const [activeForm, setActiveForm] = useState(null);
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);

@@ -1,4 +1,4 @@
-/* src/styles/Home/ProductList.module.css */
+
 
 .productList {
   display: grid;
@@ -84,7 +84,7 @@
   appearance: textfield;
 }
 
-/* Hide native spinners */
+
 .stepperInput::-webkit-outer-spin-button,
 .stepperInput::-webkit-inner-spin-button {
   -webkit-appearance: none;

@@ -1,4 +1,4 @@
-// src/components/OrdersPage/OrderDetails.jsx
+
 import React, { useState } from 'react';
 import styles from '../../styles/Orders/OrderDetails.module.css';
 import { capitalize, formatDate } from '../../utils/validators';
