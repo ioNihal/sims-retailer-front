@@ -71,7 +71,6 @@ const Profile = ({ userId, user }) => {
   return (
     <div className={styles.profileContainer}>
       <h2>Profile Details</h2>
-      <p><strong>UserID:</strong> {userDetails.id}</p>
       <p><strong>Name:</strong> {userDetails.name}</p>
       <p><strong>Email:</strong> {userDetails.email}</p>
       <p><strong>Phone:</strong>+91 {userDetails.phone}</p>
