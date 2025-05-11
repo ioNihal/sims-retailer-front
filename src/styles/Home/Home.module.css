@@ -68,12 +68,16 @@
 }
 
 .tabContent {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow: hidden;
 }
 
 .contentPane {
-  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
   background: var(--bg);
   border-radius: 12px;
   box-shadow: 0 2px 6px var(--shadow);
@@ -90,7 +94,7 @@
   margin-top: 2rem;
 }
 
-/* in Home.module.css, alongside .contentPane etc. */
+
 
 .skeletonGrid {
   display: grid;

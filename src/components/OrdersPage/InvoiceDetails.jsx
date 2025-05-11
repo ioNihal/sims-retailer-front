@@ -5,6 +5,8 @@ import { capitalize, formatDate } from '../../utils/validators';
 import { exportFunc } from '../../utils/exportFunc';
 import { updateInvoicePayment } from '../../api/invoice';
 import toast from 'react-hot-toast';
+import { QRCodeSVG } from 'qrcode.react';
+
 
 export default function InvoiceDetails({ invoice, ordersData, onOrderClick }) {
   const [editing, setEditing] = useState(false);
@@ -15,6 +17,7 @@ export default function InvoiceDetails({ invoice, ordersData, onOrderClick }) {
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [showQR, setShowQR] = useState(false);
 
   if (!invoice) return <p>No invoice selected.</p>;
 
@@ -124,14 +127,40 @@ export default function InvoiceDetails({ invoice, ordersData, onOrderClick }) {
           </label>
 
           <div className={styles.btnGroup}>
-            <button onClick={handleSave} disabled={saveDisabled}>
+            {method === 'upi' && (
+              <button
+                className={styles.qrBtn}
+                onClick={() => setShowQR(true)}
+              >
+                Show QR
+              </button>
+            )}
+            <button onClick={handleSave} disabled={saveDisabled} className={styles.saveBtn}>
               {`${saving ? 'Saving…' : 'Save Payment'}`}
             </button>
-            <button onClick={() => setEditing(false)}>Cancel</button>
+            <button onClick={() => setEditing(false)} className={styles.cancelBtn}>Cancel</button>
+
           </div>
         </div>
       ) : (
         <button className={styles.paymentBtn} onClick={() => setEditing(true)}>Add Payment Details</button>
+      )}
+
+      {showQR && (
+        <div className={styles.qrOverlay}>
+          <div className={styles.qrModal}>
+          <p>Scan the QR code to pay</p>
+            <button
+              className={styles.qrClose}
+              onClick={() => setShowQR(false)}
+              title='close'
+            >
+              &times;
+            </button>
+            <QRCodeSVG value={`this is a fake qr code`} size={300} />
+            
+          </div>
+        </div>
       )}
 
       {fullOrders.length > 0 && (

@@ -4,7 +4,7 @@
   background: var(--surface);
   padding: 1.25rem;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 8px var(--shadow);
+  
   position: relative;
   color: var(--text);
 }
@@ -144,22 +144,30 @@
   transition: background 0.2s;
 }
 
-/* Save button (primary) */
-.btnGroup button:first-of-type {
+
+.btnGroup .saveBtn {
   background: var(--primary);
   color: #fff;
 }
-.btnGroup button:first-of-type:hover {
+.btnGroup .saveBtn:hover {
   background: var(--primary-hover);
 }
 
-/* Cancel button (secondary) */
-.btnGroup button:last-of-type {
+
+.btnGroup .cancelBtn {
   background: var(--secondary);
   color: #fff;
 }
-.btnGroup button:last-of-type:hover {
+.btnGroup .cancelBtn:hover {
   background: var(--secondary-hover);
+}
+
+.btnGroup .qrBtn {
+  background: var(--info);
+  color: #fff;
+}
+.btnGroup .qrBtn:hover {
+  background: var(--info-hover);
 }
 
 /* Error message */
@@ -185,7 +193,44 @@
 }
 
 
+.qrOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
 
+
+.qrModal {
+  position: relative;
+  background: var(--surface);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.qrModal p {
+  text-align: center;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+
+.qrClose {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: var(--error);
+  color: #fff;
+  border: none;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
 
 @media (max-width: 767px) {
   .invoiceDetails {
@@ -216,5 +261,19 @@
 
   .ordersSection li {
     font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .btnGroup {
+    flex-wrap:wrap ;
+  }
+
+  .qrBtn {
+    flex: 1 1 100%;
+  }
+
+  .saveBtn, .cancelBtn {
+    flex: 1;
   }
 }
