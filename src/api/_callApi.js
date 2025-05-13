@@ -17,7 +17,7 @@ export default async function callApi(path, { method = "GET", body, requireAuth 
   try {
     res = await fetch(`${API_BASE}${path}`, { method, headers, body });
   } catch (networkErr) {
-    throw new Error(`Network error at ${path}: ${networkErr.message}`);
+    throw new Error(`Network error: ${networkErr.message}`);
   }
 
   const json = await res.json().catch(() => ({}));
