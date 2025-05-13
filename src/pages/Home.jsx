@@ -32,6 +32,7 @@ export default function Home() {
       setFiltered(data);
     } catch (e) {
       console.error(e);
+toast.error(e.message);
       setError(e.message);
     } finally {
       setLoading(false);
