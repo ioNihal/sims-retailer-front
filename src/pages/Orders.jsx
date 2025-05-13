@@ -29,6 +29,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
       const orders = await getOrders();
       setOrders(orders || []);
     } catch (err) {
+toast.error(e.message);
       console.error(err.message);
     } finally {
       setOrdersLoading(false);
@@ -41,6 +42,7 @@ export default function Orders({ activeTab: initialTab = 'orders' }) {
       const invs = await getInvoices();
       setInvoices(invs || []);
     } catch (err) {
+toast.error(e.message);
       console.error(err.message);
     } finally {
       setInvoicesLoading(false);
