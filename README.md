@@ -1,4 +1,4 @@
-[IMS System](https://github.com/ioNihal/sims-dashboard-front)
+[IMS System](https://github.com/ioNihal/sims-dashboard-front) |
 [Backend Code](https://github.com/S488U/ims)
 
 # SIMS - Customer Portal
