@@ -31,7 +31,7 @@ This project is the **Customer Portal** of the **Smart Inventory Management Syst
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/sims-customer-portal.git
+   git clone https://github.com/ioNihal/sims-retailer-front.git
    cd sims-customer-portal
    ```
 
